@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.seasar.mayaa.matatabi.feature"
+      label="org.seasar.mayaa.matatabi.feature"
+      version="0.2.7">
+
+   <description url="http://matobat.sakura.ne.jp/matatabi/">
+      Mayaa Plugin
+   </description>
+
+   <copyright>
+      Copyright 2004-2006 the Seasar Foundation and the Others.
+   </copyright>
+
+   <license>
+      Copyright 2004-2006 the Seasar Foundation and the Others.
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
+either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.wst.sse.ui"/>
+      <import plugin="org.eclipse.wst.sse.core"/>
+      <import plugin="org.eclipse.wst.xml.core"/>
+      <import plugin="org.eclipse.wst.xml.ui"/>
+      <import plugin="org.eclipse.wst.html.ui"/>
+      <import plugin="org.apache.xerces"/>
+   </requires>
+
+   <plugin
+         id="org.seasar.mayaa.matatabi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>

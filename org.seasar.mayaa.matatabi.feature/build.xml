@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.seasar.mayaa.matatabi.feature" default="build.update.jar" basedir=".">
+
+	<target name="init">
+		<property name="feature.temp.folder" value="${basedir}/feature.temp.folder"/>
+		<property name="feature.destination" value="${basedir}"/>
+	</target>
+
+	<target name="all.plugins" depends="init">
+		<ant antfile="build.xml" dir="../org.seasar.mayaa.matatabi" target="${target}">
+			<property name="arch" value="x86"/>
+			<property name="os" value="win32"/>
+			<property name="ws" value="win32"/>
+		</ant>
+	</target>
+	<target name="all.features" depends="init">
+	</target>
+	<target name="update.feature" depends="init">
+	</target>
+
+	<target name="all.children" depends="init,all.features,all.plugins,update.feature">
+	</target>
+
+	<target name="children" if="include.children">
+		<antcall target="all.children"/>
+	</target>
+
+	<target name="build.jars" depends="init" description="フィーチャー org.seasar.mayaa.matatabi.feature の JAR をすべてビルドします。">
+		<antcall target="all.children">
+			<param name="target" value="build.jars"/>
+		</antcall>
+	</target>
+
+	<target name="build.sources" depends="init">
+		<antcall target="all.children">
+			<param name="target" value="build.sources"/>
+		</antcall>
+	</target>
+
+	<target name="build.zips" depends="init">
+		<antcall target="all.children">
+			<param name="target" value="build.zips"/>
+		</antcall>
+	</target>
+
+	<target name="build.update.jar" depends="init" description="更新サイトのフィーチャー org.seasar.mayaa.matatabi.feature をビルドします。">
+		<antcall target="all.children">
+			<param name="target" value="build.update.jar"/>
+		</antcall>
+		<property name="feature.base" value="${feature.temp.folder}"/>
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="gather.bin.parts" inheritAll="false">
+			<param name="arch" value="*"/>
+			<param name="ws" value="*"/>
+			<param name="nl" value="*"/>
+			<param name="os" value="*"/>
+			<param name="feature.base" value="${feature.temp.folder}"/>
+		</antcall>
+		<jar destfile="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.jar" basedir="${feature.temp.folder}/features/org.seasar.mayaa.matatabi.feature_0.2.7"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="gather.bin.parts" depends="init" if="feature.base">
+		<mkdir dir="${feature.base}/features/org.seasar.mayaa.matatabi.feature_0.2.7"/>
+		<antcall target="children">
+			<param name="destination.temp.folder" value="${feature.base}/plugins"/>
+			<param name="target" value="gather.bin.parts"/>
+		</antcall>
+		<copy todir="${feature.base}/features/org.seasar.mayaa.matatabi.feature_0.2.7" failonerror="true" overwrite="false">
+			<fileset dir="${basedir}" includes="feature.xml"			/>
+		</copy>
+		<eclipse.idReplacer featureFilePath="${feature.base}/features/org.seasar.mayaa.matatabi.feature_0.2.7/feature.xml"  selfVersion="0.2.7" featureIds="" pluginIds="org.seasar.mayaa.matatabi,0.2.7,"/>
+		<antcall target="rootFiles${os}_${ws}_${arch}"/>
+	</target>
+	<target name="rootFileswin32_win32_x86">
+	</target>
+	<target name="rootFilesgroup_group_group">
+		<antcall target="rootFileswin32_win32_x86"/>
+	</target>
+
+	<target name="zip.distribution" depends="init" description="フィーチャー org.seasar.mayaa.matatabi.feature のプラグインおよびフィーチャーすべてを含む ZIP を作成します。">
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="gather.bin.parts">
+			<param name="arch" value="*"/>
+			<param name="ws" value="*"/>
+			<param name="nl" value="*"/>
+			<param name="include.children" value="true"/>
+			<param name="feature.base" value="${feature.temp.folder}"/>
+			<param name="os" value="*"/>
+		</antcall>
+		<zip destfile="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.bin.dist.zip" basedir="${feature.temp.folder}" filesonly="false" whenempty="skip" update="false"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="zip.sources" depends="init">
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="all.children">
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins/org.seasar.mayaa.matatabi.feature.source_0.2.7/src"/>
+			<param name="include.children" value="true"/>
+			<param name="target" value="gather.sources"/>
+		</antcall>
+		<zip destfile="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.src.zip" basedir="${feature.temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="zip.logs" depends="init">
+		<delete dir="${feature.temp.folder}"/>
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="all.children" inheritAll="false">
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins"/>
+			<param name="include.children" value="true"/>
+			<param name="target" value="gather.logs"/>
+		</antcall>
+		<zip destfile="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.log.zip" basedir="${feature.temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${feature.temp.folder}"/>
+	</target>
+
+	<target name="clean" depends="init" description="作成された ZIP、JAR、およびログすべてのフィーチャー org.seasar.mayaa.matatabi.feature をクリーンにします。">
+		<delete file="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.jar"/>
+		<delete file="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.bin.dist.zip"/>
+		<delete file="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.log.zip"/>
+		<delete file="${feature.destination}/org.seasar.mayaa.matatabi.feature_0.2.7.src.zip"/>
+		<delete dir="${feature.temp.folder}"/>
+		<antcall target="all.children">
+			<param name="target" value="clean"/>
+		</antcall>
+	</target>
+
+	<target name="refresh" depends="init" if="eclipse.running" description="このフォルダーを更新します。">
+		<eclipse.convertPath fileSystemPath="C:/work/java/project/oss/mayaa/org.seasar.mayaa.matatabi.feature/" property="resourcePath"/>
+		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
+		<antcall target="all.children">
+			<param name="target" value="refresh"/>
+		</antcall>
+	</target>
+	<target name="gather.sources">
+		<antcall target="children">
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins/org.seasar.mayaa.matatabi.feature.source_0.2.7/src"/>
+			<param name="target" value="gather.sources"/>
+		</antcall>
+	</target>
+
+	<target name="gather.logs" depends="init">
+		<mkdir dir="${feature.temp.folder}"/>
+		<antcall target="all.children" inheritAll="false">
+			<param name="destination.temp.folder" value="${feature.temp.folder}/plugins"/>
+			<param name="target" value="gather.logs"/>
+		</antcall>
+	</target>
+
+</project>
