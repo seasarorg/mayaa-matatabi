@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.seasar.mayaa.matatabi" default="build.jars" basedir=".">
+
+	<property name="basews" value="${ws}"/>
+	<property name="baseos" value="${os}"/>
+	<property name="basearch" value="${arch}"/>
+	<property name="basenl" value="${nl}"/>
+
+	<!-- コンパイラーを設定します。 -->
+	<property name="javacFailOnError" value="false"/>
+	<property name="javacDebugInfo" value="on"/>
+	<property name="javacVerbose" value="false"/>
+	<property name="logExtension" value=".log"/>
+	<property name="compilerArg" value=""/>
+	<property name="javacSource" value="1.3"/>
+	<property name="javacTarget" value="1.2"/>
+	<path id="path_bootclasspath">
+		<fileset dir="${java.home}/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<property name="bootclasspath" refid="path_bootclasspath"/>
+	<property name="bundleJavacSource" value="${javacSource}"/>
+	<property name="bundleJavacTarget" value="${javacTarget}"/>
+	<property name="bundleBootClasspath" value="${bootclasspath}"/>
+
+	<target name="init" depends="properties">
+		<condition property="pluginTemp" value="${buildTempFolder}/plugins">
+			<isset property="buildTempFolder"/>
+		</condition>
+		<property name="pluginTemp" value="${basedir}"/>
+		<condition property="build.result.folder" value="${pluginTemp}/org.seasar.mayaa.matatabi">
+			<isset property="buildTempFolder"/>
+		</condition>
+		<property name="build.result.folder" value="${basedir}"/>
+		<property name="temp.folder" value="${basedir}/temp.folder"/>
+		<property name="plugin.destination" value="${basedir}"/>
+	</target>
+
+	<target name="properties" if="eclipse.running">
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+
+	</target>
+
+	<target name="build.update.jar" depends="init" description="更新サイトのプラグイン org.seasar.mayaa.matatabi をビルドします。">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<zip destfile="${plugin.destination}/org.seasar.mayaa.matatabi_0.2.7.jar" basedir="${temp.folder}/org.seasar.mayaa.matatabi_0.2.7" filesonly="false" whenempty="skip" update="false"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+	<target name="matatabi.jar" depends="init" unless="matatabi.jar" description="JAR org.seasar.mayaa.matatabi matatabi.jar を作成します。">
+		<delete dir="${temp.folder}/matatabi.jar.bin"/>
+		<mkdir dir="${temp.folder}/matatabi.jar.bin"/>
+		<path id="matatabi.jar.classpath">
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.osgi.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.osgi_3.2.0.v20060601.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.equinox.common_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.equinox.common.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.jobs_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.jobs.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.0.v20060603/runtime_registry_compatibility.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.0.v20060603"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.equinox.registry_3.2.0.v20060601.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.equinox.registry.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.apache.xerces_2.8.0.v200606131651/resolver.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.apache.xerces_2.8.0.v200606131651/xercesImpl.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.apache.xerces_2.8.0.v200606131651/xml-apis.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.equinox.preferences_3.2.0.v20060601.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.equinox.preferences.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.0.v20060603/@dot"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.contenttype_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.contenttype.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility.auth_3.2.0.v20060601.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility.auth.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.swt_3.2.0.v3232o.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.swt.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.swt.win32.win32.x86_3.2.0.0.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.swt.win32.win32.x86_3.2.0.v3232m.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.jface_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.jface.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.commands_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.commands.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.workbench_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.workbench.compatibility_3.2.0.I20060605-1400/@dot"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.workbench.compatibility_3.2.0.I20060605-1400/compatibility.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.workbench.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/com.ibm.icu_3.4.4.1.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/com.ibm.icu.nl1_3.4.4.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.help_3.2.0.v20060602.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.help.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.expressions_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.expressions.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.resources_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.resources.compatibility_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.resources.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.resources.win32_3.2.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility_3.1.100.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.runtime.compatibility.nl1_3.1.100.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.configurator_3.2.0.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.configurator.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ant.core_3.1.100.v20060531.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ant.core.nl1_3.1.100.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.variables_3.1.100.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.variables.nl1_3.1.100.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.filesystem_1.0.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.filesystem.nl1_1.0.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.filesystem.win32.x86_1.0.0.v20060603.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.ide_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.ide.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.win32_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.views_3.2.0.I20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.views.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.core_3.2.0.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.core.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.core.win32_3.2.0.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.ui_3.2.0.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.update.ui.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.forms_3.2.0.v20060602.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.forms.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.jface.text_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.jface.text.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.text_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.text.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.workbench.texteditor_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.workbench.texteditor.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.sse.ui_1.0.101.v200606191900.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.debug.core_3.2.0.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.debug.core.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.debug.ui_3.2.0.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.debug.ui.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.console_3.1.100.v20060605.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.console.nl1_3.1.100.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.editors_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.ui.editors.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.filebuffers_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.core.filebuffers.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.search_3.2.0.v20060605-1400.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.search.nl1_3.2.0.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.sse.core_1.1.0.v200606141450.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.uriresolver_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.emf.common_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.validation_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.frameworks_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.jem.util_1.2.0.v20060530_RC2.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.emf.ecore_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.emf.ecore.xmi_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.environment_1.0.100.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.osgi.util_3.1.100.v20060601.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.osgi.util.nl1_3.1.100.v200606220026.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.project.facet.core_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.xml.core_1.1.0.v200606142000.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.emf.ecore.edit_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.emf.edit_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.emf.ecore.change_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.emf_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.emfworkbench.integration_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.xsd_2.2.0.v200606271057.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.core_1.1.0.v200606130645.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.xml.ui_1.0.100.v200606141450.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.ui_1.1.0.v200606142122.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.html.ui_1.0.100.v200606191945.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.css.ui_1.0.100.v200606141450.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.css.core_1.1.0.v200606141450.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.html.core_1.1.0.v200606141450.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.common.modulecore_1.1.0.v200606222043.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.javascript.ui_1.0.0.v200606141450.jar"/>
+			<pathelement path="../../../../../../eclipse_3_2/plugins/org.eclipse.wst.javascript.core_1.0.0.v200606141450.jar"/>
+			<pathelement path="nekohtml.jar"/>
+			<pathelement path="${build.result.folder}/../org.seasar.mayaa.matatabi/nekohtml.jar"/>
+		</path>
+		<!-- compile the source code -->
+		<javac destdir="${temp.folder}/matatabi.jar.bin" failonerror="${javacFailOnError}" verbose="${javacVerbose}" debug="${javacDebugInfo}" includeAntRuntime="no" bootclasspath="${bundleBootClasspath}" source="${bundleJavacSource}" target="${bundleJavacTarget}"		>
+			<compilerarg line="${compilerArg}" compiler="${build.compiler}"/>
+			<classpath refid="matatabi.jar.classpath" />
+			<src path="src/main/java/"			/>
+			<compilerarg value="@${basedir}/javaCompiler.matatabi.jar.args" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+			<compilerarg line="-log '${temp.folder}/matatabi.jar.bin${logExtension}'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+		</javac>
+		<!-- Copy necessary resources -->
+		<copy todir="${temp.folder}/matatabi.jar.bin" failonerror="true" overwrite="false">
+			<fileset dir="src/main/java/" excludes="**/*.java, **/package.htm*"			/>
+		</copy>
+		<mkdir dir="${build.result.folder}"/>
+		<jar destfile="${build.result.folder}/matatabi.jar" basedir="${temp.folder}/matatabi.jar.bin"/>
+		<delete dir="${temp.folder}/matatabi.jar.bin"/>
+	</target>
+
+	<target name="matatabisrc.zip" depends="init" unless="matatabisrc.zip">
+		<mkdir dir="${build.result.folder}"/>
+		<zip destfile="${build.result.folder}/matatabisrc.zip" filesonly="false" whenempty="skip" update="false">
+			<fileset dir="src/main/java/" includes="**/*.java"			/>
+		</zip>
+	</target>
+
+	<target name="build.jars" depends="init" description="プラグイン org.seasar.mayaa.matatabi の JAR をすべてビルドします。">
+		<available property="matatabi.jar" file="${build.result.folder}/matatabi.jar"/>
+		<antcall target="matatabi.jar"/>
+	</target>
+
+	<target name="build.sources" depends="init">
+		<available property="matatabisrc.zip" file="${build.result.folder}/matatabisrc.zip"/>
+		<antcall target="matatabisrc.zip"/>
+	</target>
+
+	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7"/>
+		<copy todir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7" failonerror="true" overwrite="false">
+			<fileset dir="${build.result.folder}" includes="matatabi.jar"			/>
+		</copy>
+		<copy todir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7" failonerror="true" overwrite="false">
+			<fileset dir="${basedir}" includes="plugin.xml,plugin.properties,META-INF/,matatabi.jar,nekohtml.jar,icons/mayaa_file_small.gif"			/>
+		</copy>
+	</target>
+
+	<target name="build.zips" depends="init">
+	</target>
+
+	<target name="gather.sources" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7"/>
+		<copy file="${build.result.folder}/matatabisrc.zip" todir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7" failonerror="false" overwrite="false"/>
+	</target>
+
+	<target name="gather.logs" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7"/>
+		<copy file="${temp.folder}/matatabi.jar.bin${logExtension}" todir="${destination.temp.folder}/org.seasar.mayaa.matatabi_0.2.7" failonerror="false" overwrite="false"/>
+	</target>
+
+	<target name="clean" depends="init" description="作成された ZIP、JAR、およびログすべてのプラグイン org.seasar.mayaa.matatabi をクリーンにします。">
+		<delete file="${build.result.folder}/matatabi.jar"/>
+		<delete file="${build.result.folder}/matatabisrc.zip"/>
+		<delete file="${plugin.destination}/org.seasar.mayaa.matatabi_0.2.7.jar"/>
+		<delete file="${plugin.destination}/org.seasar.mayaa.matatabi_0.2.7.zip"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+	<target name="refresh" depends="init" if="eclipse.running" description="このフォルダーを更新します。">
+		<eclipse.convertPath fileSystemPath="C:/work/java/project/oss/mayaa/org.seasar.mayaa.matatabi" property="resourcePath"/>
+		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
+	</target>
+
+	<target name="zip.plugin" depends="init" description="プラグイン org.seasar.mayaa.matatabi の要素すべてを含む ZIP を作成します。">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="build.sources"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<antcall target="gather.sources">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<delete>
+			<fileset dir="${temp.folder}" includes="**/*.bin${logExtension}"			/>
+		</delete>
+		<zip destfile="${plugin.destination}/org.seasar.mayaa.matatabi_0.2.7.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+</project>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution adaptable="true" id="org.seasar.mayaa.matatabi.openmayaa"
+			nameFilter="*.html" objectClass="org.eclipse.core.resources.IFile">
+			<action
+				class="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaa" label="%label.openmayaa" />
+		</objectContribution>
+		<objectContribution adaptable="true" id="org.seasar.mayaa.matatabi.openhtml"
+			nameFilter="*.mayaa"
+			objectClass="org.eclipse.core.resources.IFile">
+			<action
+				class="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTML" label="%label.openhtml" />
+		</objectContribution>
+	</extension>
+  <extension point="org.eclipse.wst.sse.ui.editorConfiguration">
+    <sourceViewerConfiguration
+      class="org.seasar.mayaa.matatabi.editor.MayaaXMLTextViewerConfiguration"
+       target="org.seasar.mayaa.matatabi.mayaa" />
+    <sourceViewerConfiguration
+      class="org.seasar.mayaa.matatabi.editor.MayaaHTMLTextViewerConfiguration"
+       target="org.eclipse.wst.html.core.htmlsource.source" />
+  </extension>
+  <extension point="org.eclipse.core.runtime.contentTypes">
+    <content-type
+          base-type="org.eclipse.core.runtime.xml"
+          default-charset="UTF-8"
+          file-extensions="mayaa"
+          id="mayaa"
+          name="%product.name"
+          priority="high">
+    </content-type>
+  </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.seasar.mayaa.matatabi.editor.MayaaEditor"
+            contributorClass="org.seasar.mayaa.matatabi.editor.MayaaEditorContributor"
+            default="true"
+            extensions="mayaa"
+            icon="icons/mayaa_file_small.gif"
+            id="org.seasar.mayaa.matatabi.editors.MayaaEditor"
+            name="%editor.name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.seasar.mayaa.matatabi.editors.MayaaEditor"
+            id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction">
+         <menu
+               label="%menu.label"
+               id="org.seasar.mayaa.matatabi.menu">
+              <separator name="group"/>
+         </menu>
+
+         <action
+               definitionId="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+               label="%label.generatecomponent"
+               class="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+               menubarPath="org.seasar.mayaa.matatabi.menu/group"
+               id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction">
+         </action>
+         <action
+               definitionId="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+               label="%label.openhtml"
+               class="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+               menubarPath="org.seasar.mayaa.matatabi.menu/group"
+               id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction">
+         </action>
+      </editorContribution>
+      <editorContribution
+            targetID="org.eclipse.wst.html.core.htmlsource.source"
+            id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction">
+         <menu
+               label="%product.name"
+               id="org.seasar.mayaa.matatabi.menu">
+              <separator name="group"/>
+         </menu>
+         <action
+               definitionId="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+               label="%label.openmayaa"
+               class="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+               menubarPath="org.seasar.mayaa.matatabi.menu/group"
+               id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction">
+         </action>
+      </editorContribution>
+    </extension>
+    <extension
+        point="org.eclipse.ui.commands">
+    <command id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+           name="%label.generatecomponent"/>
+    <command id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+       name="%label.openhtml"/>
+    <command
+           id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+           name="%label.openmayaa"/>
+
+  </extension>  
+  <extension
+        point="org.eclipse.ui.bindings">
+     <key
+           commandId="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+           contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="Ctrl+T"/>
+     <key
+           commandId="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+           contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="Ctrl+T"/>
+     <key
+           commandId="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+           contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="Ctrl+G"/>
+  </extension>
+  <extension point="org.eclipse.ui.propertyPages">
+      <page
+            adaptable="true"
+            class="org.seasar.mayaa.matatabi.property.MatatabiPropertyPage"
+            id="org.seasar.mayaa.matatabi.propertyPage"
+            name="Matatabi"
+            objectClass="org.eclipse.core.resources.IProject"/>
+  </extension>
+   <extension
+         id="nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.seasar.mayaa.matatabi.nature.MatatabiNature"/>
+      </runtime>
+   </extension>
+	<extension point="org.eclipse.ui.contexts">
+		<context
+			name="%editor.name"
+			parentId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+			description="%editor.description"
+			id="org.seasar.mayaa.matatabi.editor.mayaaEditorScope">
+		</context>
+	</extension>
+</plugin>
