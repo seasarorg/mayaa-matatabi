@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<toc label="matatabi help">
+	<topic label="セットアップ" href="setup.html" />
+	<topic label="使い方" href="usage.html">
+		<topic label="エディタ機能" href="help/html/editor.html" />
+		<topic label="自動生成" href="help/html/generate.html" />
+	</topic>
+</toc>

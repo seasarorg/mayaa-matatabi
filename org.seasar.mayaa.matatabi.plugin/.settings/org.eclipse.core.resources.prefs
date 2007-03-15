@@ -1,3 +1,5 @@
-#Fri Nov 03 12:24:47 JST 2006
+#Thu Mar 15 17:53:11 JST 2007
 eclipse.preferences.version=1
+encoding//help/html/editor.html=UTF-8
+encoding//help/html/generate.html=UTF-8
 encoding//src/main/java/org/seasar/mayaa/matatabi/editor/contentsassist/messages.properties=8859_1
