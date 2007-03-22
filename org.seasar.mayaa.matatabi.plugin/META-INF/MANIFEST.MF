@@ -16,6 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.xml.core,
  org.eclipse.wst.xml.ui,
  org.eclipse.wst.html.ui,
- org.apache.xerces
+ org.apache.xerces,
+ org.eclipse.ui.browser
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ClassPath: nekohtml.jar,matatabi.jar

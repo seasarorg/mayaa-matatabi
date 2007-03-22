@@ -84,20 +84,27 @@
                label="%label.openmayaa"
                class="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
                menubarPath="org.seasar.mayaa.matatabi.menu/group"
-               id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction">
-         </action>
+               id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction" />
+         <action
+               definitionId="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+               label="%label.openbrowser"
+               class="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+               menubarPath="org.seasar.mayaa.matatabi.menu/group"
+               id="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction" />
       </editorContribution>
     </extension>
     <extension
         point="org.eclipse.ui.commands">
-    <command id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
-           name="%label.generatecomponent"/>
-    <command id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
-       name="%label.openhtml"/>
-    <command
-           id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
-           name="%label.openmayaa"/>
-
+	    <command id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+	           name="%label.generatecomponent"/>
+	    <command id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+	       name="%label.openhtml"/>
+	    <command
+	           id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+	           name="%label.openmayaa"/>
+	    <command
+	           id="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+	           name="%label.openbrowser"/>
   </extension>  
   <extension
         point="org.eclipse.ui.bindings">
@@ -111,6 +118,11 @@
            contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
            sequence="Ctrl+T"/>
+     <key
+           commandId="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+           contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="Ctrl+O"/>
      <key
            commandId="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
            contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
