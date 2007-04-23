@@ -38,7 +38,6 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.seasar.mayaa.matatabi.editor.MayaaEditor"
-            contributorClass="org.seasar.mayaa.matatabi.editor.MayaaEditorContributor"
             default="true"
             extensions="mayaa"
             icon="icons/mayaa_file_small.gif"
@@ -49,7 +48,7 @@
          point="org.eclipse.ui.editorActions">
       <editorContribution
             targetID="org.seasar.mayaa.matatabi.editors.MayaaEditor"
-            id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction">
+            id="org.seasar.mayaa.matatabi.popup.actions.Mayaa">
          <menu
                label="%menu.label"
                id="org.seasar.mayaa.matatabi.menu">
@@ -73,7 +72,7 @@
       </editorContribution>
       <editorContribution
             targetID="org.eclipse.wst.html.core.htmlsource.source"
-            id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction">
+            id="org.seasar.mayaa.matatabi.popup.actions.Html">
          <menu
                label="%product.name"
                id="org.seasar.mayaa.matatabi.menu">

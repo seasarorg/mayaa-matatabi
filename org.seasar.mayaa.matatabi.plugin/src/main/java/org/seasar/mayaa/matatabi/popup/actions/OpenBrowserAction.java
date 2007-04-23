@@ -15,12 +15,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.browser.DefaultBrowserSupport;
 
 /**
- * 同じディレクトリにある違う拡張子のファイルを開くアクション
+ * 外部ブラウザでファイルを開く
  */
 public class OpenBrowserAction implements IEditorActionDelegate {
-	protected IWorkbenchPart	targetPart;
+	protected IWorkbenchPart targetPart;
 
-	protected IFile				file;
+	protected IFile file;
 
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
 		this.targetPart = targetEditor;
@@ -30,9 +30,8 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		IFile file =
-				((IFileEditorInput) ((IEditorPart) targetPart).getEditorInput())
-						.getFile();
+		IFile file = ((IFileEditorInput) ((IEditorPart) targetPart)
+				.getEditorInput()).getFile();
 		try {
 			System.out.println(file.getLocationURI().toURL());
 			executeBrowser(file.getLocationURI().toURL());

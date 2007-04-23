@@ -8,12 +8,12 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 /**
- * The main plugin class to be used in the desktop.
+ * プラグインクラス
  */
 public class MatatabiPlugin extends AbstractUIPlugin {
 
 	// The shared instance.
-	private static MatatabiPlugin	plugin;
+	private static MatatabiPlugin plugin;
 
 	/**
 	 * The constructor.
@@ -47,8 +47,8 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path.
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path.
 	 * 
 	 * @param path
 	 *            the path
