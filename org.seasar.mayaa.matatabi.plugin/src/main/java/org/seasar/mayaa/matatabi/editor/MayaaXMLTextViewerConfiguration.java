@@ -11,11 +11,10 @@ import org.seasar.mayaa.matatabi.editor.contentsassist.MayaaContentAssistProcess
 import org.seasar.mayaa.matatabi.editor.hyperlink.MayaaXMLHyperlinkDetector;
 
 /**
- * Mayaa向けのWTPエディタ設定
+ * Mayaaファイル向けのWTPエディタ設定
  */
 public class MayaaXMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationXML {
-	@Override
 	protected IContentAssistProcessor[] getContentAssistProcessors(
 			ISourceViewer sourceViewer, String string) {
 		List result = new ArrayList(0);

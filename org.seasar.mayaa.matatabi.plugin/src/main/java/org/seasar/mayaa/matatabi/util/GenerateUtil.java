@@ -11,6 +11,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
+/**
+ * コード生成に関する処理を行う
+ * 
+ * @author matoba
+ */
 public class GenerateUtil {
 
 	public static String genereteTags(Set idlist) {
@@ -46,11 +51,7 @@ public class GenerateUtil {
 				fileContents.getBytes());
 		try {
 			String fileName = path.toString();
-			String fileExtension = MatatabiPlugin.getStoreValue(project,
-					"fileExtension");
-			if (fileExtension == null || fileExtension.equals("")) {
-				fileExtension = "mayaa";
-			}
+			String fileExtension = EditorUtil.getTemplateFileExtension(project);
 
 			fileName = fileName.substring(0, fileName.length()
 					- path.getFileExtension().length())

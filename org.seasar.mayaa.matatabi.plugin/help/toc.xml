@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<toc label="matatabi help">
+<toc label="matatabi - Mayaa Plugin">
 	<topic label="設定" href="help/html/setup.html" />
 	<topic label="使い方">
 		<topic label="エディタ機能" href="help/html/editor.html" />

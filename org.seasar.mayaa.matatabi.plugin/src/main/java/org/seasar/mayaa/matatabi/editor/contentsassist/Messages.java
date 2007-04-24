@@ -3,6 +3,11 @@ package org.seasar.mayaa.matatabi.editor.contentsassist;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * メッセージ管理
+ * 
+ * @author matoba
+ */
 public class Messages {
 	private static final String BUNDLE_NAME = "org.seasar.mayaa.matatabi.editor.contentsassist.messages"; //$NON-NLS-1$
 

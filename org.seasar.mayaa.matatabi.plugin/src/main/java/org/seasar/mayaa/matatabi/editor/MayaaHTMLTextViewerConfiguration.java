@@ -6,17 +6,18 @@ import java.util.List;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.wst.html.ui.StructuredTextViewerConfigurationHTML;
+import org.seasar.mayaa.matatabi.editor.hyperlink.HtmlHyperlinkDetector;
 import org.seasar.mayaa.matatabi.editor.hyperlink.MayaaXMLHyperlinkDetector;
 
 /**
- * Mayaa向けのWTPエディタ設定
+ * Htmlファイル向けのWTPエディタ設定
  */
 public class MayaaHTMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationHTML {
 
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		List result = new ArrayList(0);
-		result.add(new MayaaXMLHyperlinkDetector());
+		result.add(new HtmlHyperlinkDetector());
 
 		IHyperlinkDetector[] superDetectors = super
 				.getHyperlinkDetectors(sourceViewer);

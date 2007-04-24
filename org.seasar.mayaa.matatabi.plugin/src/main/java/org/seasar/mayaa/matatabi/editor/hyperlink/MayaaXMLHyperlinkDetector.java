@@ -17,146 +17,29 @@ import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
-public class MayaaXMLHyperlinkDetector implements IHyperlinkDetector {
-
-	public IHyperlink[] detectHyperlinks(ITextViewer textViewer,
-			IRegion region, boolean canShowMultipleHyperlinks) {
-		if (region == null || textViewer == null) {
+/**
+ * id属性でのハイパーリンク処理を行う
+ * 
+ * @author matoba
+ */
+public class MayaaXMLHyperlinkDetector extends IdAttributeHyperlinkDetector {
+	protected Attr getIdAttribute(Node node) {
+		if (node.getNodeType() != Node.ELEMENT_NODE) {
+			return null;
+		}
+		// トップ要素の直下の要素のみ対象とする
+		if (!node.getParentNode().equals(
+				node.getOwnerDocument().getDocumentElement())) {
 			return null;
 		}
 
-		IDocument document = textViewer.getDocument();
-		Node currentNode = getCurrentNode(document, region.getOffset());
-		if (currentNode != null) {
-			short nodeType = currentNode.getNodeType();
-			if (nodeType == Node.ELEMENT_NODE) {
-				// element nodes
-				Attr attr = (Attr) currentNode.getAttributes().getNamedItemNS(
-						"http://mayaa.seasar.org", "id");
-				if (attr == null) {
-					attr = (Attr) currentNode.getAttributes()
-							.getNamedItem("id");
-				}
-
-				if (attr != null) {
-					IRegion hyperlinkRegion = getHyperlinkRegion(currentNode);
-					IHyperlink hyperLink = createHyperlinkForClass(attr
-							.getNodeValue(), hyperlinkRegion, document);
-					if (hyperLink != null) {
-						return new IHyperlink[] { hyperLink };
-					}
-				}
-			}
+		Attr attr = (Attr) node.getAttributes().getNamedItemNS(
+				"http://mayaa.seasar.org", "id");
+		// 要素の名前空間がMayaaの場合は、名前空間指定なしのid属性を取得
+		if (attr == null
+				&& "http://mayaa.seasar.org".equals(node.getNamespaceURI())) {
+			attr = (Attr) node.getAttributes().getNamedItemNS(null, "id");
 		}
-		return null;
-	}
-
-	/**
-	 * Returns the node the cursor is currently on in the document. null if no
-	 * node is selected
-	 * 
-	 * @param offset
-	 * @return Node either element, doctype, text, or null
-	 */
-	private Node getCurrentNode(IDocument document, int offset) {
-		// get the current node at the offset (returns either: element,
-		// doctype, text)
-		IndexedRegion inode = null;
-		IStructuredModel sModel = null;
-		try {
-			sModel = StructuredModelManager.getModelManager()
-					.getExistingModelForRead(document);
-			inode = sModel.getIndexedRegion(offset);
-			if (inode == null)
-				inode = sModel.getIndexedRegion(offset - 1);
-		} finally {
-			if (sModel != null)
-				sModel.releaseFromRead();
-		}
-
-		if (inode instanceof Node) {
-			return (Node) inode;
-		}
-		return null;
-	}
-
-	private IRegion getHyperlinkRegion(Node node) {
-		IRegion hyperRegion = null;
-
-		if (node != null) {
-			short nodeType = node.getNodeType();
-			if (nodeType == Node.DOCUMENT_TYPE_NODE
-					|| nodeType == Node.ELEMENT_NODE
-					|| nodeType == Node.TEXT_NODE) {
-				// handle doc type node
-				IDOMNode docNode = (IDOMNode) node;
-				hyperRegion = new Region(docNode.getStartOffset(), docNode
-						.getEndOffset()
-						- docNode.getStartOffset());
-			} else if (nodeType == Node.ATTRIBUTE_NODE) {
-				// handle attribute nodes
-				IDOMAttr att = (IDOMAttr) node;
-				// do not include quotes in attribute value region
-				int regOffset = att.getValueRegionStartOffset();
-				int regLength = att.getValueRegionText().length();
-				String attValue = att.getValueRegionText();
-				if (StringUtils.isQuoted(attValue)) {
-					regOffset = regOffset + 1;
-					regLength = regLength - 2;
-				}
-				hyperRegion = new Region(regOffset, regLength);
-			}
-		}
-		return hyperRegion;
-	}
-
-	/**
-	 * Create the appropriate hyperlink.
-	 */
-	private IHyperlink createHyperlinkForClass(String target,
-			IRegion hyperlinkRegion, IDocument document) {
-
-		IHyperlink link = null;
-		link = new AttributeHyperlink(hyperlinkRegion, target);
-
-		return link;
-	}
-
-	/**
-	 * IHyperlink implementation for the java class and other files.
-	 */
-	private class AttributeHyperlink implements IHyperlink {
-
-		private final IRegion region;
-
-		private final String name;
-
-		/**
-		 * Creates a new Java element hyperlink.
-		 */
-		public AttributeHyperlink(IRegion region, String name) {
-			this.region = region;
-			this.name = name;
-		}
-
-		public IRegion getHyperlinkRegion() {
-			return this.region;
-		}
-
-		/**
-		 * opens the standard Java Editor for the given IJavaElement
-		 */
-		public void open() {
-			IEditorPart openEditorPart = EditorUtil.openFile();
-			EditorUtil.selectText(name, openEditorPart);
-		}
-
-		public String getTypeLabel() {
-			return null;
-		}
-
-		public String getHyperlinkText() {
-			return null;
-		}
+		return attr;
 	}
 }

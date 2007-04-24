@@ -9,31 +9,49 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
+/**
+ * コンテンツアシスト機能
+ * 
+ * @author matoba
+ */
 public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
-	private String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
+	/** ルートタグ */
+	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
 
-	private static List<String> tagList = new ArrayList<String>();
+	/** タグ情報 */
+	private List tagList = new ArrayList();
 
-	private static List<IContextInformation> tagContextInformationList = new ArrayList<IContextInformation>();
+	/** タグの説明 */
+	private List tagContextInformationList = new ArrayList();
 
-	private static Map<String, String[]> attributeMap = new HashMap<String, String[]>();
+	/** 属性情報 */
+	private Map attributeMap = new HashMap();
 
+	/** アイコン */
 	private Image icon;
 
-	static {
+	/** コンストラクタ */
+	public MayaaContentAssistProcessor() {
+		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
+				.createImage();
+
 		tagList.add("<m:attribute />");
 		tagList.add("<m:comment></m:comment>");
 		tagList.add("<m:echo></m:echo>");
@@ -117,12 +135,6 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.put("m:exec", new String[] { "script", "src", "encoding" });
 	}
 
-	public MayaaContentAssistProcessor() {
-		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
-				.createImage();
-	}
-
-	@Override
 	protected void addTagInsertionProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		if (contentAssistRequest.getNode().getParentNode() instanceof Document) {
@@ -136,23 +148,23 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 		} else {
 			for (int i = 0; i < tagList.size(); i++) {
-				String tag = tagList.get(i);
+				String tag = (String) tagList.get(i);
 				if (isMatch(tag, contentAssistRequest.getMatchString())) {
 					contentAssistRequest.addProposal(new CompletionProposal(
 							tag, contentAssistRequest
 									.getReplacementBeginPosition(),
 							contentAssistRequest.getReplacementLength(), tag
 									.length(), icon, tag,
-							tagContextInformationList.get(i),
-							tagContextInformationList.get(i)
-									.getInformationDisplayString()));
+							(ContextInformation) tagContextInformationList
+									.get(i),
+							((ContextInformation) tagContextInformationList
+									.get(i)).getInformationDisplayString()));
 				}
 			}
 		}
 		super.addTagInsertionProposals(contentAssistRequest, childPosition);
 	}
 
-	@Override
 	protected void addTagNameProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		if (contentAssistRequest.getNode().getParentNode() instanceof Document) {
@@ -168,7 +180,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			}
 		} else {
 			for (int i = 0; i < tagList.size(); i++) {
-				String tag = tagList.get(i);
+				String tag = (String) tagList.get(i);
 				String matchString = contentAssistRequest.getMatchString();
 				if (isMatch(tag.substring(1), matchString)) {
 					contentAssistRequest.addProposal(new CompletionProposal(tag
@@ -176,18 +188,56 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 							.getReplacementBeginPosition(),
 							contentAssistRequest.getReplacementLength(), tag
 									.length() - 1, icon, tag,
-							tagContextInformationList.get(i),
-							tagContextInformationList.get(i)
-									.getInformationDisplayString()));
+							(ContextInformation) tagContextInformationList
+									.get(i),
+							((ContextInformation) tagContextInformationList
+									.get(i)).getInformationDisplayString()));
 				}
 			}
 		}
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
-	@Override
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
+		// トップ要素の直下の要素でない場合は処理しない
+		if (contentAssistRequest.getNode().getParentNode().equals(
+				contentAssistRequest.getNode().getOwnerDocument()
+						.getDocumentElement())) {
+			super.addAttributeValueProposals(contentAssistRequest);
+			return;
+		}
+
+		// JBossのプラグインからいただいたコード
+		int beginPos = contentAssistRequest.getReplacementBeginPosition();
+		NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
+		AttrImpl attribute = null;
+		for (int i = 0; i < map.getLength(); i++) {
+			Node tmp = map.item(i);
+			if (tmp instanceof AttrImpl) {
+				int start = ((AttrImpl) tmp).getStartOffset();
+				int end = ((AttrImpl) tmp).getEndOffset();
+				if (beginPos > start && beginPos < end) {
+					attribute = (AttrImpl) tmp;
+					break;
+				}
+			}
+		}
+
+		Node idAttribute = contentAssistRequest.getNode().getAttributes()
+				.getNamedItemNS("http://mayaa.seasar.org", "id");
+		// 要素の名前空間がMayaaの場合は、名前空間指定なしのid属性を取得
+		if (idAttribute == null
+				&& "http://mayaa.seasar.org".equals(contentAssistRequest
+						.getNode().getNamespaceURI())) {
+			idAttribute = contentAssistRequest.getNode().getAttributes()
+					.getNamedItemNS(null, "id");
+		}
+
+		if (!attribute.equals(idAttribute)) {
+			super.addAttributeValueProposals(contentAssistRequest);
+			return;
+		}
 
 		IFile file = EditorUtil.getActiveFile();
 		IProject project = file.getProject();
@@ -198,10 +248,15 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				- path.getFileExtension().length())
 				+ "html";
 		IFile openFile = project.getFile(fileName);
-		Set sourceid = ParseUtil.getIdList(openFile);
-		sourceid = new TreeSet(sourceid);
+		Set allSourceid = ParseUtil.getIdList(openFile);
+		Set unusedSourceId = new TreeSet(allSourceid);
+		unusedSourceId.removeAll(ParseUtil.getXmlIdList(file));
+		unusedSourceId.removeAll(ParseUtil.getDefaultIdList((IFolder) file
+				.getParent()));
+		Set usedSourceId = new TreeSet(allSourceid);
+		usedSourceId.removeAll(unusedSourceId);
 
-		for (Iterator iter = sourceid.iterator(); iter.hasNext();) {
+		for (Iterator iter = unusedSourceId.iterator(); iter.hasNext();) {
 			String id = (String) iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
@@ -213,10 +268,20 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 						null, ""));
 			}
 		}
-		super.addAttributeValueProposals(contentAssistRequest);
+		for (Iterator iter = usedSourceId.iterator(); iter.hasNext();) {
+			String id = (String) iter.next();
+			String matchString = contentAssistRequest.getMatchString()
+					.substring(1);
+			if (isMatch(id, matchString)) {
+				contentAssistRequest.addProposal(new CompletionProposal("\""
+						+ id + "\"", contentAssistRequest
+						.getReplacementBeginPosition(), contentAssistRequest
+						.getReplacementLength(), id.length() + 1, null, id,
+						null, ""));
+			}
+		}
 	}
 
-	@Override
 	protected void addAttributeNameProposals(
 			ContentAssistRequest contentAssistRequest) {
 		if (contentAssistRequest.getNode().getParentNode().getNodeName()
@@ -230,8 +295,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					null, ""));
 		}
 
-		String[] attributes = attributeMap.get(contentAssistRequest.getNode()
-				.getNodeName());
+		String[] attributes = (String[]) attributeMap.get(contentAssistRequest
+				.getNode().getNodeName());
 		if (attributes != null) {
 			for (int i = 0; i < attributes.length; i++) {
 				if (contentAssistRequest.getNode().getAttributes()

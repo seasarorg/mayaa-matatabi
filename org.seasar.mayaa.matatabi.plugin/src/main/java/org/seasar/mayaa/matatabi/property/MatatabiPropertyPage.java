@@ -14,10 +14,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
+/**
+ * ê›íËÉyÅ[ÉW
+ * 
+ * @author matoba
+ */
 public class MatatabiPropertyPage extends PropertyPage {
 	private Text fileExtension;
 
-	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
