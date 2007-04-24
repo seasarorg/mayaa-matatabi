@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.seasar.mayaa.matatabi.feature"
-      label="org.seasar.mayaa.matatabi.feature"
+      label="matatabi - Mayaa plugin"
       version="0.3.0">
 
    <description url="http://mayaa.seasar.org/">
-      Mayaa Plugin
+      matatabi - Mayaa Plugin
    </description>
 
    <copyright>
