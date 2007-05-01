@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
 public class MatatabiNature implements IProjectNature {
+	public static final String NATURE_ID = "org.seasar.mayaa.matatabi.MatatabiNature";
 
 	private IProject project;
 

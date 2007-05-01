@@ -9,7 +9,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 /**
  * コード生成に関する処理を行う

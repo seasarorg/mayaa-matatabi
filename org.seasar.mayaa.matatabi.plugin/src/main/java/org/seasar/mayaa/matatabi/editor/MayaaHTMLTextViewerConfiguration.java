@@ -7,7 +7,6 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.wst.html.ui.StructuredTextViewerConfigurationHTML;
 import org.seasar.mayaa.matatabi.editor.hyperlink.HtmlHyperlinkDetector;
-import org.seasar.mayaa.matatabi.editor.hyperlink.MayaaXMLHyperlinkDetector;
 
 /**
  * Htmlファイル向けのWTPエディタ設定

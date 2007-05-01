@@ -18,6 +18,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.GenerateUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 
 /**
@@ -32,45 +33,49 @@ public class GenerateComponentAction extends OpenAction {
 	}
 
 	public void run(IAction action) {
-		IFile file = EditorUtil.getActiveFile();
-		path = file.getProjectRelativePath();
-		project = file.getProject();
+		if (EditorUtil.hasMatatabiNature()) {
+			IFile file = EditorUtil.getActiveFile();
+			path = file.getProjectRelativePath();
+			project = file.getProject();
 
-		String fileName = path.toString();
-		fileName = fileName.substring(0, fileName.length()
-				- path.getFileExtension().length())
-				+ "html";
-		IFile openFile = project.getFile(fileName);
-		Set sourceid = ParseUtil.getIdList(openFile);
+			String fileName = path.toString();
+			fileName = fileName.substring(0, fileName.length()
+					- path.getFileExtension().length())
+					+ "html";
+			IFile openFile = project.getFile(fileName);
+			Set sourceid = ParseUtil.getIdList(openFile);
 
-		if (targetPart instanceof ITextEditor) {
-			try {
-				ITextEditor textEditor = (ITextEditor) targetPart;
+			if (targetPart instanceof ITextEditor) {
+				try {
+					ITextEditor textEditor = (ITextEditor) targetPart;
 
-				ISelectionProvider selectionProvider = textEditor
-						.getSelectionProvider();
-				ISelection selection = selectionProvider.getSelection();
-				ITextSelection textSelection = (ITextSelection) selection;
-				int offset = textSelection.getOffset();
+					ISelectionProvider selectionProvider = textEditor
+							.getSelectionProvider();
+					ISelection selection = selectionProvider.getSelection();
+					ITextSelection textSelection = (ITextSelection) selection;
+					int offset = textSelection.getOffset();
 
-				IDocument document = textEditor.getDocumentProvider()
-						.getDocument(textEditor.getEditorInput());
-				Set outid = ParseUtil.getIdList(new InputSource(
-						new ByteArrayInputStream(document.get().getBytes())));
-				sourceid.removeAll(outid);
-				sourceid.removeAll(ParseUtil.getDefaultIdList((IFolder) file
-						.getParent()));
+					IDocument document = textEditor.getDocumentProvider()
+							.getDocument(textEditor.getEditorInput());
+					Set outid = ParseUtil
+							.getIdList(new InputSource(
+									new ByteArrayInputStream(document.get()
+											.getBytes())));
+					sourceid.removeAll(outid);
+					sourceid.removeAll(ParseUtil
+							.getDefaultIdList((IFolder) file.getParent()));
 
-				InsertEdit insertEdit = new InsertEdit(offset, GenerateUtil
-						.genereteTags(sourceid));
+					InsertEdit insertEdit = new InsertEdit(offset, GenerateUtil
+							.genereteTags(sourceid));
 
-				MultiTextEdit multiTextEdit = new MultiTextEdit();
-				multiTextEdit.addChild(insertEdit);
-				multiTextEdit.apply(document);
-			} catch (MalformedTreeException e) {
-				e.printStackTrace();
-			} catch (BadLocationException e) {
-				e.printStackTrace();
+					MultiTextEdit multiTextEdit = new MultiTextEdit();
+					multiTextEdit.addChild(insertEdit);
+					multiTextEdit.apply(document);
+				} catch (MalformedTreeException e) {
+					e.printStackTrace();
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

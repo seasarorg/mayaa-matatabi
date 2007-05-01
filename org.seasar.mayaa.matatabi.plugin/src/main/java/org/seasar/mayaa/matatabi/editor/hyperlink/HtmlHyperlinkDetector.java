@@ -1,9 +1,9 @@
 package org.seasar.mayaa.matatabi.editor.hyperlink;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
@@ -16,6 +16,9 @@ import org.w3c.dom.Node;
 public class HtmlHyperlinkDetector extends IdAttributeHyperlinkDetector {
 	protected Attr getIdAttribute(Node node) {
 		if (node.getNodeType() != Node.ELEMENT_NODE) {
+			return null;
+		}
+		if (!EditorUtil.hasMatatabiNature()) {
 			return null;
 		}
 

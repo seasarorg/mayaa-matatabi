@@ -7,6 +7,7 @@ import java.security.PrivilegedAction;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IStatusLineManager;
@@ -26,6 +27,7 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
+import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 
 /**
  * エディタに関する処理を行う
@@ -176,4 +178,16 @@ public class EditorUtil {
 		return fileExtension;
 	}
 
+	public static boolean hasMatatabiNature() {
+		IProject project = getActiveFile().getProject();
+		if (project == null) {
+			return false;
+		}
+
+		try {
+			return project.hasNature(MatatabiNature.NATURE_ID);
+		} catch (CoreException e) {
+			return false;
+		}
+	}
 }

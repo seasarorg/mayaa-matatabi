@@ -14,6 +14,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  * 同じディレクトリにある違う拡張子のファイルを開くアクション
@@ -49,6 +50,7 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
+
 		if (path == null && targetPart instanceof IEditorPart) {
 			IFile file = ((IFileEditorInput) ((IEditorPart) targetPart)
 					.getEditorInput()).getFile();
@@ -65,6 +67,9 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 		}
 
 		openEditorPart = EditorUtil.openFile(path, project);
+		if (openEditorPart == null) {
+			throw new RuntimeException();
+		}
 		EditorUtil.selectText(EditorUtil.getSelectText(targetPart),
 				openEditorPart);
 	}
@@ -73,6 +78,12 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
+		if (EditorUtil.hasMatatabiNature()) {
+			action.setEnabled(true);
+		} else {
+			action.setEnabled(false);
+		}
+
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection ss = (StructuredSelection) selection;
 			Object obj = ss.getFirstElement();
