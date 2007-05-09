@@ -141,6 +141,9 @@
 			<run
 				class="org.seasar.mayaa.matatabi.nature.MatatabiNature" />
 		</runtime>
+		   <builder
+        id="org.seasar.mayaa.matatabi.MatatabiBuilder">
+    </builder>
 	</extension>
 	<extension point="org.eclipse.ui.contexts">
 		<context name="%editor.name"
@@ -152,4 +155,15 @@
 	<extension point="org.eclipse.help.toc">
 		<toc file="help/toc.xml" primary="true" />
 	</extension>
+ <extension
+       id="MatatabiBuilder"
+       name="Matatabi Builder"
+       point="org.eclipse.core.resources.builders">
+    <builder
+          hasNature="true">
+       <run class="org.seasar.mayaa.matatabi.builder.MatatabiBuilder"/>
+    </builder>
+ </extension>
+	
+	
 </plugin>

@@ -38,6 +38,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 	protected Control createContents(Composite parent) {
 		IProject project = getProject();
 
+		this.useMatatabi = createCheckPart(parent, "matatabiを使用する");
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
@@ -46,7 +48,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		data.grabExcessHorizontalSpace = true;
 		composite.setLayoutData(data);
 
-		this.useMatatabi = createCheckPart(composite, "matatabiを使用する");
 		this.fileExtension = createTextPart(composite, "Mayaaファイル拡張子");
 
 		setPreferenceStore(new ScopedPreferenceStore(new ProjectScope(
@@ -147,8 +148,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	private Button createCheckPart(Composite composite, String label, int style) {
 		Button check = new Button(composite, SWT.CHECK);
-		Label l = new Label(composite, SWT.NONE);
-		l.setText(label);
+		check.setText(label);
 		return check;
 	}
 }
