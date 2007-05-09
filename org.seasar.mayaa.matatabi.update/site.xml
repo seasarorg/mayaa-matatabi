@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.seasar.mayaa.matatabi.feature_0.2.7.jar" id="org.seasar.mayaa.matatabi.feature" version="0.2.7">
-      <category name="Matatabi"/>
-   </feature>
-   <category-def name="Matatabi" label="Matatabi"/>
-</site>
