@@ -14,6 +14,8 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 
 	// The shared instance.
 	private static MatatabiPlugin plugin;
+	public static final String PLUGIN_ID = "org.seasar.mayaa.matatabi";
+	public static final String MARKER_ID = "org.seasar.mayaa.matatabi.matatabiMarker";
 
 	/**
 	 * The constructor.

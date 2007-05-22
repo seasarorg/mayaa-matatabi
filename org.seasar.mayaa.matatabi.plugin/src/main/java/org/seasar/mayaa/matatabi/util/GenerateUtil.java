@@ -17,6 +17,13 @@ import org.eclipse.core.runtime.IPath;
  */
 public class GenerateUtil {
 
+	/**
+	 * idに対応するMayaaタグを生成します。
+	 * 
+	 * @param idlist
+	 *            生成対象のidのリスト
+	 * @return
+	 */
 	public static String genereteTags(Set idlist) {
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator iter = idlist.iterator(); iter.hasNext();) {
@@ -26,7 +33,7 @@ public class GenerateUtil {
 		return buffer.toString();
 	}
 
-	public static String genereteFile(String string) {
+	private static String genereteFile(String string) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		buffer.append("<m:mayaa xmlns:m=\"http://mayaa.seasar.org\">\n");
@@ -35,7 +42,10 @@ public class GenerateUtil {
 		return buffer.toString();
 	}
 
-	public static final void generateMayaaFile() {
+	/**
+	 * 現在開いているHTMLファイルに対応するMayaaファイルを生成します。
+	 */
+	public static void generateMayaaFile() {
 		IFile file = EditorUtil.getActiveFile();
 		IProject project = file.getProject();
 		IPath path = file.getProjectRelativePath();

@@ -18,9 +18,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
 /**
- * Mayaaファイル向けハイパーリンク
- * 
- * @author matoba
+ * id属性でのハイパーリンク処理を行う
  */
 public abstract class IdAttributeHyperlinkDetector implements
 		IHyperlinkDetector {

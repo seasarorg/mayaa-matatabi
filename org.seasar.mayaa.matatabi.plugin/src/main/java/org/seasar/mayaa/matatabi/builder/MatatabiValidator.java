@@ -19,19 +19,23 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
+import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
+import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * MayaaファイルのValidationを行う。
+ */
 public class MatatabiValidator implements IResourceVisitor,
 		IResourceDeltaVisitor {
-
 	public boolean visit(IResource resource) throws CoreException {
-
-		resource.deleteMarkers(IMarker.PROBLEM, false, IResource.DEPTH_ZERO);
 		if (resource instanceof IFile) {
 			validate((IFile) resource);
 		}
@@ -53,12 +57,13 @@ public class MatatabiValidator implements IResourceVisitor,
 	private void validate(IFile file) throws CoreException {
 		if (file.getName().endsWith(
 				EditorUtil.getTemplateFileExtension(file.getProject()))) {
-			file.deleteMarkers(IMarker.PROBLEM, false, IResource.DEPTH_ZERO);
+			file.deleteMarkers(MatatabiPlugin.MARKER_ID, false,
+					IResource.DEPTH_ZERO);
 			try {
 				String fileName = file.getProjectRelativePath().toString();
 				fileName = fileName.substring(0, fileName.length()
 						- file.getFileExtension().length())
-						+ "html";
+						+ "html"; //$NON-NLS-1$
 				IFile openFile = file.getProject().getFile(fileName);
 				Set sourceid = ParseUtil.getIdList(openFile);
 				Set defaultid = ParseUtil.getDefaultIdList((IFolder) file
@@ -66,7 +71,7 @@ public class MatatabiValidator implements IResourceVisitor,
 
 				SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 				parserFactory.setFeature(
-						"http://xml.org/sax/features/namespaces", true);
+						"http://xml.org/sax/features/namespaces", true); //$NON-NLS-1$
 				SAXParser parser = parserFactory.newSAXParser();
 				parser.parse(file.getContents(), new ValidateHandler(file,
 						sourceid, defaultid));
@@ -75,18 +80,18 @@ public class MatatabiValidator implements IResourceVisitor,
 			} catch (SAXException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * Mayaaファイルの解析し、Validationを行う。
+	 */
 	private class ValidateHandler extends DefaultHandler {
-		private static final String MAYAA_NAMESPACE = "http://mayaa.seasar.org";
+		private static final String MAYAA_NAMESPACE = "http://mayaa.seasar.org"; //$NON-NLS-1$
 
 		private int depth = 0;
-
-		private boolean hasIdAttribute;
 
 		private IFile file;
 
@@ -98,42 +103,111 @@ public class MatatabiValidator implements IResourceVisitor,
 
 		private Set idlist = new HashSet();
 
+		private ScopedPreferenceStore preferenceStore;
+
+		/**
+		 * 
+		 * @param file
+		 * @param sourceid
+		 * @param defaultid
+		 */
 		public ValidateHandler(IFile file, Set sourceid, Set defaultid) {
 			this.file = file;
 			this.sourceid = sourceid;
 			this.defaultid = defaultid;
+			this.preferenceStore = PreferencesUtil.getPreference(file);
 		}
 
+		/**
+		 * 
+		 */
 		public void setDocumentLocator(Locator locator) {
 			this.locator = locator;
 		}
 
+		/**
+		 * 要素開始時の処理
+		 * <ul>
+		 * <li>id属性の存在チェック</li>
+		 * <li>id属性の位置チェック</li>
+		 * <li>テンプレートに存在しないid属性のチェック</li>
+		 * <li>重複するid属性のチェック</li>
+		 * </ul>
+		 */
 		public void startElement(String uri, String localName, String qName,
 				Attributes attributes) throws SAXException {
 			depth++;
-			hasIdAttribute = false;
 			String id = getId(attributes, uri);
 			if (id == null) {
-				if (requiredIdAttribute(uri, localName) && depth == 2) {
-					setMarker("id属性が存在しません。", locator.getLineNumber());
+				if (requiredIdAttribute(uri, localName) && depth == 2
+						&& getXpath(attributes, uri) == null) {
+					int severty = getSeverty(preferenceStore
+							.getString(MatatabiPropertyPage.MISSING_ID_ATTRIBUTE));
+					setMarker(
+							Messages
+									.getString("MatatabiValidator.MISSING_ID_ATTRIBUTE"), locator.getLineNumber(), severty); //$NON-NLS-1$
 				}
 			} else {
 				if (depth != 2) {
-					setMarker("無効な位置にid属性が指定されています。", locator.getLineNumber());
+					int severty = getSeverty(preferenceStore
+							.getString(MatatabiPropertyPage.INVALID_ID_ATTRIBUTE));
+					setMarker(
+							Messages
+									.getString("MatatabiValidator.INVALID_ID_ATTRIBUTE"), locator.getLineNumber(), //$NON-NLS-1$
+							severty);
 				}
-				if (!sourceid.contains(id)) {
-					setMarker("テンプレートに存在しないid属性が指定されています。", locator
-							.getLineNumber());
+				if (!sourceid.contains(id)
+						&& !file.getName().equals("default.mayaa")) {
+					int severty = getSeverty(preferenceStore
+							.getString(MatatabiPropertyPage.NOTEXIST_ID_ATTRIBUTE));
+					setMarker(
+							Messages
+									.getString("MatatabiValidator.NOTEXIST_ID_ATTRIBUTE"), locator //$NON-NLS-1$
+									.getLineNumber(), severty);
 				}
 				if (idlist.contains(id)) {
-					setMarker("id属性が重複しています。", locator.getLineNumber());
+					int severty = getSeverty(preferenceStore
+							.getString(MatatabiPropertyPage.DUPLICATE_ID_ATTRIBUTE));
+					setMarker(
+							Messages
+									.getString("MatatabiValidator.DUPLICATE_ID_ATTRIBUTE"), locator.getLineNumber(), severty); //$NON-NLS-1$
 				}
 				idlist.add(id);
 			}
 		}
 
 		/**
-		 * id属性が必要な要素かどうか
+		 * 要素終了時の処理
+		 */
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+			depth--;
+		}
+
+		/**
+		 * 解析終了時の処理
+		 * <ul>
+		 * <li>テンプレートにあって、Mayaaファイルにないid属性のチェック</li>
+		 * </ul>
+		 */
+		public void endDocument() throws SAXException {
+			sourceid.removeAll(idlist);
+			sourceid.removeAll(defaultid);
+			for (Iterator iter = sourceid.iterator(); iter.hasNext();) {
+				String id = (String) iter.next();
+				int severty = getSeverty(preferenceStore
+						.getString(MatatabiPropertyPage.UNDEFINE_ID_ATTRIBUTE));
+				setMarker(
+						Messages
+								.getString(
+										"MatatabiValidator.UNDEFINE_ID_ATTRIBUTE", new String[] { id }), 1, severty); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+			super.endDocument();
+		}
+
+		/**
+		 * id属性が必要な要素かどうか。
 		 * 
 		 * @param uri
 		 *            要素のNamespaceURI
@@ -143,52 +217,79 @@ public class MatatabiValidator implements IResourceVisitor,
 		 */
 		private boolean requiredIdAttribute(String uri, String localName) {
 			return !(uri.equals(MAYAA_NAMESPACE) && (localName
-					.equals("beforeRender") || localName.equals("afterRender")));
+					.equals("beforeRender") || localName.equals("afterRender"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		/**
-		 * id属性を持っているかどうか
+		 * id属性を取得する。
 		 * 
 		 * @param attributes
 		 * @param elementUri
 		 * @return
 		 */
 		private String getId(Attributes attributes, String elementUri) {
-			String value = attributes.getValue(MAYAA_NAMESPACE, "id");
-			if (value == null || elementUri.equals(MAYAA_NAMESPACE)) {
-				value = attributes.getValue("id");
+			return getAttributeValue(attributes, elementUri, "id");
+		}
+
+		/**
+		 * xpath属性を取得する。
+		 * 
+		 * @param attributes
+		 * @param elementUri
+		 * @return
+		 */
+		private String getXpath(Attributes attributes, String elementUri) {
+			return getAttributeValue(attributes, elementUri, "xpath");
+		}
+
+		private String getAttributeValue(Attributes attributes,
+				String elementUri, String name) {
+			String value = attributes.getValue(MAYAA_NAMESPACE, name); //$NON-NLS-1$
+			if (value == null && elementUri.equals(MAYAA_NAMESPACE)) {
+				value = attributes.getValue(name); //$NON-NLS-1$
 			}
 			return value;
 		}
 
-		public void endElement(String uri, String localName, String qName)
-				throws SAXException {
-			depth--;
-		}
-
-		public void endDocument() throws SAXException {
-			sourceid.removeAll(idlist);
-			sourceid.removeAll(defaultid);
-			for (Iterator iter = sourceid.iterator(); iter.hasNext();) {
-				String id = (String) iter.next();
-				setMarker("未定義のid属性があります。(" + id + ")", 1);
+		/**
+		 * マーカーを設定する。
+		 * 
+		 * @param message
+		 * @param lineNumber
+		 * @param severty
+		 */
+		private void setMarker(String message, int lineNumber, int severty) {
+			if (severty == -1) {
+				return;
 			}
-
-			super.endDocument();
-		}
-
-		private void setMarker(String message, int lineNumber) {
 			try {
-				IMarker marker = file.createMarker(IMarker.PROBLEM);
+				IMarker marker = file.createMarker(MatatabiPlugin.MARKER_ID);
 				Map attributeMap = new HashMap();
-				attributeMap.put(IMarker.SEVERITY, Integer
-						.valueOf(IMarker.SEVERITY_WARNING));
+				attributeMap.put(IMarker.SEVERITY, Integer.valueOf(severty));
 				attributeMap.put(IMarker.MESSAGE, message);
 				attributeMap.put(IMarker.LINE_NUMBER, Integer
 						.valueOf(lineNumber));
 				marker.setAttributes(attributeMap);
 			} catch (CoreException e) {
 				e.printStackTrace();
+			}
+		}
+
+		/**
+		 * 設定値からエラーレベルを取得する。
+		 * 
+		 * @param preferenceValue
+		 * @return
+		 */
+		private int getSeverty(String preferenceValue) {
+			if (preferenceValue.equals("0")) { //$NON-NLS-1$
+				return IMarker.SEVERITY_ERROR;
+			} else if (preferenceValue.equals("1")) { //$NON-NLS-1$
+				return IMarker.SEVERITY_WARNING;
+			} else if (preferenceValue.equals("2")) { //$NON-NLS-1$
+				return IMarker.SEVERITY_INFO;
+			} else {
+				return -1;
 			}
 		}
 	}

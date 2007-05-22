@@ -178,6 +178,11 @@ public class EditorUtil {
 		return fileExtension;
 	}
 
+	/**
+	 * 開いているファイルが属するプロジェクトにMatatabiNatureが設定されているかどうか。
+	 * 
+	 * @return
+	 */
 	public static boolean hasMatatabiNature() {
 		IProject project = getActiveFile().getProject();
 		if (project == null) {

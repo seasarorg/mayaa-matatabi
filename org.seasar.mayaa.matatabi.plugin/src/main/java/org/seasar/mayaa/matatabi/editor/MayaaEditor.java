@@ -7,8 +7,6 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
  * Mayaaファイルエディター
- * 
- * @author matoba
  */
 public class MayaaEditor extends StructuredTextEditor {
 	protected void initializeKeyBindingScopes() {

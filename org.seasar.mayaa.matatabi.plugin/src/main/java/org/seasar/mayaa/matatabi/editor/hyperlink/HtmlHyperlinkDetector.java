@@ -10,10 +10,11 @@ import org.w3c.dom.Node;
 
 /**
  * HTMLファイル向けハイパーリンク
- * 
- * @author matoba
  */
 public class HtmlHyperlinkDetector extends IdAttributeHyperlinkDetector {
+	/**
+	 * 指定したnodeのid属性を取得します。
+	 */
 	protected Attr getIdAttribute(Node node) {
 		if (node.getNodeType() != Node.ELEMENT_NODE) {
 			return null;

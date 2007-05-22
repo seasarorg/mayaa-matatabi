@@ -4,7 +4,9 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 public class MatatabiNature implements IProjectNature {
 	public static final String NATURE_ID = "org.seasar.mayaa.matatabi.MatatabiNature";
@@ -19,6 +21,8 @@ public class MatatabiNature implements IProjectNature {
 
 	public void deconfigure() throws CoreException {
 		removeBuilder();
+		project.deleteMarkers(MatatabiPlugin.MARKER_ID, false,
+				IResource.DEPTH_INFINITE);
 	}
 
 	public IProject getProject() {
@@ -29,6 +33,11 @@ public class MatatabiNature implements IProjectNature {
 		this.project = project;
 	}
 
+	/**
+	 * BuilderÇÃìoò^
+	 * 
+	 * @throws CoreException
+	 */
 	private void setBuilder() throws CoreException {
 		IProjectDescription description = project.getDescription();
 		ICommand[] commands = description.getBuildSpec();
@@ -46,6 +55,11 @@ public class MatatabiNature implements IProjectNature {
 		project.setDescription(description, null);
 	}
 
+	/**
+	 * BuilderÇÃìoò^âèú
+	 * 
+	 * @throws CoreException
+	 */
 	private void removeBuilder() throws CoreException {
 		IProjectDescription description = project.getDescription();
 		ICommand[] commands = description.getBuildSpec();

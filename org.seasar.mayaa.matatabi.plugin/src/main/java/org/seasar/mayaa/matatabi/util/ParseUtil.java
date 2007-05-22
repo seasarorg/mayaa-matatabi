@@ -28,6 +28,12 @@ public class ParseUtil {
 	private static List mayaaNamespaces = Arrays
 			.asList(new String[] { "http://mayaa.seasar.org" });
 
+	/**
+	 * default.mayaa‚É’è‹`‚µ‚Ä‚ ‚éid‚ğæ“¾‚µ‚Ü‚·B
+	 * 
+	 * @param folder
+	 * @return
+	 */
 	public static Set getDefaultIdList(IFolder folder) {
 		IProject project = folder.getProject();
 		IPath path = folder.getProjectRelativePath();
@@ -74,6 +80,9 @@ public class ParseUtil {
 
 	public static Set getIdList(IFile file) {
 		try {
+			if (!file.exists()) {
+				return new LinkedHashSet();
+			}
 			return getIdList(new InputSource(file.getContents()));
 		} catch (CoreException e) {
 			e.printStackTrace();

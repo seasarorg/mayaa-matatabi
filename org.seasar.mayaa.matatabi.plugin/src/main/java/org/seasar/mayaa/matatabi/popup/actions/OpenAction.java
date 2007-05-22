@@ -14,7 +14,6 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
-import org.w3c.dom.NamedNodeMap;
 
 /**
  * 同じディレクトリにある違う拡張子のファイルを開くアクション

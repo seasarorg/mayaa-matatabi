@@ -18,14 +18,10 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.GenerateUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
-import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 
 /**
  * コンポーネントの一括生成を行う。
- * 
- * @author matoba
- * 
  */
 public class GenerateComponentAction extends OpenAction {
 	public GenerateComponentAction() {
