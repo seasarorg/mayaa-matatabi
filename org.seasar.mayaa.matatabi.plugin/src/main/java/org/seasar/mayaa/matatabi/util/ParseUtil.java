@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.cyberneko.html.parsers.DOMParser;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -34,14 +35,15 @@ public class ParseUtil {
 	 * @param folder
 	 * @return
 	 */
-	public static Set getDefaultIdList(IFolder folder) {
-		IProject project = folder.getProject();
-		IPath path = folder.getProjectRelativePath();
+	public static Set getDefaultIdList(IContainer container) {
+		IProject project = container.getProject();
+		IPath path = container.getProjectRelativePath();
 		IFile defaultMayaa = project.getFile(path.toString() + File.separator
 				+ "default.mayaa");
 		if (!defaultMayaa.exists()) {
-			if (folder.getParent() instanceof IFolder) {
-				return getDefaultIdList((IFolder) folder.getParent());
+			if (container.getParent() instanceof IFolder
+					|| container.getParent() instanceof IProject) {
+				return getDefaultIdList((IFolder) container.getParent());
 			}
 		} else {
 			try {
@@ -120,24 +122,28 @@ public class ParseUtil {
 	private static void traverse(Set idlist, Element element, List namespaces) {
 		for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
 			String namespace = (String) iter.next();
-			if (element.hasAttributeNS(namespace, "id")) {
-				idlist.add(element.getAttributeNS(namespace, "id"));
-			} else if (namespace.equals(element.getNamespaceURI())) {
-				idlist.add(element.getAttribute("id"));
-			} else {
-				String prefix = element.lookupPrefix(namespace);
-				if (prefix != null) {
-					prefix = prefix.toLowerCase();
-					if (element.hasAttribute(prefix + ":id")) {
-						idlist.add(element.getAttribute(prefix + ":id"));
-					}
+			traverse(idlist, element, namespace);
+		}
+	}
+
+	private static void traverse(Set idlist, Element element, String namespace) {
+		if (element.hasAttributeNS(namespace, "id")) {
+			idlist.add(element.getAttributeNS(namespace, "id"));
+		} else if (namespace.equals(element.getNamespaceURI())) {
+			idlist.add(element.getAttribute("id"));
+		} else {
+			String prefix = element.lookupPrefix(namespace);
+			if (prefix != null) {
+				prefix = prefix.toLowerCase();
+				if (element.hasAttribute(prefix + ":id")) {
+					idlist.add(element.getAttribute(prefix + ":id"));
 				}
 			}
-			NodeList nodeList = element.getChildNodes();
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				if (nodeList.item(i) instanceof Element) {
-					traverse(idlist, (Element) nodeList.item(i), namespaces);
-				}
+		}
+		NodeList nodeList = element.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			if (nodeList.item(i) instanceof Element) {
+				traverse(idlist, (Element) nodeList.item(i), namespace);
 			}
 		}
 	}

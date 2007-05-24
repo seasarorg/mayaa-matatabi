@@ -27,8 +27,6 @@ import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 
 /**
  * 設定ページ
- * 
- * @author matoba
  */
 public class MatatabiPropertyPage extends PropertyPage {
 	public static final String UNDEFINE_ID_ATTRIBUTE = "undefineIdAttribute";
@@ -40,8 +38,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 	public static final String INVALID_ID_ATTRIBUTE = "invalidIdAttribute";
 
 	public static final String MISSING_ID_ATTRIBUTE = "missingIdAttribute";
-
-	private Text fileExtension;
 
 	private Button useMatatabi;
 
@@ -77,24 +73,19 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.useMatatabi = createCheckPart(panel, "matatabiを使用する");
 		folder = createTabFolder(panel);
 
-		Composite generalPanel = createPanel(folder, 2);
 		Composite errorMarkerPanel = createPanel(folder, 2);
 
-		this.fileExtension = createTextPart(generalPanel, "Mayaaファイル拡張子");
 		missingIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"ルート要素直下のid属性");
+				"ルート要素直下のid,xpath属性の必須チェック");
 		invalidIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"無効な位置のid属性");
+				"無効な位置のid,xpath属性のチェック");
 		notexistIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"テンプレートに存在しないid属性");
+				"テンプレートに存在しないid属性のチェック");
 		duplicateIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"重複するid属性");
+				"重複するid属性のチェック");
 		undefineIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"未定義のid属性");
+				"未定義のid属性のチェック");
 
-		TabItem generalTabItem = new TabItem(folder, SWT.NULL);
-		generalTabItem.setText("基本設定");
-		generalTabItem.setControl(generalPanel);
 		TabItem errorTabItem = new TabItem(folder, SWT.NULL);
 		errorTabItem.setText("エラーマーカー");
 		errorTabItem.setControl(errorMarkerPanel);
@@ -135,7 +126,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		setPreferenceStore(new ScopedPreferenceStore(new ProjectScope(
 				(IProject) getElement()), "org.seasar.mayaa.matatabi"));
 		IPreferenceStore store = getPreferenceStore();
-		this.fileExtension.setText(store.getString("fileExtension"));
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
 		}
@@ -177,7 +167,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 	 * デフォルトに戻す
 	 */
 	protected void performDefaults() {
-		this.fileExtension.setText("");
 		this.useMatatabi.setSelection(false);
 		this.missingIdAttribute.select(1);
 		this.invalidIdAttribute.select(1);
@@ -194,7 +183,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		if (project != null) {
 			IPreferenceStore store = getPreferenceStore();
 
-			store.setValue("fileExtension", fileExtension.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, missingIdAttribute
 					.getSelectionIndex());
 			store.setValue(INVALID_ID_ATTRIBUTE, invalidIdAttribute

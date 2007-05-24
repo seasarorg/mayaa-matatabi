@@ -1,5 +1,8 @@
 package org.seasar.mayaa.matatabi.popup.actions;
 
+import org.eclipse.jface.action.IAction;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 
 public class OpenHTMLAction extends OpenAction {
 	/**
@@ -7,5 +10,17 @@ public class OpenHTMLAction extends OpenAction {
 	 */
 	public OpenHTMLAction() {
 		super("html");
+	}
+
+	public void run(IAction action) {
+		try {
+			super.run(action);
+		} catch (RuntimeException e2) {
+			MessageBox messageBox = new MessageBox(targetPart.getSite()
+					.getShell(), SWT.OK | SWT.ICON_ERROR);
+			messageBox.setMessage("対応するファイルが存在しません");
+			messageBox.setText("エラー");
+			messageBox.open();
+		}
 	}
 }

@@ -64,7 +64,6 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 				fileExtension = "mayaa";
 			}
 		}
-
 		openEditorPart = EditorUtil.openFile(path, project);
 		if (openEditorPart == null) {
 			throw new RuntimeException();

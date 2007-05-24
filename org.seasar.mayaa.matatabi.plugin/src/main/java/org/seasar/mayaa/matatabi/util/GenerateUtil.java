@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -30,6 +29,7 @@ public class GenerateUtil {
 			String id = (String) iter.next();
 			buffer.append("  <m:echo id=\"" + id + "\"></m:echo>\n");
 		}
+
 		return buffer.toString();
 	}
 
@@ -52,19 +52,16 @@ public class GenerateUtil {
 
 		IFile mayaaFile = project.getFile(path.toString());
 		Set idlist = ParseUtil.getIdList(mayaaFile);
-		idlist.removeAll(ParseUtil.getDefaultIdList((IFolder) mayaaFile
-				.getParent()));
+		idlist.removeAll(ParseUtil.getDefaultIdList(mayaaFile.getParent()));
 
 		String fileContents = genereteFile(genereteTags(idlist));
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
 				fileContents.getBytes());
 		try {
 			String fileName = path.toString();
-			String fileExtension = EditorUtil.getTemplateFileExtension(project);
-
 			fileName = fileName.substring(0, fileName.length()
 					- path.getFileExtension().length())
-					+ fileExtension;
+					+ "mayaa";
 			IFile openFile = project.getFile(fileName);
 			openFile.create(byteArrayInputStream, true, EditorUtil
 					.getProgressMonitor());

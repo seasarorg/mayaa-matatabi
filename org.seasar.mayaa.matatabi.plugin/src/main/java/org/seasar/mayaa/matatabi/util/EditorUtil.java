@@ -26,7 +26,6 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 
 /**
@@ -37,16 +36,10 @@ import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 public class EditorUtil {
 
 	public static IEditorPart openFile(IPath path, IProject project) {
-
-		String fileExtension = getTemplateFileExtension(project);
-
-		String extension = path.getFileExtension().equals(fileExtension) ? "html"
-				: fileExtension;
-
 		String fileName = path.toString();
 		fileName = fileName.substring(0, fileName.length()
 				- path.getFileExtension().length())
-				+ extension;
+				+ "mayaa";
 		IFile openFile = project.getFile(fileName);
 		if (!openFile.exists()) {
 			return null;
@@ -167,15 +160,6 @@ public class EditorUtil {
 		IActionBars bars = workbenchWindow.getActionBars();
 		IStatusLineManager lineManager = bars.getStatusLineManager();
 		return lineManager.getProgressMonitor();
-	}
-
-	public static String getTemplateFileExtension(IProject project) {
-		String fileExtension = MatatabiPlugin.getStoreValue(project,
-				"fileExtension");
-		if (fileExtension == null || fileExtension.equals("")) {
-			fileExtension = "mayaa";
-		}
-		return fileExtension;
 	}
 
 	/**
