@@ -2,7 +2,7 @@
 <feature
       id="org.seasar.mayaa.matatabi.feature"
       label="matatabi - Mayaa plugin"
-      version="0.3.0">
+      version="0.4.0">
 
    <description url="http://mayaa.seasar.org/">
       matatabi - Mayaa Plugin
