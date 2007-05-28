@@ -15,7 +15,7 @@ public class OpenHTMLAction extends OpenAction {
 	public void run(IAction action) {
 		try {
 			super.run(action);
-		} catch (RuntimeException e2) {
+		} catch (RuntimeException e) {
 			MessageBox messageBox = new MessageBox(targetPart.getSite()
 					.getShell(), SWT.OK | SWT.ICON_ERROR);
 			messageBox.setMessage("‘Î‰‚·‚éƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ");

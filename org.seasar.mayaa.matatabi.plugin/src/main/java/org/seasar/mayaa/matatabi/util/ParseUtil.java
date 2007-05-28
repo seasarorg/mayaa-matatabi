@@ -41,8 +41,7 @@ public class ParseUtil {
 		IFile defaultMayaa = project.getFile(path.toString() + File.separator
 				+ "default.mayaa");
 		if (!defaultMayaa.exists()) {
-			if (container.getParent() instanceof IFolder
-					|| container.getParent() instanceof IProject) {
+			if (container.getParent() instanceof IFolder) {
 				return getDefaultIdList(container.getParent());
 			}
 		} else {

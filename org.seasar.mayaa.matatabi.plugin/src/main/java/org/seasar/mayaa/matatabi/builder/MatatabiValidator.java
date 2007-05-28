@@ -53,8 +53,8 @@ public class MatatabiValidator implements IResourceVisitor,
 						+ "html"; //$NON-NLS-1$
 				IFile openFile = file.getProject().getFile(fileName);
 				Set sourceid = ParseUtil.getIdList(openFile).keySet();
-				Set defaultid = ParseUtil.getDefaultIdList(
-						(IFolder) file.getParent()).keySet();
+				Set defaultid = ParseUtil.getDefaultIdList(file.getParent())
+						.keySet();
 
 				SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 				parserFactory.setFeature(

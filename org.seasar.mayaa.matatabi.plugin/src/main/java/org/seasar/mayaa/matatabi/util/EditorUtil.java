@@ -36,10 +36,16 @@ import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 public class EditorUtil {
 
 	public static IEditorPart openFile(IPath path, IProject project) {
+		String fileExtension;
+		if (path.getFileExtension().equals("mayaa")) {
+			fileExtension = "html";
+		} else {
+			fileExtension = "mayaa";
+		}
 		String fileName = path.toString();
 		fileName = fileName.substring(0, fileName.length()
 				- path.getFileExtension().length())
-				+ "mayaa";
+				+ fileExtension;
 		IFile openFile = project.getFile(fileName);
 		if (!openFile.exists()) {
 			return null;

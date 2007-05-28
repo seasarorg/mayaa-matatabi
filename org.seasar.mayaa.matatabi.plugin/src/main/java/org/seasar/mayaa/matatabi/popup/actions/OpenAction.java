@@ -49,7 +49,6 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-
 		if (path == null && targetPart instanceof IEditorPart) {
 			IFile file = ((IFileEditorInput) ((IEditorPart) targetPart)
 					.getEditorInput()).getFile();
@@ -57,13 +56,6 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 			project = file.getProject();
 		}
 
-		if (fileExtension.equals("mayaa")) {
-			fileExtension = MatatabiPlugin.getStoreValue(project,
-					"fileExtension");
-			if (fileExtension == null || fileExtension.equals("")) {
-				fileExtension = "mayaa";
-			}
-		}
 		openEditorPart = EditorUtil.openFile(path, project);
 		if (openEditorPart == null) {
 			throw new RuntimeException();
