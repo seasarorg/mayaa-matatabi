@@ -180,8 +180,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 		namespaceTableViewer.setInput(namespaces);
 
-		Collection<ReplaceRule> replacerules = PreferencesUtil.getReplaceRules(
-				store).values();
+		Collection<ReplaceRule> replacerules = new ArrayList<ReplaceRule>(
+				PreferencesUtil.getReplaceRules(store).values());
 		if (replacerules.size() == 0) {
 			replacerules = getDefaultReplaceRule();
 		}
