@@ -40,10 +40,10 @@ public class ReplaceRuleTableViewer extends TableViewer {
 
 		// ヘッダの設定
 		TableColumn col1 = new TableColumn(getTable(), SWT.LEFT);
-		col1.setText("接頭辞");
+		col1.setText("タグ名");
 		col1.setWidth(100);
 		TableColumn col2 = new TableColumn(getTable(), SWT.LEFT);
-		col2.setText("名前空間");
+		col2.setText("テンプレート");
 		col2.setWidth(400);
 
 		// 編集設定

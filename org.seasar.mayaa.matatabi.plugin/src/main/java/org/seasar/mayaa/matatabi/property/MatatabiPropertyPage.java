@@ -172,6 +172,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 
 		Collection<Namespace> namespaces = PreferencesUtil.getNamespaces(store);
+		if (namespaces.size() == 0) {
+			namespaces = getDefaultNamespace();
+		}
 		while (namespaces.size() < 5) {
 			namespaces.add(new Namespace("", ""));
 		}
@@ -179,6 +182,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 		Collection<ReplaceRule> replacerules = PreferencesUtil.getReplaceRules(
 				store).values();
+		if (replacerules.size() == 0) {
+			replacerules = getDefaultReplaceRule();
+		}
 		while (replacerules.size() < 5) {
 			replacerules.add(new ReplaceRule("", ""));
 		}

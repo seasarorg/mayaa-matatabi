@@ -92,7 +92,7 @@ public class GenerateUtil {
 		IPath path = file.getProjectRelativePath();
 
 		IFile htmlFile = project.getFile(path.toString());
-		Map idlist = ParseUtil.getIdList(htmlFile);
+		Map<String, Element> idlist = ParseUtil.getIdList(htmlFile);
 		for (Iterator iter = ParseUtil.getDefaultIdList(htmlFile.getParent())
 				.keySet().iterator(); iter.hasNext();) {
 			idlist.remove(iter.next());

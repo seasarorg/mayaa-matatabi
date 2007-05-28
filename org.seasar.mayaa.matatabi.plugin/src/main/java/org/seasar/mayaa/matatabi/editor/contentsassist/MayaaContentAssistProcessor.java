@@ -196,10 +196,11 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
+	@SuppressWarnings("restriction")
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
 		// トップ要素の直下の要素でない場合は処理しない
-		if (contentAssistRequest.getNode().getParentNode().equals(
+		if (!contentAssistRequest.getNode().getParentNode().equals(
 				contentAssistRequest.getNode().getOwnerDocument()
 						.getDocumentElement())) {
 			super.addAttributeValueProposals(contentAssistRequest);
