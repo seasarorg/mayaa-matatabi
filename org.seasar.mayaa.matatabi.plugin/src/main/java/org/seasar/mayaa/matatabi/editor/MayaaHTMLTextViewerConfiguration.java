@@ -15,7 +15,7 @@ public class MayaaHTMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationHTML {
 
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-		List result = new ArrayList(0);
+		List<IHyperlinkDetector> result = new ArrayList<IHyperlinkDetector>(0);
 		result.add(new HtmlHyperlinkDetector());
 
 		IHyperlinkDetector[] superDetectors = super

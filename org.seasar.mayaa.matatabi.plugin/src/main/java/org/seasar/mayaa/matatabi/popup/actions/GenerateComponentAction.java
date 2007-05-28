@@ -1,7 +1,8 @@
 package org.seasar.mayaa.matatabi.popup.actions;
 
 import java.io.ByteArrayInputStream;
-import java.util.Set;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -18,6 +19,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.GenerateUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
+import org.seasar.mayaa.matatabi.util.PreferencesUtil;
+import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 /**
@@ -39,7 +42,7 @@ public class GenerateComponentAction extends OpenAction {
 					- path.getFileExtension().length())
 					+ "html";
 			IFile openFile = project.getFile(fileName);
-			Set sourceid = ParseUtil.getIdList(openFile);
+			Map<String, Element> sourceid = ParseUtil.getIdList(openFile);
 
 			if (targetPart instanceof ITextEditor) {
 				try {
@@ -53,16 +56,23 @@ public class GenerateComponentAction extends OpenAction {
 
 					IDocument document = textEditor.getDocumentProvider()
 							.getDocument(textEditor.getEditorInput());
-					Set outid = ParseUtil
+					Map outid = ParseUtil
 							.getIdList(new InputSource(
 									new ByteArrayInputStream(document.get()
 											.getBytes())));
-					sourceid.removeAll(outid);
-					sourceid.removeAll(ParseUtil
-							.getDefaultIdList((IFolder) file.getParent()));
+					for (Iterator iter = outid.keySet().iterator(); iter
+							.hasNext();) {
+						sourceid.remove(iter.next());
+					}
+					for (Iterator iter = ParseUtil.getDefaultIdList(
+							(IFolder) file.getParent()).keySet().iterator(); iter
+							.hasNext();) {
+						sourceid.remove(iter.next());
+					}
 
 					InsertEdit insertEdit = new InsertEdit(offset, GenerateUtil
-							.genereteTags(sourceid));
+							.genereteTags(sourceid, PreferencesUtil
+									.getPreference(file)));
 
 					MultiTextEdit multiTextEdit = new MultiTextEdit();
 					multiTextEdit.addChild(insertEdit);

@@ -2,6 +2,8 @@ package org.seasar.mayaa.matatabi.property;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -24,11 +26,18 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.seasar.mayaa.matatabi.nature.MatatabiNature;
+import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
+import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
+import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 
 /**
  * 設定ページ
  */
 public class MatatabiPropertyPage extends PropertyPage {
+	public static final String REPLACE_RULE = "replaceRule";
+
+	public static final String NAMESPACES = "namespaces";
+
 	public static final String UNDEFINE_ID_ATTRIBUTE = "undefineIdAttribute";
 
 	public static final String DUPLICATE_ID_ATTRIBUTE = "duplicateIdAttribute";
@@ -52,6 +61,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private Combo duplicateIdAttribute;
 
 	private Combo undefineIdAttribute;
+
+	private ReplaceRuleTableViewer replaceRuleTableViewer;
+
+	private NamespaceTableViewer namespaceTableViewer;
 
 	/**
 	 * ページ初期化
@@ -86,9 +99,22 @@ public class MatatabiPropertyPage extends PropertyPage {
 		undefineIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
 				"未定義のid属性のチェック");
 
+		Composite generatePanel = createPanel(folder, 1);
+		Label namespaceLabel = new Label(generatePanel, SWT.BOLD);
+		namespaceLabel.setText("Mayaaファイル名前空間");
+
+		namespaceTableViewer = new NamespaceTableViewer(generatePanel,
+				SWT.SINGLE | SWT.V_SCROLL);
+		Label replaceRuleLabel = new Label(generatePanel, SWT.BOLD);
+		replaceRuleLabel.setText("タグ変換ルール");
+		replaceRuleTableViewer = new ReplaceRuleTableViewer(generatePanel,
+				SWT.SINGLE | SWT.V_SCROLL);
 		TabItem errorTabItem = new TabItem(folder, SWT.NULL);
 		errorTabItem.setText("エラーマーカー");
 		errorTabItem.setControl(errorMarkerPanel);
+		TabItem generateTabItem = new TabItem(folder, SWT.NULL);
+		generateTabItem.setText("自動生成");
+		generateTabItem.setControl(generatePanel);
 
 		loadStore(project);
 
@@ -144,6 +170,20 @@ public class MatatabiPropertyPage extends PropertyPage {
 			this.undefineIdAttribute
 					.select(store.getInt(UNDEFINE_ID_ATTRIBUTE));
 		}
+
+		Collection<Namespace> namespaces = PreferencesUtil.getNamespaces(store);
+		while (namespaces.size() < 5) {
+			namespaces.add(new Namespace("", ""));
+		}
+		namespaceTableViewer.setInput(namespaces);
+
+		Collection<ReplaceRule> replacerules = PreferencesUtil.getReplaceRules(
+				store).values();
+		while (replacerules.size() < 5) {
+			replacerules.add(new ReplaceRule("", ""));
+		}
+		replaceRuleTableViewer.setInput(replacerules);
+
 		try {
 			if (project.hasNature(MatatabiNature.NATURE_ID)) {
 				this.useMatatabi.setSelection(true);
@@ -173,6 +213,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.notexistIdAttribute.select(1);
 		this.duplicateIdAttribute.select(1);
 		this.undefineIdAttribute.select(1);
+		this.namespaceTableViewer.setInput(getDefaultNamespace());
+		this.replaceRuleTableViewer.setInput(getDefaultReplaceRule());
 
 		super.performDefaults();
 	}
@@ -193,23 +235,47 @@ public class MatatabiPropertyPage extends PropertyPage {
 					.getSelectionIndex());
 			store.setValue(UNDEFINE_ID_ATTRIBUTE, undefineIdAttribute
 					.getSelectionIndex());
+
+			Collection namespaces = (Collection) namespaceTableViewer
+					.getInput();
+			int count = 0;
+			for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
+				Namespace namespace = (Namespace) iter.next();
+				if (namespace.getNamespaceAttribute() != null) {
+					store.setValue(NAMESPACES + "." + count, namespace
+							.toString());
+					count++;
+				}
+			}
+
+			Collection replaceRules = (Collection) replaceRuleTableViewer
+					.getInput();
+			count = 0;
+			for (Iterator iter = replaceRules.iterator(); iter.hasNext();) {
+				ReplaceRule replaceRule = (ReplaceRule) iter.next();
+				store.setValue(REPLACE_RULE + "." + count, replaceRule
+						.toString());
+				count++;
+			}
 		}
+
 		result = true;
 
 		try {
-			if (useMatatabi.getSelection()
-					&& !project.hasNature(MatatabiNature.NATURE_ID)) {
-				IProjectDescription desc = project.getDescription();
-				List natureIds = new ArrayList(Arrays.asList(desc
-						.getNatureIds()));
-				natureIds.add(MatatabiNature.NATURE_ID);
-				desc.setNatureIds((String[]) natureIds
-						.toArray(new String[natureIds.size()]));
-				project.setDescription(desc, null);
+			if (useMatatabi.getSelection()) {
+				if (!project.hasNature(MatatabiNature.NATURE_ID)) {
+					IProjectDescription desc = project.getDescription();
+					List<String> natureIds = new ArrayList<String>(Arrays
+							.asList(desc.getNatureIds()));
+					natureIds.add(MatatabiNature.NATURE_ID);
+					desc.setNatureIds((String[]) natureIds
+							.toArray(new String[natureIds.size()]));
+					project.setDescription(desc, null);
+				}
 			} else if (project.hasNature(MatatabiNature.NATURE_ID)) {
 				IProjectDescription desc = project.getDescription();
-				List natureIds = new ArrayList(Arrays.asList(desc
-						.getNatureIds()));
+				List<String> natureIds = new ArrayList<String>(Arrays
+						.asList(desc.getNatureIds()));
 				natureIds.remove(MatatabiNature.NATURE_ID);
 				desc.setNatureIds((String[]) natureIds
 						.toArray(new String[natureIds.size()]));
@@ -264,5 +330,25 @@ public class MatatabiPropertyPage extends PropertyPage {
 		Combo combo = new Combo(composite, SWT.READ_ONLY);
 
 		return combo;
+	}
+
+	private List<Namespace> getDefaultNamespace() {
+		List<Namespace> namespaces = new ArrayList<Namespace>();
+		namespaces.add(new Namespace("m", "http://mayaa.seasar.org"));
+		while (namespaces.size() < 5) {
+			namespaces.add(new Namespace("", ""));
+		}
+		return namespaces;
+	}
+
+	private List<ReplaceRule> getDefaultReplaceRule() {
+		List<ReplaceRule> replaceRules = new ArrayList<ReplaceRule>();
+
+		replaceRules.add(new ReplaceRule("*", "<m:echo id=\"$id\"></m:echo>"));
+		while (replaceRules.size() < 5) {
+			replaceRules.add(new ReplaceRule("", ""));
+		}
+
+		return replaceRules;
 	}
 }

@@ -1,8 +1,8 @@
 package org.seasar.mayaa.matatabi.builder;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,7 +34,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 
 	private Set defaultid;
 
-	private Set idlist = new HashSet();
+	private Set idlist = new LinkedHashSet<String>();
 
 	private ScopedPreferenceStore preferenceStore;
 

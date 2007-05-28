@@ -1,13 +1,26 @@
 package org.seasar.mayaa.matatabi.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
+import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
 
 /**
  * コード生成に関する処理を行う
@@ -23,20 +36,48 @@ public class GenerateUtil {
 	 *            生成対象のidのリスト
 	 * @return
 	 */
-	public static String genereteTags(Set idlist) {
+	public static String genereteTags(Map<String, Element> idlist,
+			IPreferenceStore store) {
+		Map<String, ReplaceRule> replaceRules = PreferencesUtil
+				.getReplaceRules(store);
 		StringBuffer buffer = new StringBuffer();
-		for (Iterator iter = idlist.iterator(); iter.hasNext();) {
-			String id = (String) iter.next();
-			buffer.append("  <m:echo id=\"" + id + "\"></m:echo>\n");
+		ReplaceRule defaultReplaceRule = replaceRules.get("*");
+		for (Iterator<Entry<String, Element>> iter = idlist.entrySet()
+				.iterator(); iter.hasNext();) {
+			Entry<String, Element> entry = iter.next();
+			String templateString;
+			ReplaceRule replaceRule = replaceRules.get(entry.getValue()
+					.getNodeName().toLowerCase());
+			if (replaceRule != null) {
+				templateString = replaceRule.getReplace();
+			} else {
+				templateString = defaultReplaceRule.getReplace();
+			}
+			try {
+				buffer.append("\t"
+						+ parse(entry.getValue(), entry.getKey(),
+								templateString) + "\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return buffer.toString();
 	}
 
-	private static String genereteFile(String string) {
+	private static String genereteFile(String string, IPreferenceStore store) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		buffer.append("<m:mayaa xmlns:m=\"http://mayaa.seasar.org\">\n");
+		buffer.append("<m:mayaa ");
+		List namespaces = PreferencesUtil.getNamespaces(store);
+		for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
+			Namespace namespace = (Namespace) iter.next();
+			if (namespace.getNamespaceAttribute() != null) {
+				buffer.append(namespace.getNamespaceAttribute() + "\n" + "\t");
+			}
+		}
+		buffer.delete(buffer.length() - 2, buffer.length());
+		buffer.append(">\n");
 		buffer.append(string);
 		buffer.append("</m:mayaa>\n");
 		return buffer.toString();
@@ -50,11 +91,15 @@ public class GenerateUtil {
 		IProject project = file.getProject();
 		IPath path = file.getProjectRelativePath();
 
-		IFile mayaaFile = project.getFile(path.toString());
-		Set idlist = ParseUtil.getIdList(mayaaFile);
-		idlist.removeAll(ParseUtil.getDefaultIdList(mayaaFile.getParent()));
+		IFile htmlFile = project.getFile(path.toString());
+		Map idlist = ParseUtil.getIdList(htmlFile);
+		for (Iterator iter = ParseUtil.getDefaultIdList(htmlFile.getParent())
+				.keySet().iterator(); iter.hasNext();) {
+			idlist.remove(iter.next());
+		}
 
-		String fileContents = genereteFile(genereteTags(idlist));
+		String fileContents = genereteFile(genereteTags(idlist, PreferencesUtil
+				.getPreference(file)), PreferencesUtil.getPreference(file));
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
 				fileContents.getBytes());
 		try {
@@ -68,5 +113,30 @@ public class GenerateUtil {
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	private static String parse(Element element, String id,
+			String templateString) throws IOException {
+		try {
+			Velocity.init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		VelocityContext context = new VelocityContext();
+		Map<String, Attr> attributes = new HashMap<String, Attr>();
+		for (int i = 0; i < element.getAttributes().getLength(); i++) {
+			Attr attr = (Attr) element.getAttributes().item(i);
+			attributes.put(attr.getName(), attr);
+		}
+
+		context.put("id", id);
+		context.put("name", element.getNodeName());
+		context.put("hasBody", element.hasChildNodes());
+		context.put("attributes", attributes);
+
+		VelocityEngine engine = new VelocityEngine();
+		StringWriter out = new StringWriter();
+		engine.evaluate(context, out, "MATATABI", templateString);
+		return out.getBuffer().toString();
 	}
 }

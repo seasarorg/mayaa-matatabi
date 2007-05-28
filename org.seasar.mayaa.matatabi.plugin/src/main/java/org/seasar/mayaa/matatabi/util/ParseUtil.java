@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.cyberneko.html.parsers.DOMParser;
 import org.eclipse.core.resources.IContainer;
@@ -35,7 +35,7 @@ public class ParseUtil {
 	 * @param folder
 	 * @return
 	 */
-	public static Set getDefaultIdList(IContainer container) {
+	public static Map<String, Element> getDefaultIdList(IContainer container) {
 		IProject project = container.getProject();
 		IPath path = container.getProjectRelativePath();
 		IFile defaultMayaa = project.getFile(path.toString() + File.separator
@@ -43,7 +43,7 @@ public class ParseUtil {
 		if (!defaultMayaa.exists()) {
 			if (container.getParent() instanceof IFolder
 					|| container.getParent() instanceof IProject) {
-				return getDefaultIdList((IFolder) container.getParent());
+				return getDefaultIdList(container.getParent());
 			}
 		} else {
 			try {
@@ -52,21 +52,21 @@ public class ParseUtil {
 				e.printStackTrace();
 			}
 		}
-		return new LinkedHashSet();
+		return new LinkedHashMap<String, Element>();
 	}
 
-	public static Set getXmlIdList(IFile file) {
+	public static Map getXmlIdList(IFile file) {
 		try {
 			return getXmlIdList(new InputSource(file.getContents()));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		return new LinkedHashSet();
+		return new LinkedHashMap();
 	}
 
-	public static Set getXmlIdList(InputSource input) {
+	public static Map getXmlIdList(InputSource input) {
 		org.apache.xerces.parsers.DOMParser parser = new org.apache.xerces.parsers.DOMParser();
-		Set idlist = new LinkedHashSet();
+		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 		try {
 
 			parser.parse(input);
@@ -80,21 +80,21 @@ public class ParseUtil {
 		return idlist;
 	}
 
-	public static Set getIdList(IFile file) {
+	public static Map<String, Element> getIdList(IFile file) {
 		try {
 			if (!file.exists()) {
-				return new LinkedHashSet();
+				return new LinkedHashMap<String, Element>();
 			}
 			return getIdList(new InputSource(file.getContents()));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		return new LinkedHashSet();
+		return new LinkedHashMap<String, Element>();
 	}
 
-	public static Set getIdList(InputSource input) {
+	public static Map<String, Element> getIdList(InputSource input) {
 		DOMParser parser = new DOMParser();
-		Set idlist = new LinkedHashSet();
+		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 		try {
 
 			parser.parse(input);
@@ -119,24 +119,26 @@ public class ParseUtil {
 	 * @param namespaces
 	 *            ëŒè€Ç∆Ç»ÇÈñºëOãÛä‘
 	 */
-	private static void traverse(Set idlist, Element element, List namespaces) {
+	private static void traverse(Map<String, Element> idlist, Element element,
+			List namespaces) {
 		for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
 			String namespace = (String) iter.next();
 			traverse(idlist, element, namespace);
 		}
 	}
 
-	private static void traverse(Set idlist, Element element, String namespace) {
+	private static void traverse(Map<String, Element> idlist, Element element,
+			String namespace) {
 		if (element.hasAttributeNS(namespace, "id")) {
-			idlist.add(element.getAttributeNS(namespace, "id"));
+			idlist.put(element.getAttributeNS(namespace, "id"), element);
 		} else if (namespace.equals(element.getNamespaceURI())) {
-			idlist.add(element.getAttribute("id"));
+			idlist.put(element.getAttribute("id"), element);
 		} else {
 			String prefix = element.lookupPrefix(namespace);
 			if (prefix != null) {
 				prefix = prefix.toLowerCase();
 				if (element.hasAttribute(prefix + ":id")) {
-					idlist.add(element.getAttribute(prefix + ":id"));
+					idlist.put(element.getAttribute(prefix + ":id"), element);
 				}
 			}
 		}

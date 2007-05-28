@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -35,13 +34,13 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
 
 	/** タグ情報 */
-	private List tagList = new ArrayList();
+	private List<String> tagList = new ArrayList<String>();
 
 	/** タグの説明 */
-	private List tagContextInformationList = new ArrayList();
+	private List<ContextInformation> tagContextInformationList = new ArrayList<ContextInformation>();
 
 	/** 属性情報 */
-	private Map attributeMap = new HashMap();
+	private Map<String, String[]> attributeMap = new HashMap<String, String[]>();
 
 	/** アイコン */
 	private Image icon;
@@ -247,15 +246,23 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				- path.getFileExtension().length())
 				+ "html";
 		IFile openFile = project.getFile(fileName);
-		Set allSourceid = ParseUtil.getIdList(openFile);
-		Set unusedSourceId = new TreeSet(allSourceid);
-		unusedSourceId.removeAll(ParseUtil.getXmlIdList(file));
-		unusedSourceId.removeAll(ParseUtil.getDefaultIdList((IFolder) file
-				.getParent()));
-		Set usedSourceId = new TreeSet(allSourceid);
-		usedSourceId.removeAll(unusedSourceId);
+		Map allSourceid = ParseUtil.getIdList(openFile);
+		Map unusedSourceId = new TreeMap(allSourceid);
+		for (Iterator iter = ParseUtil.getXmlIdList(file).keySet().iterator(); iter
+				.hasNext();) {
+			unusedSourceId.remove(iter.next());
+		}
+		for (Iterator iter = ParseUtil.getDefaultIdList(
+				(IFolder) file.getParent()).keySet().iterator(); iter.hasNext();) {
+			unusedSourceId.remove(iter.next());
+		}
 
-		for (Iterator iter = unusedSourceId.iterator(); iter.hasNext();) {
+		Map usedSourceId = new TreeMap(allSourceid);
+		for (Iterator iter = unusedSourceId.keySet().iterator(); iter.hasNext();) {
+			usedSourceId.remove(iter.next());
+		}
+
+		for (Iterator iter = unusedSourceId.keySet().iterator(); iter.hasNext();) {
 			String id = (String) iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
@@ -267,7 +274,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 						null, ""));
 			}
 		}
-		for (Iterator iter = usedSourceId.iterator(); iter.hasNext();) {
+		for (Iterator iter = usedSourceId.keySet().iterator(); iter.hasNext();) {
 			String id = (String) iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
