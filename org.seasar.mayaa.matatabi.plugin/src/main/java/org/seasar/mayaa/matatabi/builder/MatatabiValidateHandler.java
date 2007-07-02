@@ -30,11 +30,11 @@ public class MatatabiValidateHandler extends DefaultHandler {
 
 	private Locator locator;
 
-	private Set sourceid;
+	private Set<String> sourceid;
 
-	private Set defaultid;
+	private Set<String> defaultid;
 
-	private Set idlist = new LinkedHashSet<String>();
+	private Set<String> idlist = new LinkedHashSet<String>();
 
 	private ScopedPreferenceStore preferenceStore;
 
@@ -44,7 +44,8 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	 * @param sourceid
 	 * @param defaultid
 	 */
-	public MatatabiValidateHandler(IFile file, Set sourceid, Set defaultid) {
+	public MatatabiValidateHandler(IFile file, Set<String> sourceid,
+			Set<String> defaultid) {
 		this.file = file;
 		this.sourceid = sourceid;
 		this.defaultid = defaultid;
@@ -197,7 +198,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 		}
 		try {
 			IMarker marker = file.createMarker(MatatabiPlugin.MARKER_ID);
-			Map attributeMap = new HashMap();
+			Map<Object, Object> attributeMap = new HashMap<Object, Object>();
 			attributeMap.put(IMarker.SEVERITY, Integer.valueOf(severty));
 			attributeMap.put(IMarker.MESSAGE, message);
 			attributeMap.put(IMarker.LINE_NUMBER, Integer.valueOf(lineNumber));

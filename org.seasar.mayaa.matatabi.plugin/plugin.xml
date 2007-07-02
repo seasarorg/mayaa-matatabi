@@ -95,17 +95,24 @@
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 		<command
-			id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
-			name="%label.generatecomponent" />
+        category="org.seasar.mayaa.matatabi.plugin.category"
+        id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+        name="%label.generatecomponent"/>
 		<command
-			id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
-			name="%label.openhtml" />
+        category="org.seasar.mayaa.matatabi.plugin.category"
+        id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+        name="%label.openhtml"/>
 		<command
-			id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
-			name="%label.openmayaa" />
+        category="org.seasar.mayaa.matatabi.plugin.category"
+        id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+        name="%label.openmayaa"/>
 		<command
-			id="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
-			name="%label.openbrowser" />
+        category="org.seasar.mayaa.matatabi.plugin.category"
+        id="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+        name="%label.openbrowser"/>
+  <category
+        id="org.seasar.mayaa.matatabi.plugin.category"
+        name="matatabi"/>
 	</extension>
 	<extension point="org.eclipse.ui.bindings">
 		<key
@@ -125,7 +132,7 @@
 			sequence="Ctrl+O" />
 		<key
 			commandId="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
-			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+G" />
 	</extension>
@@ -169,6 +176,13 @@
        point="org.eclipse.core.resources.markers">
       <super type="org.eclipse.core.resources.problemmarker" /> 
  </extension>
-	
+	<extension
+		point="org.eclipse.core.filebuffers.documentSetup"
+		id="org.eclipse.jst.jsp.core.documentsetup"
+		name="aaa">
+		<participant
+			contentTypeId="org.seasar.mayaa.matatabi.mayaa"
+			class="org.eclipse.jst.jsp.core.internal.contentmodel.TaglibController" />
+	</extension>
 	
 </plugin>

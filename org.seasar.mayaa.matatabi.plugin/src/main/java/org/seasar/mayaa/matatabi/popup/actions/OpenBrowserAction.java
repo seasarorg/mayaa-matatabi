@@ -12,7 +12,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.internal.browser.DefaultBrowserSupport;
 
 /**
  * 外部ブラウザでファイルを開く
@@ -36,7 +35,6 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 			System.out.println(file.getLocationURI().toURL());
 			executeBrowser(file.getLocationURI().toURL());
 		} catch (MalformedURLException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +47,8 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 
 	private void executeBrowser(URL url) {
 		try {
-			(new DefaultBrowserSupport()).getExternalBrowser().openURL(url);
+			targetPart.getSite().getWorkbenchWindow().getWorkbench()
+					.getBrowserSupport().getExternalBrowser().openURL(url);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

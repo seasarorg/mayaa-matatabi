@@ -12,7 +12,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 
 /**

@@ -17,7 +17,8 @@ public class MayaaXMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationXML {
 	protected IContentAssistProcessor[] getContentAssistProcessors(
 			ISourceViewer sourceViewer, String string) {
-		List result = new ArrayList(0);
+		List<IContentAssistProcessor> result = new ArrayList<IContentAssistProcessor>(
+				0);
 		result.add(new MayaaContentAssistProcessor());
 
 		return (IContentAssistProcessor[]) result
@@ -25,7 +26,7 @@ public class MayaaXMLTextViewerConfiguration extends
 	}
 
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-		List result = new ArrayList(0);
+		List<IHyperlinkDetector> result = new ArrayList<IHyperlinkDetector>(0);
 		result.add(new MayaaXMLHyperlinkDetector());
 
 		IHyperlinkDetector[] superDetectors = super
