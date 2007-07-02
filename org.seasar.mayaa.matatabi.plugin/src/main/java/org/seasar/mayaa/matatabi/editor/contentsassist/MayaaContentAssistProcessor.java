@@ -375,6 +375,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					CMElementDeclaration node = (CMElementDeclaration) document
 							.getElements().item(j);
 
+					// TODO:bodyContentを見て子要素がない場合は閉じタグを省略
 					String nodeName = prefix + ":" + node.getNodeName();
 					String tag = "<" + nodeName + "></" + nodeName + ">";
 					taglibList.add(tag);
