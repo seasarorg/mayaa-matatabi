@@ -1,4 +1,4 @@
-package org.seasar.mayaa.matatabi.editor;
+package org.seasar.mayaa.matatabi.editor.configuration;
 
 import java.util.ArrayList;
 import java.util.List;

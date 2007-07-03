@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -18,6 +19,7 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformation;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMDocumentFactoryTLD;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMElementDeclarationImpl;
+import org.eclipse.jst.jsp.core.internal.contentmodel.tld.provisional.JSP11TLDNames;
 import org.eclipse.jst.jsp.core.taglib.ITaglibRecord;
 import org.eclipse.jst.jsp.core.taglib.TaglibIndex;
 import org.eclipse.swt.graphics.Image;
@@ -36,11 +38,12 @@ import org.w3c.dom.Node;
 
 /**
  * コンテンツアシスト機能
- * 
- * @author matoba
  */
+@SuppressWarnings("restriction")
 public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
+	/** 名前空間 */
 	private static final String XMLNS_URI = "http://www.w3.org/2000/xmlns/";
+	private static final String XMLNS_MAYAA = "http://mayaa.seasar.org";
 
 	/** ルートタグ */
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
@@ -148,11 +151,15 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.put("m:exec", new String[] { "script", "src", "encoding" });
 	}
 
+	/**
+	 * タグ追加
+	 */
 	protected void addTagInsertionProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
 
 		if (contentAssistRequest.getNode().getParentNode() instanceof Document) {
+			// ルートノードの追加
 			if (isMatch(ROOT_TAG, contentAssistRequest.getMatchString())) {
 				contentAssistRequest.addProposal(new CompletionProposal(
 						ROOT_TAG, contentAssistRequest
@@ -180,6 +187,9 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		super.addTagInsertionProposals(contentAssistRequest, childPosition);
 	}
 
+	/**
+	 * タグ名追加
+	 */
 	protected void addTagNameProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
@@ -215,7 +225,9 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
-	@SuppressWarnings("restriction")
+	/**
+	 * 属性値の追加
+	 */
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
 		// トップ要素またはトップ要素の直下の要素でない場合は処理しない
@@ -229,7 +241,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		// JBossのプラグインからいただいたコード
+		// 属性を取得する(JBossのプラグインからいただいたコード)
 		int beginPos = contentAssistRequest.getReplacementBeginPosition();
 		NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
 		AttrImpl attribute = null;
@@ -245,7 +257,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			}
 		}
 
-		// Taglibの名前空間の補完
+		// タグライブラリの名前空間の補完
 		if (contentAssistRequest.getNode().equals(
 				contentAssistRequest.getNode().getOwnerDocument()
 						.getDocumentElement())) {
@@ -283,10 +295,10 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 
 		Node idAttribute = contentAssistRequest.getNode().getAttributes()
-				.getNamedItemNS("http://mayaa.seasar.org", "id");
+				.getNamedItemNS(XMLNS_MAYAA, "id");
 		// 要素の名前空間がMayaaの場合は、名前空間指定なしのid属性を取得
 		if (idAttribute == null
-				&& "http://mayaa.seasar.org".equals(contentAssistRequest
+				&& XMLNS_MAYAA.equals(contentAssistRequest
 						.getNode().getNamespaceURI())) {
 			idAttribute = contentAssistRequest.getNode().getAttributes()
 					.getNamedItemNS(null, "id");
@@ -363,6 +375,38 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					null, ""));
 		}
 
+		if (contentAssistRequest.getNode().getNodeName().equals("m:mayaa")) {
+			ITaglibRecord[] taglibRecords = TaglibIndex
+					.getAvailableTaglibRecords(EditorUtil.getActiveFile()
+							.getFullPath());
+			NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
+			Set<String> usedNamespaces = new HashSet<String>();
+			Map<String, String> namespaces = new TreeMap<String, String>();
+			for (int i = 0; i < map.getLength(); i++) {
+				if (map.item(i).getNamespaceURI().equals(XMLNS_URI)) {
+					usedNamespaces.add(map.item(i).getNodeValue());
+				}
+			}
+			for (int i = 0; i < taglibRecords.length; i++) {
+				String namespaceuri = taglibRecords[i].getDescriptor().getURI();
+				if (!usedNamespaces.contains(namespaceuri)) {
+					namespaces.put(taglibRecords[i].getDescriptor()
+							.getShortName(), namespaceuri);
+				}
+			}
+			for (Entry<String, String> entry : namespaces.entrySet()) {
+				String namespace = "xmlns:" + entry.getKey() + "=\""
+						+ entry.getValue() + "\"";
+				contentAssistRequest.addProposal(new CompletionProposal(
+						namespace, contentAssistRequest
+								.getReplacementBeginPosition(),
+						contentAssistRequest.getReplacementLength(), namespace
+								.length() + 1, icon, namespace, null, ""));
+
+			}
+
+		}
+
 		String[] attributes = (String[]) taglibAttributeMap
 				.get(contentAssistRequest.getNode().getNodeName());
 		if (attributes != null) {
@@ -383,10 +427,24 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		super.addAttributeNameProposals(contentAssistRequest);
 	}
 
+	/**
+	 * 補完する文字列と入力中の文字列が先頭一致するかどうか。
+	 * 
+	 * @param contents
+	 *            補完する文字列
+	 * @param matchString
+	 *            入力中の文字列
+	 * @return
+	 */
 	private boolean isMatch(String contents, String matchString) {
 		return (matchString.length() == 0 || contents.startsWith(matchString));
 	}
 
+	/**
+	 * タグライブラリの情報を読み込む
+	 * 
+	 * @param contentAssistRequest
+	 */
 	private void initTaglibInfo(ContentAssistRequest contentAssistRequest) {
 		taglibList.clear();
 		taglibContextInformationList.clear();
@@ -419,9 +477,10 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 							.getElements().item(j);
 
 					String nodeName = prefix + ":" + node.getNodeName();
-
 					String tag = null;
-					if (node.getBodycontent().equals("EMPTY")) {
+					// Bodyを持たない場合は閉じタグ省略
+					if (node.getBodycontent().equals(
+							JSP11TLDNames.CONTENT_EMPTY)) {
 						tag = "<" + nodeName + " />";
 					} else {
 						tag = "<" + nodeName + "></" + nodeName + ">";
