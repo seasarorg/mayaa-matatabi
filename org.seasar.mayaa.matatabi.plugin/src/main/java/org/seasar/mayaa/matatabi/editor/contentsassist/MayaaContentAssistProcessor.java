@@ -1,12 +1,14 @@
 package org.seasar.mayaa.matatabi.editor.contentsassist;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -15,11 +17,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformation;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMDocumentFactoryTLD;
+import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMElementDeclarationImpl;
 import org.eclipse.jst.jsp.core.taglib.ITaglibRecord;
 import org.eclipse.jst.jsp.core.taglib.TaglibIndex;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.xml.core.internal.contentmodel.CMDocument;
-import org.eclipse.wst.xml.core.internal.contentmodel.CMElementDeclaration;
 import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
@@ -38,6 +40,8 @@ import org.w3c.dom.Node;
  * @author matoba
  */
 public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
+	private static final String XMLNS_URI = "http://www.w3.org/2000/xmlns/";
+
 	/** ルートタグ */
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
 
@@ -214,10 +218,13 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	@SuppressWarnings("restriction")
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
-		// トップ要素の直下の要素でない場合は処理しない
+		// トップ要素またはトップ要素の直下の要素でない場合は処理しない
 		if (!contentAssistRequest.getNode().getParentNode().equals(
 				contentAssistRequest.getNode().getOwnerDocument()
-						.getDocumentElement())) {
+						.getDocumentElement())
+				&& !contentAssistRequest.getNode().equals(
+						contentAssistRequest.getNode().getOwnerDocument()
+								.getDocumentElement())) {
 			super.addAttributeValueProposals(contentAssistRequest);
 			return;
 		}
@@ -236,6 +243,43 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					break;
 				}
 			}
+		}
+
+		// Taglibの名前空間の補完
+		if (contentAssistRequest.getNode().equals(
+				contentAssistRequest.getNode().getOwnerDocument()
+						.getDocumentElement())) {
+			if (attribute.getNamespaceURI().equals(XMLNS_URI)) {
+				ITaglibRecord[] taglibRecords = TaglibIndex
+						.getAvailableTaglibRecords(EditorUtil.getActiveFile()
+								.getFullPath());
+				Set<String> usedNamespaces = new HashSet<String>();
+				Set<String> namespaces = new TreeSet<String>();
+				for (int i = 0; i < map.getLength(); i++) {
+					if (map.item(i).getNamespaceURI().equals(XMLNS_URI)) {
+						usedNamespaces.add(map.item(i).getNodeValue());
+					}
+				}
+				for (int i = 0; i < taglibRecords.length; i++) {
+					String namespaceuri = taglibRecords[i].getDescriptor()
+							.getURI();
+					if (!usedNamespaces.contains(namespaceuri)) {
+						namespaces.add(namespaceuri);
+					}
+				}
+				for (String namespaceuri : namespaces) {
+					contentAssistRequest.addProposal(new CompletionProposal(
+							"\"" + namespaceuri + "\"", contentAssistRequest
+									.getReplacementBeginPosition(),
+							contentAssistRequest.getReplacementLength(),
+							namespaceuri.length() + 1, icon, namespaceuri,
+							null, ""));
+
+				}
+			}
+
+			super.addAttributeValueProposals(contentAssistRequest);
+			return;
 		}
 
 		Node idAttribute = contentAssistRequest.getNode().getAttributes()
@@ -317,11 +361,10 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					contentAssistRequest.getReplacementBeginPosition(),
 					contentAssistRequest.getReplacementLength(), 4, icon, "id",
 					null, ""));
-			// TODO:名前空間の補完
 		}
 
-		String[] attributes = (String[]) taglibAttributeMap.get(contentAssistRequest
-				.getNode().getNodeName());
+		String[] attributes = (String[]) taglibAttributeMap
+				.get(contentAssistRequest.getNode().getNodeName());
 		if (attributes != null) {
 			for (int i = 0; i < attributes.length; i++) {
 				if (contentAssistRequest.getNode().getAttributes()
@@ -361,7 +404,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.getDocumentElement();
 		for (int i = 0; i < root.getAttributes().getLength(); i++) {
 			Attr attr = (Attr) root.getAttributes().item(i);
-			if (attr.getNamespaceURI().equals("http://www.w3.org/2000/xmlns/")) {
+			if (attr.getNamespaceURI().equals(XMLNS_URI)) {
 				namespaceMap.put(attr.getValue(), attr.getLocalName());
 			}
 		}
@@ -372,23 +415,30 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				CMDocument document = (new CMDocumentFactoryTLD())
 						.createCMDocument(taglibRecords[i]);
 				for (int j = 0; j < document.getElements().getLength(); j++) {
-					CMElementDeclaration node = (CMElementDeclaration) document
+					CMElementDeclarationImpl node = (CMElementDeclarationImpl) document
 							.getElements().item(j);
 
-					// TODO:bodyContentを見て子要素がない場合は閉じタグを省略
 					String nodeName = prefix + ":" + node.getNodeName();
-					String tag = "<" + nodeName + "></" + nodeName + ">";
-					taglibList.add(tag);
-					taglibContextInformationList.add(new ContextInformation(
-							nodeName, node.getProperty("description")
-									.toString()));
-					List<String> attributes = new ArrayList<String>();
-					for (int k = 0; k < node.getAttributes().getLength(); k++) {
-						attributes.add(node.getAttributes().item(k)
-								.getNodeName());
+
+					String tag = null;
+					if (node.getBodycontent().equals("EMPTY")) {
+						tag = "<" + nodeName + " />";
+					} else {
+						tag = "<" + nodeName + "></" + nodeName + ">";
 					}
-					taglibAttributeMap.put(nodeName, attributes
-							.toArray(new String[] {}));
+					if (!taglibList.contains(tag)) {
+						taglibList.add(tag);
+						taglibContextInformationList
+								.add(new ContextInformation(nodeName, node
+										.getDescription()));
+						List<String> attributes = new ArrayList<String>();
+						for (int k = 0; k < node.getAttributes().getLength(); k++) {
+							attributes.add(node.getAttributes().item(k)
+									.getNodeName());
+						}
+						taglibAttributeMap.put(nodeName, attributes
+								.toArray(new String[] {}));
+					}
 				}
 			}
 		}

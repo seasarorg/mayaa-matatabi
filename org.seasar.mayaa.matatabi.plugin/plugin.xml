@@ -176,13 +176,5 @@
        point="org.eclipse.core.resources.markers">
       <super type="org.eclipse.core.resources.problemmarker" /> 
  </extension>
-	<extension
-		point="org.eclipse.core.filebuffers.documentSetup"
-		id="org.eclipse.jst.jsp.core.documentsetup"
-		name="aaa">
-		<participant
-			contentTypeId="org.seasar.mayaa.matatabi.mayaa"
-			class="org.eclipse.jst.jsp.core.internal.contentmodel.TaglibController" />
-	</extension>
 	
 </plugin>
