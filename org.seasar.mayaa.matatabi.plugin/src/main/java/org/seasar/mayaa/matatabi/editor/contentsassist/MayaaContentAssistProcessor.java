@@ -261,7 +261,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		if (contentAssistRequest.getNode().equals(
 				contentAssistRequest.getNode().getOwnerDocument()
 						.getDocumentElement())) {
-			if (attribute.getNamespaceURI().equals(XMLNS_URI)) {
+			if (attribute != null
+					&& XMLNS_URI.equals(attribute.getNamespaceURI())) {
 				ITaglibRecord[] taglibRecords = TaglibIndex
 						.getAvailableTaglibRecords(EditorUtil.getActiveFile()
 								.getFullPath());
@@ -280,12 +281,17 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					}
 				}
 				for (String namespaceuri : namespaces) {
-					contentAssistRequest.addProposal(new CompletionProposal(
-							"\"" + namespaceuri + "\"", contentAssistRequest
-									.getReplacementBeginPosition(),
-							contentAssistRequest.getReplacementLength(),
-							namespaceuri.length() + 1, icon, namespaceuri,
-							null, ""));
+					String value = "\"" + namespaceuri + "\"";
+					if (isMatch(value, contentAssistRequest.getMatchString())) {
+						contentAssistRequest
+								.addProposal(new CompletionProposal(value,
+										contentAssistRequest
+												.getReplacementBeginPosition(),
+										contentAssistRequest
+												.getReplacementLength(), value
+												.length() + 1, icon,
+										namespaceuri, null, ""));
+					}
 
 				}
 			}
@@ -298,8 +304,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.getNamedItemNS(XMLNS_MAYAA, "id");
 		// 要素の名前空間がMayaaの場合は、名前空間指定なしのid属性を取得
 		if (idAttribute == null
-				&& XMLNS_MAYAA.equals(contentAssistRequest
-						.getNode().getNamespaceURI())) {
+				&& XMLNS_MAYAA.equals(contentAssistRequest.getNode()
+						.getNamespaceURI())) {
 			idAttribute = contentAssistRequest.getNode().getAttributes()
 					.getNamedItemNS(null, "id");
 		}
@@ -364,6 +370,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 	protected void addAttributeNameProposals(
 			ContentAssistRequest contentAssistRequest) {
+		initTaglibInfo(contentAssistRequest);
+
 		if (contentAssistRequest.getNode().getParentNode().getNodeName()
 				.equals("m:mayaa")
 				&& contentAssistRequest.getNode().getAttributes().getNamedItem(
@@ -383,7 +391,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			Set<String> usedNamespaces = new HashSet<String>();
 			Map<String, String> namespaces = new TreeMap<String, String>();
 			for (int i = 0; i < map.getLength(); i++) {
-				if (map.item(i).getNamespaceURI().equals(XMLNS_URI)) {
+				if (XMLNS_URI.equals(map.item(i).getNamespaceURI())) {
 					usedNamespaces.add(map.item(i).getNodeValue());
 				}
 			}
@@ -397,12 +405,13 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			for (Entry<String, String> entry : namespaces.entrySet()) {
 				String namespace = "xmlns:" + entry.getKey() + "=\""
 						+ entry.getValue() + "\"";
-				contentAssistRequest.addProposal(new CompletionProposal(
-						namespace, contentAssistRequest
-								.getReplacementBeginPosition(),
-						contentAssistRequest.getReplacementLength(), namespace
-								.length() + 1, icon, namespace, null, ""));
-
+				if (isMatch(namespace, contentAssistRequest.getMatchString())) {
+					contentAssistRequest.addProposal(new CompletionProposal(
+							namespace, contentAssistRequest
+									.getReplacementBeginPosition(),
+							contentAssistRequest.getReplacementLength(),
+							namespace.length() + 1, icon, namespace, null, ""));
+				}
 			}
 
 		}
@@ -462,7 +471,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.getDocumentElement();
 		for (int i = 0; i < root.getAttributes().getLength(); i++) {
 			Attr attr = (Attr) root.getAttributes().item(i);
-			if (attr.getNamespaceURI().equals(XMLNS_URI)) {
+			if (XMLNS_URI.equals(attr.getNamespaceURI())) {
 				namespaceMap.put(attr.getValue(), attr.getLocalName());
 			}
 		}

@@ -30,6 +30,13 @@ public class PreferencesUtil {
 				MatatabiPlugin.PLUGIN_ID);
 	}
 
+	/**
+	 * タグ変換ルールの取得
+	 * 
+	 * @param store
+	 *            IPreferenceStore
+	 * @return タグ変換ルール
+	 */
 	public static Map<String, ReplaceRule> getReplaceRules(
 			IPreferenceStore store) {
 		Map<String, ReplaceRule> replacerules = new LinkedHashMap<String, ReplaceRule>();
@@ -47,6 +54,13 @@ public class PreferencesUtil {
 		return replacerules;
 	}
 
+	/**
+	 * Mayaaファイル名前空間の取得
+	 * 
+	 * @param store
+	 *            IPreferenceStore
+	 * @return Mayaaファイル名前空間
+	 */
 	public static List<Namespace> getNamespaces(IPreferenceStore store) {
 		List<Namespace> namespaces = new ArrayList<Namespace>();
 		for (int i = 0;; i++) {

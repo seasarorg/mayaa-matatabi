@@ -69,8 +69,8 @@ public class GenerateUtil {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		buffer.append("<m:mayaa ");
-		List namespaces = PreferencesUtil.getNamespaces(store);
-		for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
+		List<Namespace> namespaces = PreferencesUtil.getNamespaces(store);
+		for (Iterator<Namespace> iter = namespaces.iterator(); iter.hasNext();) {
 			Namespace namespace = (Namespace) iter.next();
 			if (namespace.getNamespaceAttribute() != null) {
 				buffer.append(namespace.getNamespaceAttribute() + "\n" + "\t");
@@ -93,9 +93,9 @@ public class GenerateUtil {
 
 		IFile htmlFile = project.getFile(path.toString());
 		Map<String, Element> idlist = ParseUtil.getIdList(htmlFile);
-		for (Iterator iter = ParseUtil.getDefaultIdList(htmlFile.getParent())
-				.keySet().iterator(); iter.hasNext();) {
-			idlist.remove(iter.next());
+		for (String id : ParseUtil.getDefaultIdList(htmlFile.getParent())
+				.keySet()) {
+			idlist.remove(id);
 		}
 
 		String fileContents = genereteFile(genereteTags(idlist, PreferencesUtil

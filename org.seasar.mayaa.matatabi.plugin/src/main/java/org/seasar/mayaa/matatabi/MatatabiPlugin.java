@@ -59,6 +59,15 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 				"org.seasar.mayaa.matatabi", path);
 	}
 
+	/**
+	 * 設定値を取得する。
+	 * 
+	 * @param project
+	 *            プロジェクト
+	 * @param key
+	 *            キー
+	 * @return 設定値
+	 */
 	public static String getStoreValue(IProject project, String key) {
 		return (new ScopedPreferenceStore(new ProjectScope(project),
 				"org.seasar.mayaa.matatabi")).getString(key);

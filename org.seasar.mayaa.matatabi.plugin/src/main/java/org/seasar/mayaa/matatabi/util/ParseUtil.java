@@ -22,11 +22,11 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class ParseUtil {
-	private static List htmlNamespaces = Arrays.asList(new String[] { "",
-			"http://mayaa.seasar.org", "http://www.w3.org/TR/html4",
+	private static List<String> htmlNamespaces = Arrays.asList(new String[] {
+			"", "http://mayaa.seasar.org", "http://www.w3.org/TR/html4",
 			"http://www.w3.org/1999/xhtml" });
 
-	private static List mayaaNamespaces = Arrays
+	private static List<String> mayaaNamespaces = Arrays
 			.asList(new String[] { "http://mayaa.seasar.org" });
 
 	/**
@@ -54,16 +54,16 @@ public class ParseUtil {
 		return new LinkedHashMap<String, Element>();
 	}
 
-	public static Map getXmlIdList(IFile file) {
+	public static Map<String, Element> getXmlIdList(IFile file) {
 		try {
 			return getXmlIdList(new InputSource(file.getContents()));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
-		return new LinkedHashMap();
+		return new LinkedHashMap<String, Element>();
 	}
 
-	public static Map getXmlIdList(InputSource input) {
+	public static Map<String, Element> getXmlIdList(InputSource input) {
 		org.apache.xerces.parsers.DOMParser parser = new org.apache.xerces.parsers.DOMParser();
 		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 		try {
@@ -119,8 +119,8 @@ public class ParseUtil {
 	 *            ëŒè€Ç∆Ç»ÇÈñºëOãÛä‘
 	 */
 	private static void traverse(Map<String, Element> idlist, Element element,
-			List namespaces) {
-		for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
+			List<String> namespaces) {
+		for (Iterator<String> iter = namespaces.iterator(); iter.hasNext();) {
 			String namespace = (String) iter.next();
 			traverse(idlist, element, namespace);
 		}
@@ -149,11 +149,11 @@ public class ParseUtil {
 		}
 	}
 
-	public static List getHtmlNamespaces() {
+	public static List<String> getHtmlNamespaces() {
 		return htmlNamespaces;
 	}
 
-	public static List getMayaaNamespaces() {
+	public static List<String> getMayaaNamespaces() {
 		return mayaaNamespaces;
 	}
 }

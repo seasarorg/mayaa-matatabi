@@ -102,7 +102,7 @@ public class EditorUtil {
 					"getPageCount", new Class[] {});
 			method.setAccessible(true);
 			Object pageCountObject = AccessController
-					.doPrivileged(new PrivilegedAction() {
+					.doPrivileged(new PrivilegedAction<Object>() {
 						public Object run() {
 							try {
 								return method.invoke(multiPageEditorPart,
@@ -163,6 +163,7 @@ public class EditorUtil {
 	public static IProgressMonitor getProgressMonitor() {
 		WorkbenchWindow workbenchWindow = (WorkbenchWindow) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow();
+
 		IActionBars bars = workbenchWindow.getActionBars();
 		IStatusLineManager lineManager = bars.getStatusLineManager();
 		return lineManager.getProgressMonitor();
