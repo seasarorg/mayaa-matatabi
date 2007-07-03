@@ -430,6 +430,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 						taglibList.add(tag);
 						taglibContextInformationList
 								.add(new ContextInformation(nodeName, node
+										.getDescription() == null ? "" : node
 										.getDescription()));
 						List<String> attributes = new ArrayList<String>();
 						for (int k = 0; k < node.getAttributes().getLength(); k++) {
