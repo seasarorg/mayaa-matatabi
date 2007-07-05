@@ -130,7 +130,8 @@ public class ParseUtil {
 			String namespace) {
 		if (element.hasAttributeNS(namespace, "id")) {
 			idlist.put(element.getAttributeNS(namespace, "id"), element);
-		} else if (namespace.equals(element.getNamespaceURI())) {
+		} else if (namespace.equals(element.getNamespaceURI())
+				&& element.hasAttribute("id")) {
 			idlist.put(element.getAttribute("id"), element);
 		} else {
 			String prefix = element.lookupPrefix(namespace);
