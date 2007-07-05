@@ -1,4 +1,4 @@
-package org.seasar.mayaa.matatabi.popup.actions;
+package org.seasar.mayaa.matatabi.action;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;

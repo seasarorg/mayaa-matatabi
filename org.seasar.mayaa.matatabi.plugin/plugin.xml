@@ -3,27 +3,52 @@
 <plugin>
 	<extension point="org.eclipse.ui.popupMenus">
 		<objectContribution adaptable="true"
-			id="org.seasar.mayaa.matatabi.openmayaa" nameFilter="*.html"
-			objectClass="org.eclipse.core.resources.IFile">
+			id="org.seasar.mayaa.matatabi.mayaa.objectContribution"
+			nameFilter="*.html" objectClass="org.eclipse.core.resources.IFile">
+			<visibility>
+				<objectState name="projectNature"
+					value="org.seasar.mayaa.matatabi.MatatabiNature" />
+			</visibility>
 			<action
-				class="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+				class="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaa"
 				label="%label.openmayaa" />
-			<visibility>
-				<objectState name="projectNature"
-					value="org.seasar.mayaa.matatabi.MatatabiNature" />
-			</visibility>
+			<action
+				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
+				label="%label.openaction" />
 		</objectContribution>
 		<objectContribution adaptable="true"
-			id="org.seasar.mayaa.matatabi.openhtml" nameFilter="*.mayaa"
+			id="org.seasar.mayaa.matatabi.html.objectContribution"
+			nameFilter="*.mayaa"
 			objectClass="org.eclipse.core.resources.IFile">
 			<visibility>
 				<objectState name="projectNature"
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
 			<action
-				class="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+				class="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTML"
+				label="%label.openhtml" />
+			<action
+				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
+				label="%label.openaction" />
+		</objectContribution>
+		<objectContribution adaptable="true"
+			id="org.seasar.mayaa.matatabi.java.objectContribution"
+			objectClass="org.eclipse.jdt.core.IPackageFragmentRoot">
+			<visibility>
+				<objectState name="projectNature"
+					value="org.seasar.mayaa.matatabi.MatatabiNature" />
+			</visibility>
+			<action
+				class="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaaPair"
+				label="%label.openmayaa" />
+			<action
+				class="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTMLPair"
 				label="%label.openhtml" />
 		</objectContribution>
 	</extension>
@@ -50,91 +75,142 @@
 	<extension point="org.eclipse.ui.editorActions">
 		<editorContribution
 			targetID="org.seasar.mayaa.matatabi.editors.MayaaEditor"
-			id="org.seasar.mayaa.matatabi.popup.actions.Mayaa">
+			id="org.seasar.mayaa.matatabi.action.Mayaa">
 			<menu label="%menu.label"
 				id="org.seasar.mayaa.matatabi.menu">
 				<separator name="group" />
 			</menu>
 			<action
-				definitionId="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+				definitionId="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
 				label="%label.generatecomponent"
-				class="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
+				class="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction">
-			</action>
+				id="org.seasar.mayaa.matatabi.action.GenerateComponentAction" />
 			<action
-				definitionId="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+				definitionId="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
 				label="%label.openhtml"
-				class="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+				class="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction">
-			</action>
+				id="org.seasar.mayaa.matatabi.action.OpenHTMLAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				label="%label.openaction"
+				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
 		</editorContribution>
 		<editorContribution
 			targetID="org.eclipse.wst.html.core.htmlsource.source"
-			id="org.seasar.mayaa.matatabi.popup.actions.Html">
+			id="org.seasar.mayaa.matatabi.action.Html">
 			<menu label="%product.name"
 				id="org.seasar.mayaa.matatabi.menu">
 				<separator name="group" />
 			</menu>
-
 			<action
-				definitionId="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 				label="%label.openmayaa"
-				class="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+				class="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction">
-			</action>
+				id="org.seasar.mayaa.matatabi.action.OpenMayaaAction" />
 			<action
-				definitionId="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+				definitionId="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				label="%label.openbrowser"
-				class="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+				class="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction" />
+				id="org.seasar.mayaa.matatabi.action.OpenBrowserAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				label="%label.openaction"
+				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+		</editorContribution>
+		<editorContribution
+			targetID="org.eclipse.jdt.ui.CompilationUnitEditor"
+			id="org.seasar.mayaa.matatabi.action.java">
+			<menu label="%product.name"
+				id="org.seasar.mayaa.matatabi.menu">
+				<separator name="group" />
+			</menu>
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+				label="%label.openmayaa"
+				class="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+				label="%label.openhtml"
+				class="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction" />
 		</editorContribution>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
-		<command
-        category="org.seasar.mayaa.matatabi.plugin.category"
-        id="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
-        name="%label.generatecomponent"/>
-		<command
-        category="org.seasar.mayaa.matatabi.plugin.category"
-        id="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
-        name="%label.openhtml"/>
-		<command
-        category="org.seasar.mayaa.matatabi.plugin.category"
-        id="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
-        name="%label.openmayaa"/>
-		<command
-        category="org.seasar.mayaa.matatabi.plugin.category"
-        id="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
-        name="%label.openbrowser"/>
-  <category
-        id="org.seasar.mayaa.matatabi.plugin.category"
-        name="matatabi"/>
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
+			name="%label.generatecomponent" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
+			name="%label.openhtml" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+			name="%label.openmayaa" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
+			name="%label.openbrowser" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+			name="%label.openaction" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+			name="%label.openhtml" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+			name="label.openmayaa" />
+		<category id="org.seasar.mayaa.matatabi.plugin.category"
+			name="matatabi" />
 	</extension>
 	<extension point="org.eclipse.ui.bindings">
-		<key
-			commandId="org.seasar.mayaa.matatabi.popup.actions.OpenHTMLAction"
+		<key commandId="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
 			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+T" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.popup.actions.OpenMayaaAction"
+			commandId="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
+			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+G" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Alt+T" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+T" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.popup.actions.OpenBrowserAction"
+			commandId="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+O" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.popup.actions.GenerateComponentAction"
-			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
+			commandId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="Ctrl+G" />
+			sequence="Ctrl+Alt+T" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+			contextId="org.eclipse.jdt.ui.javaEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Alt+T" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+			contextId="org.eclipse.jdt.ui.javaEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Alt+Y" />
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page adaptable="true"
@@ -148,9 +224,8 @@
 			<run
 				class="org.seasar.mayaa.matatabi.nature.MatatabiNature" />
 		</runtime>
-		   <builder
-        id="org.seasar.mayaa.matatabi.MatatabiBuilder">
-    </builder>
+		<builder id="org.seasar.mayaa.matatabi.MatatabiBuilder">
+		</builder>
 	</extension>
 	<extension point="org.eclipse.ui.contexts">
 		<context name="%editor.name"
@@ -162,19 +237,16 @@
 	<extension point="org.eclipse.help.toc">
 		<toc file="help/toc.xml" primary="true" />
 	</extension>
- <extension
-       id="MatatabiBuilder"
-       name="Matatabi Builder"
-       point="org.eclipse.core.resources.builders">
-    <builder
-          hasNature="true">
-       <run class="org.seasar.mayaa.matatabi.builder.MatatabiBuilder"/>
-    </builder>
- </extension>
- <extension
-       id="matatabiMarker"
-       point="org.eclipse.core.resources.markers">
-      <super type="org.eclipse.core.resources.problemmarker" /> 
- </extension>
-	
+	<extension id="MatatabiBuilder" name="Matatabi Builder"
+		point="org.eclipse.core.resources.builders">
+		<builder hasNature="true">
+			<run
+				class="org.seasar.mayaa.matatabi.builder.MatatabiBuilder" />
+		</builder>
+	</extension>
+	<extension id="matatabiMarker"
+		point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.core.resources.problemmarker" />
+	</extension>
+
 </plugin>

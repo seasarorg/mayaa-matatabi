@@ -1,4 +1,4 @@
-package org.seasar.mayaa.matatabi.popup.actions;
+package org.seasar.mayaa.matatabi.action;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;

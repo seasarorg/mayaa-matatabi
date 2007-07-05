@@ -1,4 +1,4 @@
-package org.seasar.mayaa.matatabi.popup.actions;
+package org.seasar.mayaa.matatabi.action;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -127,7 +127,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	public void endDocument() throws SAXException {
 		sourceid.removeAll(idlist);
 		sourceid.removeAll(defaultid);
-		for (Iterator iter = sourceid.iterator(); iter.hasNext();) {
+		for (Iterator<String> iter = sourceid.iterator(); iter.hasNext();) {
 			String id = (String) iter.next();
 			int severty = getSeverty(preferenceStore
 					.getString(MatatabiPropertyPage.UNDEFINE_ID_ATTRIBUTE));

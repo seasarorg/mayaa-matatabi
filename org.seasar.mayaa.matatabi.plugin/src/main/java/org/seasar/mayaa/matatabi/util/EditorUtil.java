@@ -35,6 +35,13 @@ import org.seasar.mayaa.matatabi.nature.MatatabiNature;
  */
 public class EditorUtil {
 
+	public static IEditorPart openFile(IFile file) throws PartInitException {
+		IEditorDescriptor descriptor = IDE.getEditorDescriptor(file);
+		return IDE.openEditor(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage(), file, descriptor
+				.getId());
+	}
+
 	public static IEditorPart openFile(IPath path, IProject project) {
 		String fileExtension;
 		if (path.getFileExtension().equals("mayaa")) {

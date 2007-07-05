@@ -3,16 +3,26 @@ package org.seasar.mayaa.matatabi.property;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog;
+import org.eclipse.jdt.internal.ui.util.BusyIndicatorRunnableContext;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,10 +30,14 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
@@ -48,6 +62,12 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	public static final String MISSING_ID_ATTRIBUTE = "missingIdAttribute";
 
+	public static final String JAVA_SOURCE_PATH = "javaSourcePath";
+
+	public static final String WEB_ROOT_PATH = "webRootPath";
+
+	public static final String DEFAULT_PACKAGE = "defaultPackage";
+
 	private Button useMatatabi;
 
 	private TabFolder folder;
@@ -61,6 +81,11 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private Combo duplicateIdAttribute;
 
 	private Combo undefineIdAttribute;
+
+	private Text javaSourcePath;
+
+	private Text webRootPath;
+	private Text defaultPackage;
 
 	private ReplaceRuleTableViewer replaceRuleTableViewer;
 
@@ -86,6 +111,15 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.useMatatabi = createCheckPart(panel, "matatabiを使用する");
 		folder = createTabFolder(panel);
 
+		Composite configMarkerPanel = createPanel(folder, 3);
+
+		javaSourcePath = createFolderSelectionText(project, configMarkerPanel,
+				"Javaソースパス");
+		webRootPath = createFolderSelectionText(project, configMarkerPanel,
+				"Webルートパス");
+		defaultPackage = createJavaPackageSelectionText(project,
+				configMarkerPanel, "Javaデフォルトパッケージ");
+
 		Composite errorMarkerPanel = createPanel(folder, 2);
 
 		missingIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
@@ -109,6 +143,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 		replaceRuleLabel.setText("タグ変換ルール");
 		replaceRuleTableViewer = new ReplaceRuleTableViewer(generatePanel,
 				SWT.SINGLE | SWT.V_SCROLL);
+		TabItem configTabItem = new TabItem(folder, SWT.NULL);
+		configTabItem.setText("ディレクトリ設定");
+		configTabItem.setControl(configMarkerPanel);
 		TabItem errorTabItem = new TabItem(folder, SWT.NULL);
 		errorTabItem.setText("エラーマーカー");
 		errorTabItem.setControl(errorMarkerPanel);
@@ -119,6 +156,57 @@ public class MatatabiPropertyPage extends PropertyPage {
 		loadStore(project);
 
 		return panel;
+	}
+
+	private Text createFolderSelectionText(IProject project,
+			Composite configMarkerPanel, String labelText) {
+		Label label = new Label(configMarkerPanel, SWT.NONE);
+		label.setText(labelText);
+		Text text = new Text(configMarkerPanel, SWT.SINGLE | SWT.BORDER);
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		text.setLayoutData(data);
+		Button srcpath = new Button(configMarkerPanel, SWT.PUSH);
+		srcpath.setText("選択");
+
+		srcpath.addSelectionListener(new FolderSelectionAdapter(getShell(),
+				project, text));
+
+		return text;
+	}
+
+	private Text createJavaPackageSelectionText(IProject project,
+			Composite configMarkerPanel, String labelText) {
+		Label label = new Label(configMarkerPanel, SWT.NONE);
+		label.setText(labelText);
+		final Text text = new Text(configMarkerPanel, SWT.SINGLE | SWT.BORDER);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		label = new Label(configMarkerPanel, SWT.NONE);
+
+		// Button button = new Button(configMarkerPanel, SWT.PUSH);
+		// button.setText("選択");
+		//
+		// button.addSelectionListener(new SelectionAdapter() {
+		// public void widgetSelected(SelectionEvent e) {
+		// PackageSelectionDialog dialog = new PackageSelectionDialog(
+		// getShell(),
+		// new BusyIndicatorRunnableContext(),
+		// PackageSelectionDialog.F_REMOVE_DUPLICATES
+		// | PackageSelectionDialog.F_HIDE_EMPTY_INNER
+		// | PackageSelectionDialog.F_SHOW_PARENTS
+		// | PackageSelectionDialog.F_HIDE_DEFAULT_PACKAGE,
+		// SearchEngine.createWorkspaceScope());
+		// if (dialog.open() == Dialog.OK) {
+		// IPackageFragment result = (IPackageFragment) dialog
+		// .getFirstResult();
+		// if (result != null) {
+		// text.setText(result.getElementName());
+		// }
+		// }
+		// }
+		// });
+
+		return text;
 	}
 
 	private Combo createErrorMarkerCombo(Composite composite, String label) {
@@ -152,6 +240,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 		setPreferenceStore(new ScopedPreferenceStore(new ProjectScope(
 				(IProject) getElement()), "org.seasar.mayaa.matatabi"));
 		IPreferenceStore store = getPreferenceStore();
+		this.javaSourcePath.setText(store.getString(JAVA_SOURCE_PATH));
+		this.webRootPath.setText(store.getString(WEB_ROOT_PATH));
+		this.defaultPackage.setText(store.getString(DEFAULT_PACKAGE));
+
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
 		}
@@ -213,6 +305,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 	 * デフォルトに戻す
 	 */
 	protected void performDefaults() {
+		this.javaSourcePath.setText("");
+		this.webRootPath.setText("");
+		this.defaultPackage.setText("");
 		this.useMatatabi.setSelection(false);
 		this.missingIdAttribute.select(1);
 		this.invalidIdAttribute.select(1);
@@ -231,6 +326,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 		if (project != null) {
 			IPreferenceStore store = getPreferenceStore();
 
+			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
+			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
+			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, missingIdAttribute
 					.getSelectionIndex());
 			store.setValue(INVALID_ID_ATTRIBUTE, invalidIdAttribute
@@ -242,11 +340,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(UNDEFINE_ID_ATTRIBUTE, undefineIdAttribute
 					.getSelectionIndex());
 
-			Collection namespaces = (Collection) namespaceTableViewer
+			Collection<Namespace> namespaces = (Collection<Namespace>) namespaceTableViewer
 					.getInput();
 			int count = 0;
-			for (Iterator iter = namespaces.iterator(); iter.hasNext();) {
-				Namespace namespace = (Namespace) iter.next();
+			for (Namespace namespace : namespaces) {
 				if (namespace.getNamespaceAttribute() != null) {
 					store.setValue(NAMESPACES + "." + count, namespace
 							.toString());
@@ -254,11 +351,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 				}
 			}
 
-			Collection replaceRules = (Collection) replaceRuleTableViewer
+			Collection<ReplaceRule> replaceRules = (Collection<ReplaceRule>) replaceRuleTableViewer
 					.getInput();
 			count = 0;
-			for (Iterator iter = replaceRules.iterator(); iter.hasNext();) {
-				ReplaceRule replaceRule = (ReplaceRule) iter.next();
+			for (ReplaceRule replaceRule : replaceRules) {
 				store.setValue(REPLACE_RULE + "." + count, replaceRule
 						.toString());
 				count++;
@@ -356,5 +452,40 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 
 		return replaceRules;
+	}
+
+	/**
+	 * プロジェクト内のフォルダ選択
+	 */
+	private static class FolderSelectionAdapter extends SelectionAdapter {
+		private Shell shell;
+		private IProject project;
+		private Text text;
+
+		public FolderSelectionAdapter(Shell shell, IProject project, Text text) {
+			this.shell = shell;
+			this.project = project;
+			this.text = text;
+		}
+
+		public void widgetSelected(SelectionEvent e) {
+			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
+					shell, new WorkbenchLabelProvider(),
+					new WorkbenchContentProvider());
+			dialog.setInput(project);
+			dialog.setAllowMultiple(false);
+			dialog.addFilter(new ViewerFilter() {
+				public boolean select(Viewer viewer, Object parent,
+						Object element) {
+					return element instanceof IFolder;
+				}
+			});
+			if (dialog.open() == Dialog.OK) {
+				IResource result = (IResource) dialog.getFirstResult();
+				if (result != null) {
+					text.setText(result.getProjectRelativePath().toString());
+				}
+			}
+		}
 	}
 }

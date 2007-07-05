@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -26,7 +27,11 @@ public class PreferencesUtil {
 	 * @return
 	 */
 	public static final ScopedPreferenceStore getPreference(IFile file) {
-		return new ScopedPreferenceStore(new ProjectScope(file.getProject()),
+		return getPreference(file.getProject());
+	}
+
+	public static final ScopedPreferenceStore getPreference(IProject project) {
+		return new ScopedPreferenceStore(new ProjectScope(project),
 				MatatabiPlugin.PLUGIN_ID);
 	}
 
