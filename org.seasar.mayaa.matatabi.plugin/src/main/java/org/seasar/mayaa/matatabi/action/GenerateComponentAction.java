@@ -65,7 +65,7 @@ public class GenerateComponentAction extends OpenAction {
 						sourceid.remove(iter.next());
 					}
 					for (Iterator iter = ParseUtil.getDefaultIdList(
-							(IFolder) file.getParent()).keySet().iterator(); iter
+							file.getParent()).keySet().iterator(); iter
 							.hasNext();) {
 						sourceid.remove(iter.next());
 					}

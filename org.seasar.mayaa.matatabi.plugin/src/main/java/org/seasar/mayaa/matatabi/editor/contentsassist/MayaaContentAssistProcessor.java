@@ -331,8 +331,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.hasNext();) {
 			unusedSourceId.remove(iter.next());
 		}
-		for (Iterator iter = ParseUtil.getDefaultIdList(
-				(IFolder) file.getParent()).keySet().iterator(); iter.hasNext();) {
+		for (Iterator iter = ParseUtil.getDefaultIdList(file.getParent())
+				.keySet().iterator(); iter.hasNext();) {
 			unusedSourceId.remove(iter.next());
 		}
 
