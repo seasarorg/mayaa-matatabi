@@ -69,6 +69,12 @@ public class EditorUtil {
 		return null;
 	}
 
+	/**
+	 * ‘I‘ğ’†‚Ì•¶š—ñ‚ğæ“¾‚·‚éB
+	 * 
+	 * @param targetPart
+	 * @return
+	 */
 	public static final String getSelectText(IWorkbenchPart targetPart) {
 		String id = null;
 		if (targetPart instanceof ITextEditor) {

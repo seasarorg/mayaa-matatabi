@@ -11,8 +11,27 @@
 <h2>プロジェクトごとの設定</h2>
 <h3>基本・エラーマーカー</h3>
 <div>プロジェクトの設定画面で「matatabiを使用する」のチェックを入れれば、機能が有効になります。<br />
-またMayaaファイルの形式チェックのエラーレベルを変更することが出来ます。</div>
-<img src="setting1.jpg" />
+また以下の設定を行うとHTML,Mayaaファイルから対応するActionクラスを開くことが出来ます。</div>
+<table border="1">
+	<tbody>
+		<tr>
+			<td>Javaソースパス</td>
+			<td>Javaのソースフォルダのルート</td>
+		</tr>
+		<tr>
+			<td>Webルートパス</td>
+			<td>HTMLファイルなどが置かれるWebアプリケーションのルートフォルダ</td>
+		</tr>
+		<tr>
+			<td>Javaデフォルトパッケージ</td>
+			<td>Actionクラスを探す起点となるパッケージ</td>
+		</tr>
+	</tbody>
+</table>
+<img src="setting_config.jpg" />
+<h3>エラーマーカー</h3>
+<div>Mayaaファイルの形式チェックのエラーレベルを変更することが出来ます。</div>
+<img src="setting_error.jpg" />
 <h3>自動生成</h3>
 <div>自動生成のタブではMayaaファイルの自動生成処理に対する設定が出来ます。
 名前空間を追加すれば設定した名前空間がMayaaファイルの生成時に名前空間として設定され、タグ変換ルールではHTMLのタグに対して自動生成時に適用するテンプレートが設定できます。<br />
@@ -49,6 +68,6 @@
 	</tbody>
 </table>
 </div>
-<img src="setting2.jpg" />
+<img src="setting_generate.jpg" />
 </body>
 </html>

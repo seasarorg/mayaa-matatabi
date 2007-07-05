@@ -7,10 +7,36 @@
 <img src="mayaa01.gif" />
 <h1>エディタ機能</h1>
 <h2>ファイル切り替え機能</h2>
+<h3>WTPのHTMLエディタ</h3>
+<ul>
+	<li>対応するMayaaファイルを開く(Ctrl+T)</li>
+	<li>対応するActionクラスを開く(Ctrl+Alt+T)</li>
+	<li>ブラウザで開く(Ctrl+O)</li>
+</ul>
+<h3>Mayaaエディタ</h3>
+<ul>
+	<li>対応するHTMLファイルを開く(Ctrl+T)</li>
+	<li>対応するActionクラスを開く(Ctrl+Alt+T)</li>
+</ul>
+<h3>Javaエディタ</h3>
+<ul>
+	<li>対応するMayaaクラスを開く(Ctrl+Alt+T)</li>
+	<li>対応するHTMLファイルを開く(Ctrl+Alt+Y)</li>
+</ul>
 <div>
-WTPのHTMLエディタとMayaaエディタ上でCtrl+Tキーを押すと、それぞれ対応するHTMLファイル、Mayaaファイルを開きます。<br />
-また、idがついている要素をCtrlキーを押しながらマウスで左クリックすると対応するHTML/Mayaaファイルを開き、クリックしたidと同名のidが記述されていればそこに飛びます。
+またWTPのHTMLエディタ・Mayaaエディタで、idがついている要素をCtrlキーを押しながらマウスで左クリックすると対応するHTML/Mayaaファイルを開き、クリックしたidと同名のidが記述されていればそこに飛びます。<br />
+上記のキーバインドはEclipseの設定から変更することが出来ます。
 </div>
+<div>
+ActionクラスとHTML,Mayaaファイルを対応づけるルールは以下のようなものです。
+例(Javaルートパス:src/main/java、Webルートパス:src/main/webapp、デフォルトパッケージ:org.seasar.mayaa.exampleの場合):
+<ul>
+<li>src/main/java/org/seasar/mayaa/example/IndexAction.java←→src/main/webapp/index.html(.mayaa)</li>
+<li>src/main/java/org/seasar/mayaa/example/sub/SubFooAction.java←→src/main/webapp/sub/subFoo.html(.mayaa)</li>
+<li>src/main/java/org/seasar/mayaa/example/sub/test/SubBarAction.java←→src/main/webapp/sub/test/subBar.html(.mayaa)</li>
+</ul>
+</div>
+
 <h2>補完機能</h2>
 Mayaaエディタではタグライブラリの関する情報やMayaaで定義されているコンポーネントとid属性の値の補完候補として表示されます。
 <h3>要素の補完</h3>
