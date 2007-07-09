@@ -14,6 +14,8 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jst.pagedesigner.editors.HTMLEditor;
+import org.eclipse.jst.pagedesigner.ui.common.sash.SashEditorPart;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
@@ -77,6 +79,9 @@ public class EditorUtil {
 	 */
 	public static final String getSelectText(IWorkbenchPart targetPart) {
 		String id = null;
+		if (targetPart instanceof HTMLEditor) {
+			targetPart = ((HTMLEditor) targetPart).getTextEditor();
+		}
 		if (targetPart instanceof ITextEditor) {
 			ITextEditor textEditor = (ITextEditor) targetPart;
 			ITextSelection textSelection = (ITextSelection) textEditor
@@ -92,6 +97,9 @@ public class EditorUtil {
 		if (openEditorPart instanceof MultiPageEditorPart) {
 			openEditorPart = EditorUtil
 					.getSourceEditor((MultiPageEditorPart) openEditorPart);
+		}
+		if (openEditorPart instanceof SashEditorPart) {
+			openEditorPart = ((SashEditorPart) openEditorPart).getActiveEditor();
 		}
 		if (openEditorPart instanceof ITextEditor) {
 			if (id != null) {
@@ -134,10 +142,10 @@ public class EditorUtil {
 					.getDeclaredMethod("getEditor", new Class[] { int.class });
 			getEditorMethod.setAccessible(true);
 			int pageCount = ((Integer) pageCountObject).intValue();
-			for (int i = 0; i <= pageCount; i++) {
+			for (int i = 0; i < pageCount; i++) {
 				Object editor = getEditorMethod.invoke(multiPageEditorPart,
 						new Object[] { new Integer(i) });
-				if (editor instanceof ITextEditor) {
+				if (editor instanceof IEditorPart) {
 					return (IEditorPart) editor;
 				}
 			}
