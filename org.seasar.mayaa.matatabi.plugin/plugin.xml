@@ -60,6 +60,11 @@
 			class="org.seasar.mayaa.matatabi.editor.configuration.MayaaHTMLTextViewerConfiguration"
 			target="org.eclipse.wst.html.core.htmlsource.source" />
 	</extension>
+	<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
+		<sourceViewerConfiguration
+			class="org.seasar.mayaa.matatabi.editor.configuration.MayaaHTMLTextViewerConfiguration"
+			target="org.eclipse.jst.pagedesigner.editors.DesignerStructuredTextEditorJSP" />
+	</extension>
 	<extension point="org.eclipse.core.runtime.contentTypes">
 		<content-type base-type="org.eclipse.core.runtime.xml"
 			default-charset="UTF-8" file-extensions="mayaa" id="mayaa"
@@ -102,6 +107,32 @@
 		<editorContribution
 			targetID="org.eclipse.wst.html.core.htmlsource.source"
 			id="org.seasar.mayaa.matatabi.action.Html">
+			<menu label="%product.name"
+				id="org.seasar.mayaa.matatabi.menu">
+				<separator name="group" />
+			</menu>
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				label="%label.openmayaa"
+				class="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenMayaaAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
+				label="%label.openbrowser"
+				class="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenBrowserAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				label="%label.openaction"
+				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+		</editorContribution>
+		<editorContribution
+			targetID="org.eclipse.jst.pagedesigner.PageDesignerEditor"
+			id="org.seasar.mayaa.matatabi.action.webpageeditor">
 			<menu label="%product.name"
 				id="org.seasar.mayaa.matatabi.menu">
 				<separator name="group" />
