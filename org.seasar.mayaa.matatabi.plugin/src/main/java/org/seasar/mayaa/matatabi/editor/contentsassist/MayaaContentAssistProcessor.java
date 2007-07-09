@@ -12,7 +12,6 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
@@ -193,7 +192,6 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	protected void addTagNameProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
-
 		if (contentAssistRequest.getNode().getParentNode() instanceof Document) {
 			if (isMatch(ROOT_TAG.substring(1), contentAssistRequest
 					.getMatchString())) {
@@ -327,22 +325,24 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		Map<String, Element> allSourceid = ParseUtil.getIdList(openFile);
 		Map<String, Element> unusedSourceId = new TreeMap<String, Element>(
 				allSourceid);
-		for (Iterator iter = ParseUtil.getXmlIdList(file).keySet().iterator(); iter
-				.hasNext();) {
+		for (Iterator<String> iter = ParseUtil.getXmlIdList(file).keySet()
+				.iterator(); iter.hasNext();) {
 			unusedSourceId.remove(iter.next());
 		}
-		for (Iterator iter = ParseUtil.getDefaultIdList(file.getParent())
-				.keySet().iterator(); iter.hasNext();) {
+		for (Iterator<String> iter = ParseUtil.getDefaultIdList(
+				file.getParent()).keySet().iterator(); iter.hasNext();) {
 			unusedSourceId.remove(iter.next());
 		}
 
 		Map<String, Element> usedSourceId = new TreeMap<String, Element>(
 				allSourceid);
-		for (Iterator iter = unusedSourceId.keySet().iterator(); iter.hasNext();) {
+		for (Iterator<String> iter = unusedSourceId.keySet().iterator(); iter
+				.hasNext();) {
 			usedSourceId.remove(iter.next());
 		}
 
-		for (Iterator iter = unusedSourceId.keySet().iterator(); iter.hasNext();) {
+		for (Iterator<String> iter = unusedSourceId.keySet().iterator(); iter
+				.hasNext();) {
 			String id = (String) iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
@@ -354,7 +354,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 						null, ""));
 			}
 		}
-		for (Iterator iter = usedSourceId.keySet().iterator(); iter.hasNext();) {
+		for (Iterator<String> iter = usedSourceId.keySet().iterator(); iter
+				.hasNext();) {
 			String id = (String) iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);

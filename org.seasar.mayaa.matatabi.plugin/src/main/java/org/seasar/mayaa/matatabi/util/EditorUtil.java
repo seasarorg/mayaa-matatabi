@@ -99,7 +99,8 @@ public class EditorUtil {
 					.getSourceEditor((MultiPageEditorPart) openEditorPart);
 		}
 		if (openEditorPart instanceof SashEditorPart) {
-			openEditorPart = ((SashEditorPart) openEditorPart).getActiveEditor();
+			openEditorPart = ((SashEditorPart) openEditorPart)
+					.getActiveEditor();
 		}
 		if (openEditorPart instanceof ITextEditor) {
 			if (id != null) {

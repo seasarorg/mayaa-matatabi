@@ -1,7 +1,5 @@
 package org.seasar.mayaa.matatabi.action;
 
-import org.eclipse.ui.IEditorActionDelegate;
-import org.eclipse.ui.IObjectActionDelegate;
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 
 public class OpenHTMLPairAction extends OpenActionBase {

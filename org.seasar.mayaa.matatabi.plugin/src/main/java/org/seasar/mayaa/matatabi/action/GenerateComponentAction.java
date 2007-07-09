@@ -1,11 +1,9 @@
 package org.seasar.mayaa.matatabi.action;
 
 import java.io.ByteArrayInputStream;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -56,18 +54,16 @@ public class GenerateComponentAction extends OpenAction {
 
 					IDocument document = textEditor.getDocumentProvider()
 							.getDocument(textEditor.getEditorInput());
-					Map outid = ParseUtil
+					Map<String, Element> outid = ParseUtil
 							.getIdList(new InputSource(
 									new ByteArrayInputStream(document.get()
 											.getBytes())));
-					for (Iterator iter = outid.keySet().iterator(); iter
-							.hasNext();) {
-						sourceid.remove(iter.next());
+					for (String id : outid.keySet()) {
+						sourceid.remove(id);
 					}
-					for (Iterator iter = ParseUtil.getDefaultIdList(
-							file.getParent()).keySet().iterator(); iter
-							.hasNext();) {
-						sourceid.remove(iter.next());
+					for (String id : ParseUtil.getDefaultIdList(
+							file.getParent()).keySet()) {
+						sourceid.remove(id);
 					}
 
 					InsertEdit insertEdit = new InsertEdit(offset, GenerateUtil

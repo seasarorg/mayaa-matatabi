@@ -1,7 +1,5 @@
 package org.seasar.mayaa.matatabi.action;
 
-import java.io.File;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -16,7 +14,6 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 

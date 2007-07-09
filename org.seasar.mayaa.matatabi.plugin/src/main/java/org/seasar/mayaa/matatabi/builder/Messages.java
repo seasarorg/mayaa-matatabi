@@ -23,8 +23,8 @@ public class Messages {
 
 	public static String getString(String key, String[] replace) {
 		try {
-			return MessageFormat
-					.format(RESOURCE_BUNDLE.getString(key), replace);
+			return MessageFormat.format(RESOURCE_BUNDLE.getString(key),
+					(Object[]) replace);
 		} catch (MissingResourceException e) {
 			return '!' + key + '!';
 		}

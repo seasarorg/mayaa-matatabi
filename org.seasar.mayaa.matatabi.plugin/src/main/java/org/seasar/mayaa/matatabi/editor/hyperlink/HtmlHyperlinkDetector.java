@@ -23,9 +23,9 @@ public class HtmlHyperlinkDetector extends IdAttributeHyperlinkDetector {
 			return null;
 		}
 
-		List namespaces = ParseUtil.getHtmlNamespaces();
+		List<String> namespaces = ParseUtil.getHtmlNamespaces();
 		Attr attr = null;
-		for (Iterator iter = namespaces.iterator(); iter.hasNext()
+		for (Iterator<String> iter = namespaces.iterator(); iter.hasNext()
 				&& attr == null;) {
 			String namespace = (String) iter.next();
 			if (namespace.length() > 0) {
