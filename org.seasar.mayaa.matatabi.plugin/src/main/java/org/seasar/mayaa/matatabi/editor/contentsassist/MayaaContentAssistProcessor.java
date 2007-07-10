@@ -437,20 +437,23 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 		}
 
-		List<AttributeInfo> attributes = taglibList.get(
-				contentAssistRequest.getNode().getNodeName())
-				.getAttributeInfos();
-		for (AttributeInfo attributeInfo : attributes) {
-			if (contentAssistRequest.getNode().getAttributes().getNamedItem(
-					attributeInfo.getName()) == null
-					&& isMatch(attributeInfo.getName(), contentAssistRequest
-							.getMatchString())) {
-				contentAssistRequest.addProposal(new CompletionProposal(
-						attributeInfo.getName() + "=\"\"", contentAssistRequest
-								.getReplacementBeginPosition(),
-						contentAssistRequest.getReplacementLength(),
-						attributeInfo.getName().length() + 2, icon,
-						attributeInfo.getName(), null, ""));
+		if (taglibList
+				.containsKey(contentAssistRequest.getNode().getNodeName())) {
+			List<AttributeInfo> attributes = taglibList.get(
+					contentAssistRequest.getNode().getNodeName())
+					.getAttributeInfos();
+			for (AttributeInfo attributeInfo : attributes) {
+				if (contentAssistRequest.getNode().getAttributes()
+						.getNamedItem(attributeInfo.getName()) == null
+						&& isMatch(attributeInfo.getName(),
+								contentAssistRequest.getMatchString())) {
+					contentAssistRequest.addProposal(new CompletionProposal(
+							attributeInfo.getName() + "=\"\"",
+							contentAssistRequest.getReplacementBeginPosition(),
+							contentAssistRequest.getReplacementLength(),
+							attributeInfo.getName().length() + 2, icon,
+							attributeInfo.getName(), null, ""));
+				}
 			}
 		}
 		super.addAttributeNameProposals(contentAssistRequest);
