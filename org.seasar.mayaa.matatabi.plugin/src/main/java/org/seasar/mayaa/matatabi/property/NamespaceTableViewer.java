@@ -80,6 +80,8 @@ public class NamespaceTableViewer extends TableViewer {
 	}
 
 	public static final class Namespace implements Serializable {
+		private static final long serialVersionUID = -3505534635492680800L;
+
 		String prefix;
 
 		String uri;

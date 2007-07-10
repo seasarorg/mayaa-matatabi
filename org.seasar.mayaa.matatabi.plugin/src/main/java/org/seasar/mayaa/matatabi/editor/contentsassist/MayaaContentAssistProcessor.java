@@ -1,9 +1,11 @@
 package org.seasar.mayaa.matatabi.editor.contentsassist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformation;
+import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMAttributeDeclarationImpl;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMDocumentFactoryTLD;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.CMElementDeclarationImpl;
 import org.eclipse.jst.jsp.core.internal.contentmodel.tld.provisional.JSP11TLDNames;
@@ -48,16 +51,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
 
 	/** タグ情報 */
-	private List<String> tagList = new ArrayList<String>();
-	private List<String> taglibList = new ArrayList<String>();
-
-	/** タグの説明 */
-	private List<ContextInformation> tagContextInformationList = new ArrayList<ContextInformation>();
-	private List<ContextInformation> taglibContextInformationList = new ArrayList<ContextInformation>();
-
-	/** 属性情報 */
-	private Map<String, String[]> attributeMap = new HashMap<String, String[]>();
-	private Map<String, String[]> taglibAttributeMap = new HashMap<String, String[]>();
+	private Map<String, TagInfo> tagList = new LinkedHashMap<String, TagInfo>();
+	private Map<String, TagInfo> taglibList = new LinkedHashMap<String, TagInfo>();
 
 	/** アイコン */
 	private Image icon;
@@ -67,87 +62,113 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
 				.createImage();
 
-		tagList.add("<m:attribute />");
-		tagList.add("<m:comment></m:comment>");
-		tagList.add("<m:echo></m:echo>");
-		tagList.add("<m:element></m:element>");
-		tagList.add("<m:formatDate />");
-		tagList.add("<m:formatNumber />");
-		tagList.add("<m:write />");
-		tagList.add("<m:for></m:for>");
-		tagList.add("<m:forEach></m:forEach>");
-		tagList.add("<m:if></m:if>");
-		tagList.add("<m:with></m:with>");
-		tagList.add("<m:doBase />");
-		tagList.add("<m:doBody />");
-		tagList.add("<m:doRender />");
-		tagList.add("<m:beforeRender />");
-		tagList.add("<m:afterRender />");
-		tagList.add("<m:insert />");
-		tagList.add("<m:exec />");
-		tagList.add("<m:ignore />");
-		tagList.add("<m:null />");
-
-		tagContextInformationList.add(new ContextInformation("m:attribute",
-				Messages.getString("description.attribute")));
-		tagContextInformationList.add(new ContextInformation("m:comment",
-				Messages.getString("description.comment")));
-		tagContextInformationList.add(new ContextInformation("m:echo", Messages
-				.getString("description.echo")));
-		tagContextInformationList.add(new ContextInformation("m:element",
-				Messages.getString("description.element")));
-		tagContextInformationList.add(new ContextInformation("m:formatDate",
-				Messages.getString("description.formatDate")));
-		tagContextInformationList.add(new ContextInformation("m:formatNumber",
-				Messages.getString("description.formatNumber")));
-		tagContextInformationList.add(new ContextInformation("m:write",
-				Messages.getString("description.write")));
-		tagContextInformationList.add(new ContextInformation("m:for", Messages
-				.getString("description.for")));
-		tagContextInformationList.add(new ContextInformation("m:forEach",
-				Messages.getString("description.forEach")));
-		tagContextInformationList.add(new ContextInformation("m:if", Messages
-				.getString("description.if")));
-
-		tagContextInformationList.add(new ContextInformation("m:with", Messages
-				.getString("description.with")));
-		tagContextInformationList.add(new ContextInformation("m:doBase",
-				Messages.getString("description.doBase")));
-		tagContextInformationList.add(new ContextInformation("m:doBody",
-				Messages.getString("description.doBody")));
-		tagContextInformationList.add(new ContextInformation("m:doRender",
-				Messages.getString("description.doRender")));
-		tagContextInformationList.add(new ContextInformation("m:beforeRender",
-				Messages.getString("description.beforeRender")));
-		tagContextInformationList.add(new ContextInformation("m:afterRender",
-				Messages.getString("description.afterRender")));
-		tagContextInformationList.add(new ContextInformation("m:insert",
-				Messages.getString("description.insert")));
-		tagContextInformationList.add(new ContextInformation("m:exec", Messages
-				.getString("description.exec")));
-		tagContextInformationList.add(new ContextInformation("m:ignore",
-				Messages.getString("description.ignore")));
-		tagContextInformationList.add(new ContextInformation("m:null", Messages
-				.getString("description.null")));
-
-		attributeMap.put("m:attribute", new String[] { "name", "value" });
-		attributeMap.put("m:comment", new String[] {});
-		attributeMap.put("m:echo", new String[] { "name" });
-		attributeMap.put("m:element", new String[] { "name" });
-		attributeMap.put("m:formatDate", new String[] { "value", "pattern",
-				"result" });
-		attributeMap.put("m:formatNumber", new String[] { "value", "pattern",
-				"result" });
-		attributeMap.put("m:write", new String[] { "value", "default",
-				"escapeXml", "escapeWhitespace", "escapeEol" });
-		attributeMap.put("m:for",
-				new String[] { "init", "test", "after", "max" });
-		attributeMap.put("m:forEach", new String[] { "items", "var", "index" });
-		attributeMap.put("m:if", new String[] { "test" });
-		attributeMap.put("m:doRender", new String[] { "name" });
-		attributeMap.put("m:insert", new String[] { "name", "path" });
-		attributeMap
-				.put("m:exec", new String[] { "script", "src", "encoding" });
+		tagList.put("m:attribute", new TagInfo("m", "attribute",
+				new ContextInformation("m:attribute", Messages
+						.getString("description.attribute")), false,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("name", true),
+						new AttributeInfo("value", true) }))));
+		tagList.put("m:with", new TagInfo("m", "with", new ContextInformation(
+				"m:with", Messages.getString("description.with")), true,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:comment", new TagInfo("m", "comment",
+				new ContextInformation("m:comment", Messages
+						.getString("description.comment")), true,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:echo", new TagInfo("m", "echo", new ContextInformation(
+				"m:echo", Messages.getString("description.echo")), true,
+				new ArrayList<AttributeInfo>(Arrays
+						.asList(new AttributeInfo[] { new AttributeInfo("name",
+								false) }))));
+		tagList.put("m:element", new TagInfo("m", "element",
+				new ContextInformation("m:element", Messages
+						.getString("description.element")), true,
+				new ArrayList<AttributeInfo>(Arrays
+						.asList(new AttributeInfo[] { new AttributeInfo("name",
+								false) }))));
+		tagList.put("m:formatDate", new TagInfo("m", "formatDate",
+				new ContextInformation("m:formatDate", Messages
+						.getString("description.formatDate")), false,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("value", true),
+						new AttributeInfo("pattern", false),
+						new AttributeInfo("result", false) }))));
+		tagList.put("m:formatNumber", new TagInfo("m", "formatNumber",
+				new ContextInformation("m:formatNumber", Messages
+						.getString("description.formatNumber")), false,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("value", true),
+						new AttributeInfo("pattern", false),
+						new AttributeInfo("result", false) }))));
+		tagList.put("m:write", new TagInfo("m", "write",
+				new ContextInformation("m:write", Messages
+						.getString("description.write")), false,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("value", true),
+						new AttributeInfo("default", false),
+						new AttributeInfo("escapeXml", false),
+						new AttributeInfo("escapeWhitespace", false),
+						new AttributeInfo("escapeEol", false) }))));
+		tagList.put("m:for", new TagInfo("m", "for", new ContextInformation(
+				"m:for", Messages.getString("description.for")), true,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("test", true),
+						new AttributeInfo("init", false),
+						new AttributeInfo("after", false),
+						new AttributeInfo("max", false) }))));
+		tagList.put("m:forEach", new TagInfo("m", "forEach",
+				new ContextInformation("m:forEach", Messages
+						.getString("description.forEach")), true,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("items", true),
+						new AttributeInfo("var", true),
+						new AttributeInfo("index", false) }))));
+		tagList.put("m:if", new TagInfo("m", "if", new ContextInformation(
+				"m:if", Messages.getString("description.if")), true,
+				new ArrayList<AttributeInfo>(Arrays
+						.asList(new AttributeInfo[] { new AttributeInfo("test",
+								true) }))));
+		tagList.put("m:doBase", new TagInfo("m", "doBase",
+				new ContextInformation("m:doBase", Messages
+						.getString("description.doBase")), false,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:doBody", new TagInfo("m", "doBody",
+				new ContextInformation("m:doBody", Messages
+						.getString("description.doBody")), false,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:doRender", new TagInfo("m", "doRender",
+				new ContextInformation("m:doRender", Messages
+						.getString("description.doRender")), false,
+				new ArrayList<AttributeInfo>(Arrays
+						.asList(new AttributeInfo[] { new AttributeInfo("name",
+								false) }))));
+		tagList.put("m:beforeRender", new TagInfo("m", "beforeRender",
+				new ContextInformation("m:beforeRender", Messages
+						.getString("description.beforeRender")), false,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:afterRender", new TagInfo("m", "afterRender",
+				new ContextInformation("m:afterRender", Messages
+						.getString("description.afterRender")), false,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:insert", new TagInfo("m", "insert",
+				new ContextInformation("m:insert", Messages
+						.getString("description.insert")), false,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("name", false),
+						new AttributeInfo("path", true) }))));
+		tagList.put("m:exec", new TagInfo("m", "exec", new ContextInformation(
+				"m:exec", Messages.getString("description.exec")), false,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("script", false),
+						new AttributeInfo("src", false),
+						new AttributeInfo("encoding", true) }))));
+		tagList.put("m:ignore", new TagInfo("m", "ignore",
+				new ContextInformation("m:ignore", Messages
+						.getString("description.ignore")), false,
+				new ArrayList<AttributeInfo>()));
+		tagList.put("m:null", new TagInfo("m", "null", new ContextInformation(
+				"m:null", Messages.getString("description.null")), false,
+				new ArrayList<AttributeInfo>()));
 	}
 
 	/**
@@ -168,18 +189,18 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			}
 
 		} else {
-			for (int i = 0; i < taglibList.size(); i++) {
-				String tag = (String) taglibList.get(i);
-				if (isMatch(tag, contentAssistRequest.getMatchString())) {
-					contentAssistRequest.addProposal(new CompletionProposal(
-							tag, contentAssistRequest
-									.getReplacementBeginPosition(),
+			for (Entry<String, TagInfo> entry : taglibList.entrySet()) {
+				TagInfo tag = entry.getValue();
+				if (isMatch(tag.getContent(), contentAssistRequest
+						.getMatchString())) {
+					contentAssistRequest.addProposal(new CompletionProposal(tag
+							.getContent(), contentAssistRequest
+							.getReplacementBeginPosition(),
 							contentAssistRequest.getReplacementLength(), tag
-									.length(), icon, tag,
-							(ContextInformation) taglibContextInformationList
-									.get(i),
-							((ContextInformation) taglibContextInformationList
-									.get(i)).getInformationDisplayString()));
+									.getContent().length(), icon, tag
+									.getFullName(), tag.getDescription(), tag
+									.getDescription()
+									.getInformationDisplayString()));
 				}
 			}
 		}
@@ -204,19 +225,18 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 								null, ""));
 			}
 		} else {
-			for (int i = 0; i < taglibList.size(); i++) {
-				String tag = (String) taglibList.get(i);
+			for (Entry<String, TagInfo> entry : taglibList.entrySet()) {
+				TagInfo tag = (TagInfo) entry.getValue();
 				String matchString = contentAssistRequest.getMatchString();
-				if (isMatch(tag.substring(1), matchString)) {
+				if (isMatch(tag.getContent().substring(1), matchString)) {
 					contentAssistRequest.addProposal(new CompletionProposal(tag
-							.substring(1), contentAssistRequest
+							.getContent().substring(1), contentAssistRequest
 							.getReplacementBeginPosition(),
 							contentAssistRequest.getReplacementLength(), tag
-									.length() - 1, icon, tag,
-							(ContextInformation) taglibContextInformationList
-									.get(i),
-							((ContextInformation) taglibContextInformationList
-									.get(i)).getInformationDisplayString()));
+									.getContent().length() - 1, icon, tag
+									.getFullName(), tag.getDescription(), tag
+									.getDescription()
+									.getInformationDisplayString()));
 				}
 			}
 		}
@@ -417,21 +437,20 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 		}
 
-		String[] attributes = (String[]) taglibAttributeMap
-				.get(contentAssistRequest.getNode().getNodeName());
-		if (attributes != null) {
-			for (int i = 0; i < attributes.length; i++) {
-				if (contentAssistRequest.getNode().getAttributes()
-						.getNamedItem(attributes[i]) == null
-						&& isMatch(attributes[i], contentAssistRequest
-								.getMatchString())) {
-					contentAssistRequest.addProposal(new CompletionProposal(
-							attributes[i] + "=\"\"", contentAssistRequest
-									.getReplacementBeginPosition(),
-							contentAssistRequest.getReplacementLength(),
-							attributes[i].length() + 2, icon, attributes[i],
-							null, ""));
-				}
+		List<AttributeInfo> attributes = taglibList.get(
+				contentAssistRequest.getNode().getNodeName())
+				.getAttributeInfos();
+		for (AttributeInfo attributeInfo : attributes) {
+			if (contentAssistRequest.getNode().getAttributes().getNamedItem(
+					attributeInfo.getName()) == null
+					&& isMatch(attributeInfo.getName(), contentAssistRequest
+							.getMatchString())) {
+				contentAssistRequest.addProposal(new CompletionProposal(
+						attributeInfo.getName() + "=\"\"", contentAssistRequest
+								.getReplacementBeginPosition(),
+						contentAssistRequest.getReplacementLength(),
+						attributeInfo.getName().length() + 2, icon,
+						attributeInfo.getName(), null, ""));
 			}
 		}
 		super.addAttributeNameProposals(contentAssistRequest);
@@ -457,12 +476,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	 */
 	private void initTaglibInfo(ContentAssistRequest contentAssistRequest) {
 		taglibList.clear();
-		taglibContextInformationList.clear();
-		taglibAttributeMap.clear();
-
-		taglibList.addAll(tagList);
-		taglibContextInformationList.addAll(tagContextInformationList);
-		taglibAttributeMap.putAll(attributeMap);
+		taglibList.putAll(tagList);
 
 		ITaglibRecord[] taglibRecords = TaglibIndex
 				.getAvailableTaglibRecords(EditorUtil.getActiveFile()
@@ -487,30 +501,103 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 							.getElements().item(j);
 
 					String nodeName = prefix + ":" + node.getNodeName();
-					String tag = null;
-					// Bodyを持たない場合は閉じタグ省略
-					if (node.getBodycontent().equals(
-							JSP11TLDNames.CONTENT_EMPTY)) {
-						tag = "<" + nodeName + " />";
-					} else {
-						tag = "<" + nodeName + "></" + nodeName + ">";
-					}
-					if (!taglibList.contains(tag)) {
-						taglibList.add(tag);
-						taglibContextInformationList
-								.add(new ContextInformation(nodeName, node
-										.getDescription() == null ? "" : node
-										.getDescription()));
-						List<String> attributes = new ArrayList<String>();
+					TagInfo tag = new TagInfo(prefix, node.getNodeName(),
+							new ContextInformation(nodeName, node
+									.getDescription() == null ? "" : node
+									.getDescription()), !node.getBodycontent()
+									.equals(JSP11TLDNames.CONTENT_EMPTY),
+							new ArrayList<AttributeInfo>());
+					if (!taglibList.containsKey(tag.getFullName())) {
+						taglibList.put(tag.getFullName(), tag);
 						for (int k = 0; k < node.getAttributes().getLength(); k++) {
-							attributes.add(node.getAttributes().item(k)
-									.getNodeName());
+							CMAttributeDeclarationImpl attr = (CMAttributeDeclarationImpl) node
+									.getAttributes().item(k);
+							tag.getAttributeInfos().add(
+									new AttributeInfo(attr.getNodeName(), attr
+											.isRequired()));
 						}
-						taglibAttributeMap.put(nodeName, attributes
-								.toArray(new String[] {}));
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * タグ情報
+	 */
+	public static class TagInfo {
+		private String prefix;
+		private String name;
+		private ContextInformation description;
+		private boolean hasBody;
+		private List<AttributeInfo> attributeInfos;
+
+		public TagInfo(String prefix, String name,
+				ContextInformation description, boolean hasBody,
+				List<AttributeInfo> attributeInfos) {
+			this.prefix = prefix;
+			this.name = name;
+			this.description = description;
+			this.hasBody = hasBody;
+			this.attributeInfos = attributeInfos;
+		}
+
+		public String getFullName() {
+			return prefix + ":" + name;
+		}
+
+		public String getContent() {
+			StringBuilder stringBuilder = new StringBuilder();
+			for (AttributeInfo attributeInfo : attributeInfos) {
+				if (attributeInfo.isRequired()) {
+					stringBuilder.append(" " + attributeInfo.name + "=\"\"");
+				}
+			}
+			return hasBody ? "<" + getFullName() + stringBuilder + ">" + "</"
+					+ getFullName() + ">" : "<" + getFullName() + stringBuilder
+					+ " />";
+		}
+
+		public String getPrefix() {
+			return prefix;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public ContextInformation getDescription() {
+			return description;
+		}
+
+		public boolean isHasBody() {
+			return hasBody;
+		}
+
+		public List<AttributeInfo> getAttributeInfos() {
+			return attributeInfos;
+		}
+	}
+
+	/**
+	 * 属性情報
+	 */
+	public static class AttributeInfo {
+		private String name;
+		private boolean required;
+
+		public AttributeInfo(String name, boolean required) {
+			this.name = name;
+			this.required = required;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public boolean isRequired() {
+			return required;
+		}
+
 	}
 }

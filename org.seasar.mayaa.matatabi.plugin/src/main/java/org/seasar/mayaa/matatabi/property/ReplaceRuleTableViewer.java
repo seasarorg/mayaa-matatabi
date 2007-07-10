@@ -80,6 +80,8 @@ public class ReplaceRuleTableViewer extends TableViewer {
 	}
 
 	public static final class ReplaceRule implements Serializable {
+		private static final long serialVersionUID = -3332275212133101838L;
+
 		private String tag;
 
 		private String replace;
