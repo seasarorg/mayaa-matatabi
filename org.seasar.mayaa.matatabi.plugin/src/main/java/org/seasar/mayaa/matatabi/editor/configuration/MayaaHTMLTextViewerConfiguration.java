@@ -3,9 +3,11 @@ package org.seasar.mayaa.matatabi.editor.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.wst.html.ui.StructuredTextViewerConfigurationHTML;
+import org.seasar.mayaa.matatabi.editor.contentsassist.HTMLContentAssistProcessor;
 import org.seasar.mayaa.matatabi.editor.hyperlink.HtmlHyperlinkDetector;
 
 /**
@@ -14,6 +16,17 @@ import org.seasar.mayaa.matatabi.editor.hyperlink.HtmlHyperlinkDetector;
 public class MayaaHTMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationHTML {
 
+	protected IContentAssistProcessor[] getContentAssistProcessors(
+			ISourceViewer sourceViewer, String string) {
+		List<IContentAssistProcessor> result = new ArrayList<IContentAssistProcessor>(
+				0);
+		result.add(new HTMLContentAssistProcessor());
+
+		return (IContentAssistProcessor[]) result
+				.toArray(new IContentAssistProcessor[0]);
+	}
+
+	
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		List<IHyperlinkDetector> result = new ArrayList<IHyperlinkDetector>(0);
 		result.add(new HtmlHyperlinkDetector());

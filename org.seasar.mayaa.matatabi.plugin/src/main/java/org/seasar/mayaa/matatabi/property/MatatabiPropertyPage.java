@@ -44,6 +44,8 @@ import org.seasar.mayaa.matatabi.util.PreferencesUtil;
  * 設定ページ
  */
 public class MatatabiPropertyPage extends PropertyPage {
+	private static final String TEMPLATE_EXTENSIONS = "templateExtensions";
+
 	public static final String REPLACE_RULE = "replaceRule";
 
 	public static final String NAMESPACES = "namespaces";
@@ -82,6 +84,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	private Text webRootPath;
 	private Text defaultPackage;
+	private Text templateExtensions;
 
 	private ReplaceRuleTableViewer replaceRuleTableViewer;
 
@@ -115,7 +118,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 				"Webルートパス");
 		defaultPackage = createJavaPackageSelectionText(project,
 				configMarkerPanel, "Javaデフォルトパッケージ");
-
+		templateExtensions = createTextPart(configMarkerPanel, "テンプレートファイル拡張子");
 		Composite errorMarkerPanel = createPanel(folder, 2);
 
 		missingIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
@@ -239,6 +242,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.javaSourcePath.setText(store.getString(JAVA_SOURCE_PATH));
 		this.webRootPath.setText(store.getString(WEB_ROOT_PATH));
 		this.defaultPackage.setText(store.getString(DEFAULT_PACKAGE));
+		this.templateExtensions.setText(store.getString(TEMPLATE_EXTENSIONS));
 
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
@@ -304,6 +308,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.javaSourcePath.setText("");
 		this.webRootPath.setText("");
 		this.defaultPackage.setText("");
+		this.templateExtensions.setText("html");
 		this.useMatatabi.setSelection(false);
 		this.missingIdAttribute.select(1);
 		this.invalidIdAttribute.select(1);
@@ -325,6 +330,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
 			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
+			store.setValue(TEMPLATE_EXTENSIONS, templateExtensions.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, missingIdAttribute
 					.getSelectionIndex());
 			store.setValue(INVALID_ID_ATTRIBUTE, invalidIdAttribute
