@@ -1,7 +1,5 @@
 package org.seasar.mayaa.matatabi.property;
 
-import java.lang.reflect.Method;
-
 import org.eclipse.core.resources.IProject;
 import org.seasar.mayaa.matatabi.util.JDTUtil;
 

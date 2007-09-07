@@ -137,6 +137,7 @@ public class GenerateUtil {
 		VelocityEngine engine = new VelocityEngine();
 		StringWriter out = new StringWriter();
 		engine.evaluate(context, out, "MATATABI", templateString);
+
 		return out.getBuffer().toString();
 	}
 }

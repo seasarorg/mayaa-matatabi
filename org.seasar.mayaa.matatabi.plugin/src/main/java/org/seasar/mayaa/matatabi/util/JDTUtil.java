@@ -90,6 +90,14 @@ public class JDTUtil {
 		return new URLClassLoader(getClasspathAsURLArray(javaProject));
 	}
 
+	/**
+	 * JavaプロジェクトのクラスパスからクラスパスのURL配列を取得する。
+	 * 
+	 * @param javaProject
+	 *            Javaプロジェクト
+	 * @return クラスパスのURL配列
+	 * @throws JavaModelException
+	 */
 	public static URL[] getClasspathAsURLArray(IJavaProject javaProject)
 			throws JavaModelException {
 		if (javaProject == null)

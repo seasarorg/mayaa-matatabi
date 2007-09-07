@@ -17,6 +17,14 @@
 				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
 				label="%label.openaction" />
+			<action
+				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.InsertMayaaId"
+				label="%label.insertmayaaid" />
+			<action
+				class="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.InsertSpanTag"
+				label="%label.insertspantag" />
 		</objectContribution>
 		<objectContribution adaptable="true"
 			id="org.seasar.mayaa.matatabi.html.objectContribution"
@@ -129,6 +137,18 @@
 				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				label="%label.insertmayaaid" 
+				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+				label="%label.insertspantag"
+				class="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertSpanTag" />
 		</editorContribution>
 		<editorContribution
 			targetID="org.eclipse.jst.pagedesigner.PageDesignerEditor"
@@ -155,6 +175,20 @@
 				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+			<!-- ページデザイナーでは動かなかったので保留
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				label="%label.insertmayaaid" 
+				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+				label="%label.insertspantag"
+				class="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertSpanTag" />
+			-->
 		</editorContribution>
 		<editorContribution
 			targetID="org.eclipse.jdt.ui.CompilationUnitEditor"
@@ -199,6 +233,12 @@
 		<command category="org.seasar.mayaa.matatabi.plugin.category"
 			id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
 			name="label.openmayaa" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+			name="%label.insertmayaaid" />
+		<command category="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+			name="%label.insertspantag" />
 		<category id="org.seasar.mayaa.matatabi.plugin.category"
 			name="matatabi" />
 	</extension>
@@ -227,6 +267,16 @@
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+O" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Shift+I" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Shift+S" />
 		<key
 			commandId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
