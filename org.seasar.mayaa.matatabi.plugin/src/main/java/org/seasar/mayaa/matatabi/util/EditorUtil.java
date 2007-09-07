@@ -52,9 +52,15 @@ public class EditorUtil {
 			fileExtension = "mayaa";
 		}
 		String fileName = path.toString();
-		fileName = fileName.substring(0, fileName.length()
-				- path.getFileExtension().length())
-				+ fileExtension;
+		if (fileName.substring(fileName.lastIndexOf("/"), fileName.length())
+				.indexOf("$") > 0) {
+			fileName = fileName.substring(0, fileName.lastIndexOf("$")) + "."
+					+ fileExtension;
+		} else {
+			fileName = fileName.substring(0, fileName.length()
+					- path.getFileExtension().length())
+					+ fileExtension;
+		}
 		IFile openFile = project.getFile(fileName);
 		if (!openFile.exists()) {
 			return null;

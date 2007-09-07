@@ -2,6 +2,7 @@ package org.seasar.mayaa.matatabi.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -13,6 +14,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Document;
@@ -46,7 +48,7 @@ public class ParseUtil {
 			}
 		} else {
 			try {
-				return getIdList(new InputSource(defaultMayaa.getContents()));
+				return getXmlIdList(new InputSource(defaultMayaa.getContents()));
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
@@ -63,12 +65,12 @@ public class ParseUtil {
 		return new LinkedHashMap<String, Element>();
 	}
 
-	public static Map<String, Element> getXmlIdList(InputSource input) {
+	public static Map<String, Element> getXmlIdList(InputSource inputSource) {
 		org.apache.xerces.parsers.DOMParser parser = new org.apache.xerces.parsers.DOMParser();
 		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 		try {
 
-			parser.parse(input);
+			parser.parse(inputSource);
 			Document document = parser.getDocument();
 			traverse(idlist, document.getDocumentElement(), mayaaNamespaces);
 		} catch (SAXException e) {
@@ -81,31 +83,44 @@ public class ParseUtil {
 
 	public static Map<String, Element> getIdList(IFile file) {
 		try {
-			if (!file.exists()) {
-				return new LinkedHashMap<String, Element>();
+			List<IFile> fileList = new ArrayList<IFile>();
+			if (file.exists()) {
+				fileList.add(file);
 			}
-			return getIdList(new InputSource(file.getContents()));
+
+			String prefix = file.getName().substring(0,
+					file.getName().indexOf("."))
+					+ "$";
+			if (file.getParent() instanceof IFolder) {
+				IFolder folder = (IFolder) file.getParent();
+				for (IResource resource : folder.members()) {
+					if (resource instanceof IFile
+							&& resource.getName().startsWith(prefix)) {
+						fileList.add((IFile) resource);
+					}
+				}
+			}
+
+			DOMParser parser = new DOMParser();
+			Map<String, Element> idlist = new LinkedHashMap<String, Element>();
+			for (IFile targetFile : fileList) {
+				try {
+					parser.parse(new InputSource(targetFile.getContents()));
+					Document document = parser.getDocument();
+					traverse(idlist, (Element) document.getElementsByTagName(
+							"html").item(0), htmlNamespaces);
+				} catch (SAXException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return idlist;
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		return new LinkedHashMap<String, Element>();
-	}
-
-	public static Map<String, Element> getIdList(InputSource input) {
-		DOMParser parser = new DOMParser();
-		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
-		try {
-
-			parser.parse(input);
-			Document document = parser.getDocument();
-			traverse(idlist, (Element) document.getElementsByTagName("html")
-					.item(0), htmlNamespaces);
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return idlist;
 	}
 
 	/**

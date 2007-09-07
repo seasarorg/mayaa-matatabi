@@ -55,7 +55,7 @@ public class GenerateComponentAction extends OpenAction {
 					IDocument document = textEditor.getDocumentProvider()
 							.getDocument(textEditor.getEditorInput());
 					Map<String, Element> outid = ParseUtil
-							.getIdList(new InputSource(
+							.getXmlIdList(new InputSource(
 									new ByteArrayInputStream(document.get()
 											.getBytes())));
 					for (String id : outid.keySet()) {
