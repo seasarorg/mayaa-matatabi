@@ -103,12 +103,6 @@ public abstract class OpenActionBase implements IObjectActionDelegate,
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		if (EditorUtil.hasMatatabiNature()) {
-			action.setEnabled(true);
-		} else {
-			action.setEnabled(false);
-		}
-
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection ss = (StructuredSelection) selection;
 			Object obj = ss.getFirstElement();
@@ -119,6 +113,12 @@ public abstract class OpenActionBase implements IObjectActionDelegate,
 		} else {
 			path = null;
 			project = null;
+		}
+
+		if (EditorUtil.hasMatatabiNature()) {
+			action.setEnabled(true);
+		} else {
+			action.setEnabled(false);
 		}
 	}
 }

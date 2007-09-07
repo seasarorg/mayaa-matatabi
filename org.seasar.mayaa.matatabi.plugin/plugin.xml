@@ -17,14 +17,6 @@
 				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
 				label="%label.openaction" />
-			<action
-				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.InsertMayaaId"
-				label="%label.insertmayaaid" />
-			<action
-				class="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.InsertSpanTag"
-				label="%label.insertspantag" />
 		</objectContribution>
 		<objectContribution adaptable="true"
 			id="org.seasar.mayaa.matatabi.html.objectContribution"

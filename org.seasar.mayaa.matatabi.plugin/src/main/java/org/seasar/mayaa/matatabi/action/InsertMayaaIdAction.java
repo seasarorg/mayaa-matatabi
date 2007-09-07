@@ -3,9 +3,6 @@ package org.seasar.mayaa.matatabi.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -13,7 +10,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorActionDelegate;
@@ -32,10 +28,6 @@ import org.w3c.dom.NamedNodeMap;
 public class InsertMayaaIdAction implements IObjectActionDelegate,
 		IEditorActionDelegate {
 	protected IWorkbenchPart targetPart;
-
-	protected IPath path;
-
-	protected IProject project;
 
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
 		this.targetPart = targetEditor;
@@ -101,18 +93,6 @@ public class InsertMayaaIdAction implements IObjectActionDelegate,
 			action.setEnabled(true);
 		} else {
 			action.setEnabled(false);
-		}
-
-		if (selection instanceof StructuredSelection) {
-			StructuredSelection ss = (StructuredSelection) selection;
-			Object obj = ss.getFirstElement();
-			if (obj instanceof IFile) {
-				path = ((IFile) obj).getProjectRelativePath();
-				project = ((IFile) obj).getProject();
-			}
-		} else {
-			path = null;
-			project = null;
 		}
 	}
 

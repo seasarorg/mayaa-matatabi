@@ -197,7 +197,11 @@ public class EditorUtil {
 	 * @return
 	 */
 	public static boolean hasMatatabiNature() {
-		IProject project = getActiveFile().getProject();
+		IFile file = getActiveFile();
+		if (file == null) {
+			return false;
+		}
+		IProject project = file.getProject();
 		if (project == null) {
 			return false;
 		}

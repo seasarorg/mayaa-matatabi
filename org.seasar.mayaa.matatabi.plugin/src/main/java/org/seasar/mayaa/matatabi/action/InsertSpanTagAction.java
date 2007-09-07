@@ -1,6 +1,5 @@
 package org.seasar.mayaa.matatabi.action;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IAction;
@@ -10,7 +9,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -81,18 +79,6 @@ public class InsertSpanTagAction implements IObjectActionDelegate,
 			action.setEnabled(true);
 		} else {
 			action.setEnabled(false);
-		}
-
-		if (selection instanceof StructuredSelection) {
-			StructuredSelection ss = (StructuredSelection) selection;
-			Object obj = ss.getFirstElement();
-			if (obj instanceof IFile) {
-				path = ((IFile) obj).getProjectRelativePath();
-				project = ((IFile) obj).getProject();
-			}
-		} else {
-			path = null;
-			project = null;
 		}
 	}
 
