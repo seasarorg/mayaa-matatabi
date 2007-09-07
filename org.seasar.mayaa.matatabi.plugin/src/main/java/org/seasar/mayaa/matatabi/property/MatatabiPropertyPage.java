@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -35,6 +36,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
@@ -44,7 +46,7 @@ import org.seasar.mayaa.matatabi.util.PreferencesUtil;
  * 設定ページ
  */
 public class MatatabiPropertyPage extends PropertyPage {
-	private static final String TEMPLATE_EXTENSIONS = "templateExtensions";
+	public static final String BUILDER_ID = "org.seasar.mayaa.matatabi.MatatabiBuilder";
 
 	public static final String REPLACE_RULE = "replaceRule";
 
@@ -68,6 +70,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	private Button useMatatabi;
 
+	private Button useValidator;
+
 	private TabFolder folder;
 
 	private Combo missingIdAttribute;
@@ -84,7 +88,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	private Text webRootPath;
 	private Text defaultPackage;
-	private Text templateExtensions;
 
 	private ReplaceRuleTableViewer replaceRuleTableViewer;
 
@@ -118,9 +121,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 				"Webルートパス");
 		defaultPackage = createJavaPackageSelectionText(project,
 				configMarkerPanel, "Javaデフォルトパッケージ");
-		templateExtensions = createTextPart(configMarkerPanel, "テンプレートファイル拡張子");
-		Composite errorMarkerPanel = createPanel(folder, 2);
 
+		Composite errorMarkerPanel = createPanel(folder, 2);
+		this.useValidator = createCheckPart(errorMarkerPanel,
+				"MayaaファイルのValidatorを有効にする");
 		missingIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
 				"ルート要素直下のid,xpath属性の必須チェック");
 		invalidIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
@@ -146,7 +150,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		configTabItem.setText("ディレクトリ設定");
 		configTabItem.setControl(configMarkerPanel);
 		TabItem errorTabItem = new TabItem(folder, SWT.NULL);
-		errorTabItem.setText("エラーマーカー");
+		errorTabItem.setText("バリデーション");
 		errorTabItem.setControl(errorMarkerPanel);
 		TabItem generateTabItem = new TabItem(folder, SWT.NULL);
 		generateTabItem.setText("自動生成");
@@ -181,29 +185,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		label = new Label(configMarkerPanel, SWT.NONE);
-
-		// Button button = new Button(configMarkerPanel, SWT.PUSH);
-		// button.setText("選択");
-		//
-		// button.addSelectionListener(new SelectionAdapter() {
-		// public void widgetSelected(SelectionEvent e) {
-		// PackageSelectionDialog dialog = new PackageSelectionDialog(
-		// getShell(),
-		// new BusyIndicatorRunnableContext(),
-		// PackageSelectionDialog.F_REMOVE_DUPLICATES
-		// | PackageSelectionDialog.F_HIDE_EMPTY_INNER
-		// | PackageSelectionDialog.F_SHOW_PARENTS
-		// | PackageSelectionDialog.F_HIDE_DEFAULT_PACKAGE,
-		// SearchEngine.createWorkspaceScope());
-		// if (dialog.open() == Dialog.OK) {
-		// IPackageFragment result = (IPackageFragment) dialog
-		// .getFirstResult();
-		// if (result != null) {
-		// text.setText(result.getElementName());
-		// }
-		// }
-		// }
-		// });
 
 		return text;
 	}
@@ -242,7 +223,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.javaSourcePath.setText(store.getString(JAVA_SOURCE_PATH));
 		this.webRootPath.setText(store.getString(WEB_ROOT_PATH));
 		this.defaultPackage.setText(store.getString(DEFAULT_PACKAGE));
-		this.templateExtensions.setText(store.getString(TEMPLATE_EXTENSIONS));
 
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
@@ -286,6 +266,11 @@ public class MatatabiPropertyPage extends PropertyPage {
 			if (project.hasNature(MatatabiNature.NATURE_ID)) {
 				this.useMatatabi.setSelection(true);
 			}
+			for (ICommand command : project.getDescription().getBuildSpec()) {
+				if (command.getBuilderName().equals(BUILDER_ID)) {
+					this.useValidator.setSelection(true);
+				}
+			}
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -308,7 +293,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.javaSourcePath.setText("");
 		this.webRootPath.setText("");
 		this.defaultPackage.setText("");
-		this.templateExtensions.setText("html");
 		this.useMatatabi.setSelection(false);
 		this.missingIdAttribute.select(1);
 		this.invalidIdAttribute.select(1);
@@ -330,7 +314,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
 			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
-			store.setValue(TEMPLATE_EXTENSIONS, templateExtensions.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, missingIdAttribute
 					.getSelectionIndex());
 			store.setValue(INVALID_ID_ATTRIBUTE, invalidIdAttribute
@@ -376,6 +359,11 @@ public class MatatabiPropertyPage extends PropertyPage {
 							.toArray(new String[natureIds.size()]));
 					project.setDescription(desc, null);
 				}
+				if (useValidator.getSelection()) {
+					setBuilder(project);
+				} else {
+					removeBuilder(project);
+				}
 			} else if (project.hasNature(MatatabiNature.NATURE_ID)) {
 				IProjectDescription desc = project.getDescription();
 				List<String> natureIds = new ArrayList<String>(Arrays
@@ -384,6 +372,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 				desc.setNatureIds((String[]) natureIds
 						.toArray(new String[natureIds.size()]));
 				project.setDescription(desc, null);
+
+				removeBuilder(project);
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -421,6 +411,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private Button createCheckPart(Composite composite, String label, int style) {
 		Button check = new Button(composite, SWT.CHECK);
 		check.setText(label);
+		Label l = new Label(composite, SWT.NONE);
 		return check;
 	}
 
@@ -457,6 +448,52 @@ public class MatatabiPropertyPage extends PropertyPage {
 	}
 
 	/**
+	 * Builderの登録
+	 * 
+	 * @throws CoreException
+	 */
+	private void setBuilder(IProject project) throws CoreException {
+		IProjectDescription description = project.getDescription();
+		ICommand[] commands = description.getBuildSpec();
+		for (int i = 0; i < commands.length; i++) {
+			if (commands[i].getBuilderName().equals(BUILDER_ID)) {
+				return; // ビルダー登録のキャンセル
+			}
+		}
+		ICommand command = description.newCommand();
+		command.setBuilderName(BUILDER_ID);
+		ICommand[] newCommands = new ICommand[commands.length + 1];
+		System.arraycopy(commands, 0, newCommands, 0, commands.length);
+		newCommands[commands.length] = command;
+		description.setBuildSpec(newCommands);
+		project.setDescription(description, null);
+	}
+
+	/**
+	 * Builderの登録解除
+	 * 
+	 * @throws CoreException
+	 */
+	private void removeBuilder(IProject project) throws CoreException {
+		project.deleteMarkers(MatatabiPlugin.MARKER_ID, false,
+				IResource.DEPTH_INFINITE);
+
+		IProjectDescription description = project.getDescription();
+		ICommand[] commands = description.getBuildSpec();
+		for (int i = 0; i < commands.length; i++) {
+			if (commands[i].getBuilderName().equals(BUILDER_ID)) {
+				ICommand[] newCommands = new ICommand[commands.length - 1];
+				System.arraycopy(commands, 0, newCommands, 0, i);
+				System.arraycopy(commands, i + 1, newCommands, i,
+						commands.length - i - 1);
+				description.setBuildSpec(newCommands);
+				project.setDescription(description, null);
+				return; // or break;
+			}
+		}
+	}
+
+	/**
 	 * プロジェクト内のフォルダ選択
 	 */
 	private static class FolderSelectionAdapter extends SelectionAdapter {
@@ -490,4 +527,5 @@ public class MatatabiPropertyPage extends PropertyPage {
 			}
 		}
 	}
+
 }

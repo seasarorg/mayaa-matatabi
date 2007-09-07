@@ -329,8 +329,8 @@
 		</builder>
 	</extension>
 	<extension id="matatabiMarker"
-		point="org.eclipse.core.resources.markers">
+		point="org.eclipse.core.resources.markers" name="Matatabi Mayaa Marker">
 		<super type="org.eclipse.core.resources.problemmarker" />
+		<persistent value="true" />
 	</extension>
-
 </plugin>
