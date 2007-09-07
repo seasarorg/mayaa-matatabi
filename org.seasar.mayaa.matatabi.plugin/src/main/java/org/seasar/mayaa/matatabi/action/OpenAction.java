@@ -7,19 +7,14 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IActionDelegate;
-import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 
 /**
  * 同じディレクトリにある違う拡張子のファイルを開くアクション
  */
-public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate {
-	protected IWorkbenchPart targetPart;
-
+public class OpenAction extends ActionBase {
 	protected IPath path;
 
 	protected IProject project;
@@ -34,14 +29,6 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 	public OpenAction(String fileExtension) {
 		super();
 		this.fileExtension = fileExtension;
-	}
-
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		this.targetPart = targetPart;
-	}
-
-	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-		this.targetPart = targetEditor;
 	}
 
 	/**
@@ -67,6 +54,7 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
+		super.selectionChanged(action, selection);
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection ss = (StructuredSelection) selection;
 			Object obj = ss.getFirstElement();
@@ -77,12 +65,6 @@ public class OpenAction implements IObjectActionDelegate, IEditorActionDelegate 
 		} else {
 			path = null;
 			project = null;
-		}
-
-		if (EditorUtil.hasMatatabiNature()) {
-			action.setEnabled(true);
-		} else {
-			action.setEnabled(false);
 		}
 	}
 }

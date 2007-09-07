@@ -103,6 +103,12 @@
 				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				label="%label.insertmayaaid" 
+				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
 		</editorContribution>
 		<editorContribution
 			targetID="org.eclipse.wst.html.core.htmlsource.source"
@@ -249,6 +255,11 @@
 			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Alt+T" />
+		<key
+			commandId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+			sequence="Ctrl+Shift+I" />
 		<key
 			commandId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"

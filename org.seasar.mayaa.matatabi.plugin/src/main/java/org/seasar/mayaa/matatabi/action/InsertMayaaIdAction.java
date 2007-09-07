@@ -11,11 +11,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.ui.IActionDelegate;
-import org.eclipse.ui.IEditorActionDelegate;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.w3c.dom.Attr;
@@ -25,14 +20,7 @@ import org.w3c.dom.NamedNodeMap;
 /**
  * HTMLファイルの要素にm:idを挿入するアクション
  */
-public class InsertMayaaIdAction implements IObjectActionDelegate,
-		IEditorActionDelegate {
-	protected IWorkbenchPart targetPart;
-
-	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
-		this.targetPart = targetEditor;
-	}
-
+public class InsertMayaaIdAction extends ActionBase {
 	public void run(IAction action) {
 		if (EditorUtil.hasMatatabiNature()) {
 			if (targetPart instanceof ITextEditor) {
@@ -53,8 +41,8 @@ public class InsertMayaaIdAction implements IObjectActionDelegate,
 						}
 
 						InputDialog dialog = new InputDialog(targetPart
-								.getSite().getShell(), "id入力", "idを入力してください",
-								"", null);
+								.getSite().getShell(), "mayaa id入力",
+								"mayaa idを入力してください", "", null);
 						if (dialog.open() == Dialog.CANCEL) {
 							return;
 						}
@@ -83,20 +71,5 @@ public class InsertMayaaIdAction implements IObjectActionDelegate,
 				}
 			}
 		}
-	}
-
-	/**
-	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-		if (EditorUtil.hasMatatabiNature()) {
-			action.setEnabled(true);
-		} else {
-			action.setEnabled(false);
-		}
-	}
-
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		this.targetPart = targetPart;
 	}
 }
