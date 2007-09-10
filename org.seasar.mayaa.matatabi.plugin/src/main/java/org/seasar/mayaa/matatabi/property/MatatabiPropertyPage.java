@@ -312,7 +312,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.invalidIdAttribute.select(1);
 		this.notexistIdAttribute.select(1);
 		this.duplicateIdAttribute.select(1);
-		this.undefineIdAttribute.select(1);
+		this.undefineIdAttribute.select(3);
 		this.namespaceTableViewer.setInput(getDefaultNamespace());
 		this.replaceRuleTableViewer.setInput(getDefaultReplaceRule());
 
@@ -329,16 +329,16 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
 			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
-			store.setValue(MISSING_ID_ATTRIBUTE, missingIdAttribute
-					.getSelectionIndex());
-			store.setValue(INVALID_ID_ATTRIBUTE, invalidIdAttribute
-					.getSelectionIndex());
-			store.setValue(NOTEXIST_ID_ATTRIBUTE, notexistIdAttribute
-					.getSelectionIndex());
-			store.setValue(DUPLICATE_ID_ATTRIBUTE, duplicateIdAttribute
-					.getSelectionIndex());
-			store.setValue(UNDEFINE_ID_ATTRIBUTE, undefineIdAttribute
-					.getSelectionIndex());
+			store.setValue(MISSING_ID_ATTRIBUTE, String
+					.valueOf(missingIdAttribute.getSelectionIndex()));
+			store.setValue(INVALID_ID_ATTRIBUTE, String
+					.valueOf(invalidIdAttribute.getSelectionIndex()));
+			store.setValue(NOTEXIST_ID_ATTRIBUTE, String
+					.valueOf(notexistIdAttribute.getSelectionIndex()));
+			store.setValue(DUPLICATE_ID_ATTRIBUTE, String
+					.valueOf(duplicateIdAttribute.getSelectionIndex()));
+			store.setValue(UNDEFINE_ID_ATTRIBUTE, String
+					.valueOf(undefineIdAttribute.getSelectionIndex()));
 
 			Collection<Namespace> namespaces = (Collection<Namespace>) namespaceTableViewer
 					.getInput();
