@@ -3,10 +3,12 @@ package org.seasar.mayaa.matatabi.builder;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 /**
  * MayaaファイルのValidationを行うビルダー
@@ -46,6 +48,8 @@ public class MatatabiBuilder extends IncrementalProjectBuilder {
 	 * @throws CoreException
 	 */
 	private void fullBuild(IProgressMonitor monitor) throws CoreException {
+		getProject().deleteMarkers(MatatabiPlugin.MARKER_ID, false,
+				IResource.DEPTH_INFINITE);
 		getProject().accept(new MatatabiValidator());
 	}
 
