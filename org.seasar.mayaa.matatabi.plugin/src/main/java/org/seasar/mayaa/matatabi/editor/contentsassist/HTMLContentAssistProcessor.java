@@ -24,9 +24,6 @@ import org.w3c.dom.Node;
  */
 @SuppressWarnings("restriction")
 public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
-	/** 名前空間 */
-	private static final String XMLNS_URI = "http://www.w3.org/2000/xmlns/";
-
 	/** アイコン */
 	private Image icon;
 

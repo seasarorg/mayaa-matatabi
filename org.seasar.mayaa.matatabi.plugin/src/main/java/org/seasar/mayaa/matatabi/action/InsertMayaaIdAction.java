@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -33,8 +32,6 @@ public class InsertMayaaIdAction extends ActionBase {
 					ISelection selection = selectionProvider.getSelection();
 					IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
-					IDocument document = textEditor.getDocumentProvider()
-							.getDocument(textEditor.getEditorInput());
 					Object object = structuredSelection.getFirstElement();
 					if (object instanceof Element) {
 						Element element = (Element) object;

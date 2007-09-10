@@ -192,7 +192,7 @@ public class ReplaceRuleTableViewer extends TableViewer {
 				viewer.editElement(targetItem.getData(), columnIndex);
 			} else {
 				ReplaceRule relpace = new ReplaceRule("", "");
-				((List) viewer.getInput()).add(relpace);
+				((List<ReplaceRule>) viewer.getInput()).add(relpace);
 				add(relpace);
 			}
 		}

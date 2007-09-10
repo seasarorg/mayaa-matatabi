@@ -406,19 +406,6 @@ public class MatatabiPropertyPage extends PropertyPage {
 		return result;
 	}
 
-	private Text createTextPart(Composite composite, String label) {
-		return createTextPart(composite, label, SWT.SINGLE | SWT.BORDER);
-	}
-
-	private Text createTextPart(Composite composite, String label, int style) {
-		Label l = new Label(composite, SWT.NONE);
-		l.setText(label);
-		Text txt = new Text(composite, style);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		txt.setLayoutData(data);
-		return txt;
-	}
-
 	private Button createCheckPart(Composite composite, String label) {
 		return createCheckPart(composite, label, SWT.SINGLE | SWT.BORDER);
 	}
@@ -426,7 +413,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private Button createCheckPart(Composite composite, String label, int style) {
 		Button check = new Button(composite, SWT.CHECK);
 		check.setText(label);
-		Label l = new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		return check;
 	}
 

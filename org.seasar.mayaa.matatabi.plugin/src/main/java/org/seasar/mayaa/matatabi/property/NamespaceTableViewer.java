@@ -199,7 +199,7 @@ public class NamespaceTableViewer extends TableViewer {
 				viewer.editElement(targetItem.getData(), columnIndex);
 			} else {
 				Namespace namespace = new Namespace("", "");
-				((List) viewer.getInput()).add(namespace);
+				((List<Namespace>) viewer.getInput()).add(namespace);
 				add(namespace);
 			}
 		}
