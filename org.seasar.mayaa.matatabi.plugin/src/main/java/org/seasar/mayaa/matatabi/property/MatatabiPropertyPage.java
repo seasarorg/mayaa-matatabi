@@ -62,6 +62,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	public static final String MISSING_ID_ATTRIBUTE = "missingIdAttribute";
 
+	public static final String ONLY_MAYAA_ID = "onlyMayaaId";
+
 	public static final String JAVA_SOURCE_PATH = "javaSourcePath";
 
 	public static final String WEB_ROOT_PATH = "webRootPath";
@@ -71,6 +73,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private Button useMatatabi;
 
 	private Button useValidator;
+
+	private Button onlyMayaaId;
 
 	private TabFolder folder;
 
@@ -110,20 +114,24 @@ public class MatatabiPropertyPage extends PropertyPage {
 		panel.setLayout(g);
 		panel.setFont(parent.getFont());
 
-		this.useMatatabi = createCheckPart(panel, "matatabiを使用する");
+		useMatatabi = createCheckPart(panel, "matatabiを使用する");
 		folder = createTabFolder(panel);
 
 		Composite configMarkerPanel = createPanel(folder, 3);
-
 		javaSourcePath = createFolderSelectionText(project, configMarkerPanel,
 				"Javaソースパス");
 		webRootPath = createFolderSelectionText(project, configMarkerPanel,
 				"Webルートパス");
 		defaultPackage = createJavaPackageSelectionText(project,
 				configMarkerPanel, "Javaデフォルトパッケージ");
+		onlyMayaaId = createCheckPart(configMarkerPanel,
+				"テンプレートファイルでm:idのみ処理対象とする");
+		GridData data = new GridData();
+		data.horizontalSpan = 2;
+		onlyMayaaId.setLayoutData(data);
 
 		Composite errorMarkerPanel = createPanel(folder, 2);
-		this.useValidator = createCheckPart(errorMarkerPanel,
+		useValidator = createCheckPart(errorMarkerPanel,
 				"MayaaファイルのValidatorを有効にする");
 		missingIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
 				"ルート要素直下のid,xpath属性の必須チェック");
@@ -147,7 +155,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		replaceRuleTableViewer = new ReplaceRuleTableViewer(generatePanel,
 				SWT.SINGLE | SWT.V_SCROLL);
 		TabItem configTabItem = new TabItem(folder, SWT.NULL);
-		configTabItem.setText("ディレクトリ設定");
+		configTabItem.setText("動作設定");
 		configTabItem.setControl(configMarkerPanel);
 		TabItem errorTabItem = new TabItem(folder, SWT.NULL);
 		errorTabItem.setText("バリデーション");
@@ -217,9 +225,13 @@ public class MatatabiPropertyPage extends PropertyPage {
 	}
 
 	private void loadStore(IProject project) {
-		setPreferenceStore(new ScopedPreferenceStore(new ProjectScope(
-				(IProject) getElement()), "org.seasar.mayaa.matatabi"));
+		setPreferenceStore(new ScopedPreferenceStore(new ProjectScope(project),
+				"org.seasar.mayaa.matatabi"));
 		IPreferenceStore store = getPreferenceStore();
+
+		if (store.getBoolean(ONLY_MAYAA_ID)) {
+			onlyMayaaId.setSelection(true);
+		}
 		this.javaSourcePath.setText(store.getString(JAVA_SOURCE_PATH));
 		this.webRootPath.setText(store.getString(WEB_ROOT_PATH));
 		this.defaultPackage.setText(store.getString(DEFAULT_PACKAGE));
@@ -294,6 +306,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.webRootPath.setText("");
 		this.defaultPackage.setText("");
 		this.useMatatabi.setSelection(false);
+		this.onlyMayaaId.setSelection(false);
+		this.useValidator.setSelection(false);
 		this.missingIdAttribute.select(1);
 		this.invalidIdAttribute.select(1);
 		this.notexistIdAttribute.select(1);
@@ -311,6 +325,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		if (project != null) {
 			IPreferenceStore store = getPreferenceStore();
 
+			store.setValue(ONLY_MAYAA_ID, onlyMayaaId.getSelection());
 			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
 			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());

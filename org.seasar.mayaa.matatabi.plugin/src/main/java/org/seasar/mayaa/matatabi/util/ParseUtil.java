@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -69,10 +70,10 @@ public class ParseUtil {
 		org.apache.xerces.parsers.DOMParser parser = new org.apache.xerces.parsers.DOMParser();
 		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 		try {
-
 			parser.parse(inputSource);
 			Document document = parser.getDocument();
-			traverse(idlist, document.getDocumentElement(), mayaaNamespaces);
+			traverse(idlist, document.getDocumentElement(),
+					getMayaaNamespaces());
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -108,7 +109,8 @@ public class ParseUtil {
 					parser.parse(new InputSource(targetFile.getContents()));
 					Document document = parser.getDocument();
 					traverse(idlist, (Element) document.getElementsByTagName(
-							"html").item(0), htmlNamespaces);
+							"html").item(0), getHtmlNamespaces(file
+							.getProject()));
 				} catch (SAXException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -165,8 +167,10 @@ public class ParseUtil {
 		}
 	}
 
-	public static List<String> getHtmlNamespaces() {
-		return htmlNamespaces;
+	public static List<String> getHtmlNamespaces(IProject project) {
+		return PreferencesUtil.getPreference(project).getBoolean(
+				MatatabiPropertyPage.ONLY_MAYAA_ID) ? mayaaNamespaces
+				: htmlNamespaces;
 	}
 
 	public static List<String> getMayaaNamespaces() {

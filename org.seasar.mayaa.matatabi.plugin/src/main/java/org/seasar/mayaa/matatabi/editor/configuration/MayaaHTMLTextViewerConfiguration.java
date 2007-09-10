@@ -26,7 +26,6 @@ public class MayaaHTMLTextViewerConfiguration extends
 				.toArray(new IContentAssistProcessor[0]);
 	}
 
-	
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		List<IHyperlinkDetector> result = new ArrayList<IHyperlinkDetector>(0);
 		result.add(new HtmlHyperlinkDetector());

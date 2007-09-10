@@ -1,6 +1,8 @@
 package org.seasar.mayaa.matatabi.action;
 
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -61,10 +63,14 @@ public class GenerateComponentAction extends OpenActionBase {
 
 					IDocument document = textEditor.getDocumentProvider()
 							.getDocument(textEditor.getEditorInput());
-					Map<String, Element> outid = ParseUtil
-							.getXmlIdList(new InputSource(
-									new ByteArrayInputStream(document.get()
-											.getBytes())));
+					Map<String, Element> outid = new LinkedHashMap<String, Element>();
+					try {
+						outid = ParseUtil.getXmlIdList(new InputSource(
+								new ByteArrayInputStream(document.get()
+										.getBytes("UTF-8"))));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 					for (String id : outid.keySet()) {
 						sourceid.remove(id);
 					}
