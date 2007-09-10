@@ -77,34 +77,42 @@ public class MatatabiValidateHandler extends DefaultHandler {
 					&& getXpath(attributes, uri) == null) {
 				int severty = getSeverty(preferenceStore
 						.getString(MatatabiPropertyPage.MISSING_ID_ATTRIBUTE));
-				setMarker(
-						Messages
-								.getString("MatatabiValidator.MISSING_ID_ATTRIBUTE"), locator.getLineNumber(), severty); //$NON-NLS-1$
+				setMarker(Messages
+						.getString("MatatabiValidator.MISSING_ID_ATTRIBUTE"),
+						locator.getLineNumber(), severty);
 			}
 		} else {
 			if (depth != 2) {
 				int severty = getSeverty(preferenceStore
 						.getString(MatatabiPropertyPage.INVALID_ID_ATTRIBUTE));
-				setMarker(
-						Messages
-								.getString("MatatabiValidator.INVALID_ID_ATTRIBUTE"), locator.getLineNumber(), //$NON-NLS-1$
-						severty);
+				setMarker(Messages
+						.getString("MatatabiValidator.INVALID_ID_ATTRIBUTE"),
+						locator.getLineNumber(), severty);
+				if (severty != -1) {
+					return;
+				}
 			}
 			if (!sourceid.contains(id)
 					&& !file.getName().equals("default.mayaa")) {
 				int severty = getSeverty(preferenceStore
 						.getString(MatatabiPropertyPage.NOTEXIST_ID_ATTRIBUTE));
-				setMarker(
-						Messages
-								.getString("MatatabiValidator.NOTEXIST_ID_ATTRIBUTE"), locator //$NON-NLS-1$
-								.getLineNumber(), severty);
+				setMarker(Messages
+						.getString("MatatabiValidator.NOTEXIST_ID_ATTRIBUTE"),
+						locator.getLineNumber(), severty);
+				if (severty != -1) {
+					return;
+				}
+
 			}
 			if (idlist.contains(id)) {
 				int severty = getSeverty(preferenceStore
 						.getString(MatatabiPropertyPage.DUPLICATE_ID_ATTRIBUTE));
-				setMarker(
-						Messages
-								.getString("MatatabiValidator.DUPLICATE_ID_ATTRIBUTE"), locator.getLineNumber(), severty); //$NON-NLS-1$
+				setMarker(Messages
+						.getString("MatatabiValidator.DUPLICATE_ID_ATTRIBUTE"),
+						locator.getLineNumber(), severty);
+				if (severty != -1) {
+					return;
+				}
 			}
 			idlist.add(id);
 		}
