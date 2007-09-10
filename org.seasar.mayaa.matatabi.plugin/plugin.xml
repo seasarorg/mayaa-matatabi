@@ -10,11 +10,11 @@
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
 			<action
-				class="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaa"
 				label="%label.openmayaa" />
 			<action
-				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
 				label="%label.openaction" />
 		</objectContribution>
@@ -27,11 +27,11 @@
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
 			<action
-				class="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
+				class="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTML"
 				label="%label.openhtml" />
 			<action
-				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				class="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
 				label="%label.openaction" />
 		</objectContribution>
@@ -43,11 +43,11 @@
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
 			<action
-				class="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+				class="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaaPair"
 				label="%label.openmayaa" />
 			<action
-				class="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+				class="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTMLPair"
 				label="%label.openhtml" />
 		</objectContribution>
@@ -94,13 +94,13 @@
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
 				label="%label.openhtml"
-				class="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
+				class="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenHTMLAction" />
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				label="%label.openaction"
-				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				class="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
 			<action
@@ -120,7 +120,7 @@
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 				label="%label.openmayaa"
-				class="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenMayaaAction" />
 			<action
@@ -132,7 +132,7 @@
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				label="%label.openaction"
-				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
 			<action
@@ -158,7 +158,7 @@
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
 				label="%label.openmayaa"
-				class="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenMayaaAction" />
 			<action
@@ -170,7 +170,7 @@
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
 				label="%label.openaction"
-				class="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
 			<!-- ページデザイナーでは動かなかったので保留
@@ -198,13 +198,13 @@
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
 				label="%label.openmayaa"
-				class="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+				class="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction" />
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
 				label="%label.openhtml"
-				class="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+				class="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction" />
 		</editorContribution>
@@ -297,10 +297,9 @@
 			sequence="Ctrl+Alt+Y" />
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
-		<page adaptable="true"
+		<page 
 			class="org.seasar.mayaa.matatabi.property.MatatabiPropertyPage"
-			id="org.seasar.mayaa.matatabi.propertyPage" name="Matatabi"
-			objectClass="org.eclipse.core.resources.IProject" />
+			id="org.seasar.mayaa.matatabi.propertyPage" name="Matatabi" />
 	</extension>
 	<extension id="MatatabiNature"
 		point="org.eclipse.core.resources.natures">

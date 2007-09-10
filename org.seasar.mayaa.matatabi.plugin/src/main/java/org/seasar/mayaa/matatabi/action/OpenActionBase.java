@@ -55,25 +55,9 @@ public abstract class OpenActionBase extends ActionBase {
 		}
 
 		init();
-
 		if (path.toString().startsWith(baseDir)) {
-			String[] filaPath = path.toString().substring(baseDir.length())
-					.split("/");
-			StringBuilder className = new StringBuilder("");
-			for (int i = 0; i < filaPath.length - 1; i++) {
-				if (!filaPath[i].equals("")) {
-					className.append("." + filaPath[i]);
-				}
-			}
-			String baseName = filaPath[filaPath.length - 1].substring(0,
-					filaPath[filaPath.length - 1].indexOf("."));
-			className.append(getResourceName(baseName));
-
-			String targetFilePath = targetBaseDir + "/"
-					+ className.toString().replace('.', '/') + "."
-					+ targetExtension;
-			IFile openFile = project.getFile(targetFilePath);
-			if (!openFile.exists()) {
+			IFile openFile = getTargetFile();
+			if (openFile == null || !openFile.exists()) {
 				return;
 			}
 			try {
@@ -82,7 +66,24 @@ public abstract class OpenActionBase extends ActionBase {
 				e.printStackTrace();
 			}
 		}
+	}
 
+	protected IFile getTargetFile() {
+		String[] filaPath = path.toString().substring(baseDir.length()).split(
+				"/");
+		StringBuilder className = new StringBuilder("");
+		for (int i = 0; i < filaPath.length - 1; i++) {
+			if (!filaPath[i].equals("")) {
+				className.append("." + filaPath[i]);
+			}
+		}
+		String baseName = filaPath[filaPath.length - 1].substring(0,
+				filaPath[filaPath.length - 1].indexOf("."));
+		className.append(getResourceName(baseName));
+
+		return project.getFile(targetBaseDir + "/"
+				+ className.toString().replace('.', '/') + "."
+				+ targetExtension);
 	}
 
 	/**

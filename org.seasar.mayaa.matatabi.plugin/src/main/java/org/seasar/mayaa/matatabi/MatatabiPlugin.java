@@ -3,6 +3,7 @@ package org.seasar.mayaa.matatabi;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
@@ -71,5 +72,10 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 	public static String getStoreValue(IProject project, String key) {
 		return (new ScopedPreferenceStore(new ProjectScope(project),
 				"org.seasar.mayaa.matatabi")).getString(key);
+	}
+
+	public static Shell getShell() {
+		return getDefault().getWorkbench().getActiveWorkbenchWindow()
+				.getShell();
 	}
 }

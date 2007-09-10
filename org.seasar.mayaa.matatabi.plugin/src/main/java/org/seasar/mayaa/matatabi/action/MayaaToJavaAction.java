@@ -2,8 +2,8 @@ package org.seasar.mayaa.matatabi.action;
 
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 
-public class OpenActionPairAction extends OpenActionBase {
-	public OpenActionPairAction() {
+public class MayaaToJavaAction extends OpenActionBase {
+	public MayaaToJavaAction() {
 		super("java");
 	}
 

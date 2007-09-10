@@ -2,11 +2,7 @@ package org.seasar.mayaa.matatabi.action;
 
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 
-public class OpenHTMLPairAction extends OpenActionBase {
-	public OpenHTMLPairAction() {
-		super("html");
-	}
-
+public class JavaToHTMLAction extends OpenHTMLActionBase {
 	@Override
 	protected void init() {
 		baseDir = store.getString(MatatabiPropertyPage.JAVA_SOURCE_PATH)

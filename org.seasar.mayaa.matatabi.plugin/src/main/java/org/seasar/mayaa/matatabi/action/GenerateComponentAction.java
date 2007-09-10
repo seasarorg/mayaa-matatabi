@@ -14,6 +14,7 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.GenerateUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
@@ -24,9 +25,15 @@ import org.xml.sax.InputSource;
 /**
  * コンポーネントの一括生成を行う。
  */
-public class GenerateComponentAction extends OpenAction {
+public class GenerateComponentAction extends OpenActionBase {
 	public GenerateComponentAction() {
 		super("mayaa");
+	}
+
+	@Override
+	protected void init() {
+		baseDir = store.getString(MatatabiPropertyPage.WEB_ROOT_PATH);
+		targetBaseDir = baseDir;
 	}
 
 	public void run(IAction action) {
