@@ -157,7 +157,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	 *            —v‘f‚Ì–¼‘O
 	 * @return
 	 */
-	private boolean requiredIdAttribute(String uri, String localName) {
+	public static final boolean requiredIdAttribute(String uri, String localName) {
 		return !(uri.equals(MAYAA_NAMESPACE) && (localName
 				.equals("beforeRender") || localName.equals("afterRender"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -186,9 +186,9 @@ public class MatatabiValidateHandler extends DefaultHandler {
 
 	private String getAttributeValue(Attributes attributes, String elementUri,
 			String name) {
-		String value = attributes.getValue(MAYAA_NAMESPACE, name); //$NON-NLS-1$
+		String value = attributes.getValue(MAYAA_NAMESPACE, name);
 		if (value == null && elementUri.equals(MAYAA_NAMESPACE)) {
-			value = attributes.getValue(name); //$NON-NLS-1$
+			value = attributes.getValue(name);
 		}
 		return value;
 	}

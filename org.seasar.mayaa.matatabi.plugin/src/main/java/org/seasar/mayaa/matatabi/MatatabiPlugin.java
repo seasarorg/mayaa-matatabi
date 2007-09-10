@@ -17,6 +17,7 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 	private static MatatabiPlugin plugin;
 	public static final String PLUGIN_ID = "org.seasar.mayaa.matatabi";
 	public static final String MARKER_ID = "org.seasar.mayaa.matatabi.matatabiMarker";
+	public static final String XMLNS_MAYAA = "http://mayaa.seasar.org";
 
 	/**
 	 * The constructor.

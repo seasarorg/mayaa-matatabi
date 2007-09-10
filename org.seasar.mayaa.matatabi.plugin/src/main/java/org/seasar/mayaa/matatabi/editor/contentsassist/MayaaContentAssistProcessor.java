@@ -30,6 +30,7 @@ import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
+import org.seasar.mayaa.matatabi.builder.MatatabiValidateHandler;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
 import org.w3c.dom.Attr;
@@ -45,8 +46,6 @@ import org.w3c.dom.Node;
 public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	/** 名前空間 */
 	private static final String XMLNS_URI = "http://www.w3.org/2000/xmlns/";
-	private static final String XMLNS_MAYAA = "http://mayaa.seasar.org";
-
 	/** ルートタグ */
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
 	private Map<String, AttributeInfo> rootTagAttributeList = new LinkedHashMap<String, AttributeInfo>();
@@ -64,129 +63,157 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				.createImage();
 
 		rootTagAttributeList.put("m:contentType", new AttributeInfo(
-				"contentType", XMLNS_MAYAA, false));
+				"contentType", MatatabiPlugin.XMLNS_MAYAA, false));
 		rootTagAttributeList.put("m:noCache", new AttributeInfo("noCache",
-				XMLNS_MAYAA, false));
+				MatatabiPlugin.XMLNS_MAYAA, false));
 		rootTagAttributeList.put("m:cacheControl", new AttributeInfo(
-				"cacheControl", XMLNS_MAYAA, false));
+				"cacheControl", MatatabiPlugin.XMLNS_MAYAA, false));
 		rootTagAttributeList.put("m:templateSuffix", new AttributeInfo(
-				"templateSuffix", XMLNS_MAYAA, false));
+				"templateSuffix", MatatabiPlugin.XMLNS_MAYAA, false));
 		rootTagAttributeList.put("m:extends", new AttributeInfo("extends",
-				XMLNS_MAYAA, false));
+				MatatabiPlugin.XMLNS_MAYAA, false));
 
-		tagList.put("m:attribute", new TagInfo("m", "attribute",
-				new ContextInformation("m:attribute", Messages
+		tagList.put("m:attribute", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"attribute", new ContextInformation("m:attribute", Messages
 						.getString("description.attribute")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("name", XMLNS_MAYAA, true),
-						new AttributeInfo("value", XMLNS_MAYAA, true) }))));
-		tagList.put("m:with", new TagInfo("m", "with", new ContextInformation(
-				"m:with", Messages.getString("description.with")), true,
+						new AttributeInfo("name", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("value", MatatabiPlugin.XMLNS_MAYAA,
+								true) }))));
+		tagList.put("m:with", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"with", new ContextInformation("m:with", Messages
+						.getString("description.with")), true,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:comment", new TagInfo("m", "comment",
-				new ContextInformation("m:comment", Messages
+		tagList.put("m:comment", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"comment", new ContextInformation("m:comment", Messages
 						.getString("description.comment")), true,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:echo", new TagInfo("m", "echo", new ContextInformation(
-				"m:echo", Messages.getString("description.echo")), true,
+		tagList.put("m:echo", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"echo", new ContextInformation("m:echo", Messages
+						.getString("description.echo")), true,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("name",
-								XMLNS_MAYAA, false) }))));
-		tagList.put("m:element", new TagInfo("m", "element",
-				new ContextInformation("m:element", Messages
+								MatatabiPlugin.XMLNS_MAYAA, false) }))));
+		tagList.put("m:element", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"element", new ContextInformation("m:element", Messages
 						.getString("description.element")), true,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("name",
-								XMLNS_MAYAA, false) }))));
-		tagList.put("m:formatDate", new TagInfo("m", "formatDate",
+								MatatabiPlugin.XMLNS_MAYAA, false) }))));
+		tagList.put("m:formatDate", new TagInfo("m",
+				MatatabiPlugin.XMLNS_MAYAA, "formatDate",
 				new ContextInformation("m:formatDate", Messages
 						.getString("description.formatDate")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("value", XMLNS_MAYAA, true),
-						new AttributeInfo("pattern", XMLNS_MAYAA, false),
-						new AttributeInfo("result", XMLNS_MAYAA, false) }))));
-		tagList.put("m:formatNumber", new TagInfo("m", "formatNumber",
+						new AttributeInfo("value", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("pattern",
+								MatatabiPlugin.XMLNS_MAYAA, false),
+						new AttributeInfo("result", MatatabiPlugin.XMLNS_MAYAA,
+								false) }))));
+		tagList.put("m:formatNumber", new TagInfo("m",
+				MatatabiPlugin.XMLNS_MAYAA, "formatNumber",
 				new ContextInformation("m:formatNumber", Messages
 						.getString("description.formatNumber")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("value", XMLNS_MAYAA, true),
-						new AttributeInfo("pattern", XMLNS_MAYAA, false),
-						new AttributeInfo("result", XMLNS_MAYAA, false) }))));
-		tagList
-				.put("m:write", new TagInfo("m", "write",
-						new ContextInformation("m:write", Messages
-								.getString("description.write")), false,
-						new ArrayList<AttributeInfo>(Arrays
-								.asList(new AttributeInfo[] {
-										new AttributeInfo("value", XMLNS_MAYAA,
-												true),
-										new AttributeInfo("default",
-												XMLNS_MAYAA, false),
-										new AttributeInfo("escapeXml",
-												XMLNS_MAYAA, false),
-										new AttributeInfo("escapeWhitespace",
-												XMLNS_MAYAA, false),
-										new AttributeInfo("escapeEol",
-												XMLNS_MAYAA, false) }))));
-		tagList.put("m:for", new TagInfo("m", "for", new ContextInformation(
-				"m:for", Messages.getString("description.for")), true,
+						new AttributeInfo("value", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("pattern",
+								MatatabiPlugin.XMLNS_MAYAA, false),
+						new AttributeInfo("result", MatatabiPlugin.XMLNS_MAYAA,
+								false) }))));
+		tagList.put("m:write", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"write", new ContextInformation("m:write", Messages
+						.getString("description.write")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("test", XMLNS_MAYAA, true),
-						new AttributeInfo("init", XMLNS_MAYAA, false),
-						new AttributeInfo("after", XMLNS_MAYAA, false),
-						new AttributeInfo("max", XMLNS_MAYAA, false) }))));
-		tagList.put("m:forEach", new TagInfo("m", "forEach",
-				new ContextInformation("m:forEach", Messages
+						new AttributeInfo("value", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("default",
+								MatatabiPlugin.XMLNS_MAYAA, false),
+						new AttributeInfo("escapeXml",
+								MatatabiPlugin.XMLNS_MAYAA, false),
+						new AttributeInfo("escapeWhitespace",
+								MatatabiPlugin.XMLNS_MAYAA, false),
+						new AttributeInfo("escapeEol",
+								MatatabiPlugin.XMLNS_MAYAA, false) }))));
+		tagList.put("m:for", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"for", new ContextInformation("m:for", Messages
+						.getString("description.for")), true,
+				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
+						new AttributeInfo("test", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("init", MatatabiPlugin.XMLNS_MAYAA,
+								false),
+						new AttributeInfo("after", MatatabiPlugin.XMLNS_MAYAA,
+								false),
+						new AttributeInfo("max", MatatabiPlugin.XMLNS_MAYAA,
+								false) }))));
+		tagList.put("m:forEach", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"forEach", new ContextInformation("m:forEach", Messages
 						.getString("description.forEach")), true,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("items", XMLNS_MAYAA, true),
-						new AttributeInfo("var", XMLNS_MAYAA, true),
-						new AttributeInfo("index", XMLNS_MAYAA, false) }))));
-		tagList.put("m:if", new TagInfo("m", "if", new ContextInformation(
-				"m:if", Messages.getString("description.if")), true,
+						new AttributeInfo("items", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("var", MatatabiPlugin.XMLNS_MAYAA,
+								true),
+						new AttributeInfo("index", MatatabiPlugin.XMLNS_MAYAA,
+								false) }))));
+		tagList.put("m:if", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA, "if",
+				new ContextInformation("m:if", Messages
+						.getString("description.if")), true,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("test",
-								XMLNS_MAYAA, true) }))));
-		tagList.put("m:doBase", new TagInfo("m", "doBase",
-				new ContextInformation("m:doBase", Messages
+								MatatabiPlugin.XMLNS_MAYAA, true) }))));
+		tagList.put("m:doBase", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"doBase", new ContextInformation("m:doBase", Messages
 						.getString("description.doBase")), false,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:doBody", new TagInfo("m", "doBody",
-				new ContextInformation("m:doBody", Messages
+		tagList.put("m:doBody", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"doBody", new ContextInformation("m:doBody", Messages
 						.getString("description.doBody")), false,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:doRender", new TagInfo("m", "doRender",
-				new ContextInformation("m:doRender", Messages
+		tagList.put("m:doRender", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"doRender", new ContextInformation("m:doRender", Messages
 						.getString("description.doRender")), false,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("name",
-								XMLNS_MAYAA, false) }))));
-		tagList.put("m:beforeRender", new TagInfo("m", "beforeRender",
+								MatatabiPlugin.XMLNS_MAYAA, false) }))));
+		tagList.put("m:beforeRender", new TagInfo("m",
+				MatatabiPlugin.XMLNS_MAYAA, "beforeRender",
 				new ContextInformation("m:beforeRender", Messages
 						.getString("description.beforeRender")), false,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:afterRender", new TagInfo("m", "afterRender",
+		tagList.put("m:afterRender", new TagInfo("m",
+				MatatabiPlugin.XMLNS_MAYAA, "afterRender",
 				new ContextInformation("m:afterRender", Messages
 						.getString("description.afterRender")), false,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:insert", new TagInfo("m", "insert",
-				new ContextInformation("m:insert", Messages
+		tagList.put("m:insert", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"insert", new ContextInformation("m:insert", Messages
 						.getString("description.insert")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("name", XMLNS_MAYAA, false),
-						new AttributeInfo("path", XMLNS_MAYAA, true) }))));
-		tagList.put("m:exec", new TagInfo("m", "exec", new ContextInformation(
-				"m:exec", Messages.getString("description.exec")), false,
+						new AttributeInfo("name", MatatabiPlugin.XMLNS_MAYAA,
+								false),
+						new AttributeInfo("path", MatatabiPlugin.XMLNS_MAYAA,
+								true) }))));
+		tagList.put("m:exec", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"exec", new ContextInformation("m:exec", Messages
+						.getString("description.exec")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("script", XMLNS_MAYAA, false),
-						new AttributeInfo("src", XMLNS_MAYAA, false),
-						new AttributeInfo("encoding", XMLNS_MAYAA, true) }))));
-		tagList.put("m:ignore", new TagInfo("m", "ignore",
-				new ContextInformation("m:ignore", Messages
+						new AttributeInfo("script", MatatabiPlugin.XMLNS_MAYAA,
+								false),
+						new AttributeInfo("src", MatatabiPlugin.XMLNS_MAYAA,
+								false),
+						new AttributeInfo("encoding",
+								MatatabiPlugin.XMLNS_MAYAA, true) }))));
+		tagList.put("m:ignore", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"ignore", new ContextInformation("m:ignore", Messages
 						.getString("description.ignore")), false,
 				new ArrayList<AttributeInfo>()));
-		tagList.put("m:null", new TagInfo("m", "null", new ContextInformation(
-				"m:null", Messages.getString("description.null")), false,
+		tagList.put("m:null", new TagInfo("m", MatatabiPlugin.XMLNS_MAYAA,
+				"null", new ContextInformation("m:null", Messages
+						.getString("description.null")), false,
 				new ArrayList<AttributeInfo>()));
 	}
 
@@ -197,7 +224,9 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
 
-		if (contentAssistRequest.getNode().getParentNode() instanceof Document) {
+		Node parentNode = contentAssistRequest.getNode().getParentNode();
+		Node node = contentAssistRequest.getNode();
+		if (parentNode instanceof Document) {
 			// ルートノードの追加
 			if (isMatch(ROOT_TAG, contentAssistRequest.getMatchString())) {
 				contentAssistRequest.addProposal(new CompletionProposal(
@@ -210,13 +239,13 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		} else {
 			for (Entry<String, TagInfo> entry : taglibList.entrySet()) {
 				TagInfo tag = entry.getValue();
-				if (isMatch(tag.getContent(), contentAssistRequest
+				if (isMatch(tag.getContent(node), contentAssistRequest
 						.getMatchString())) {
 					contentAssistRequest.addProposal(new CompletionProposal(tag
-							.getContent(), contentAssistRequest
+							.getContent(node), contentAssistRequest
 							.getReplacementBeginPosition(),
 							contentAssistRequest.getReplacementLength(), tag
-									.getContent().length(), icon, tag
+									.getContent(node).length(), icon, tag
 									.getFullName(), tag.getDescription(), tag
 									.getDescription()
 									.getInformationDisplayString()));
@@ -232,7 +261,10 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	protected void addTagNameProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
-		if (contentAssistRequest.getNode().getParentNode() instanceof Document) {
+
+		Node parentNode = contentAssistRequest.getNode().getParentNode();
+		Node node = contentAssistRequest.getNode();
+		if (parentNode instanceof Document) {
 			if (isMatch(ROOT_TAG.substring(1), contentAssistRequest
 					.getMatchString())) {
 				contentAssistRequest
@@ -247,12 +279,12 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			for (Entry<String, TagInfo> entry : taglibList.entrySet()) {
 				TagInfo tag = (TagInfo) entry.getValue();
 				String matchString = contentAssistRequest.getMatchString();
-				if (isMatch(tag.getContent().substring(1), matchString)) {
+				if (isMatch(tag.getContent(node).substring(1), matchString)) {
 					contentAssistRequest.addProposal(new CompletionProposal(tag
-							.getContent().substring(1), contentAssistRequest
-							.getReplacementBeginPosition(),
+							.getContent(node).substring(1),
+							contentAssistRequest.getReplacementBeginPosition(),
 							contentAssistRequest.getReplacementLength(), tag
-									.getContent().length() - 1, icon, tag
+									.getContent(node).length() - 1, icon, tag
 									.getFullName(), tag.getDescription(), tag
 									.getDescription()
 									.getInformationDisplayString()));
@@ -337,16 +369,9 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		Node idAttribute = contentAssistRequest.getNode().getAttributes()
-				.getNamedItemNS(XMLNS_MAYAA, "id");
-		// 要素の名前空間がMayaaの場合は、名前空間指定なしのid属性を取得
-		if (idAttribute == null
-				&& XMLNS_MAYAA.equals(contentAssistRequest.getNode()
-						.getNamespaceURI())) {
-			idAttribute = contentAssistRequest.getNode().getAttributes()
-					.getNamedItemNS(null, "id");
-		}
-
+		Node idAttribute = ParseUtil.getAttributeNode(
+				(Element) contentAssistRequest.getNode(),
+				MatatabiPlugin.XMLNS_MAYAA, "id");
 		if (!attribute.equals(idAttribute)) {
 			super.addAttributeValueProposals(contentAssistRequest);
 			return;
@@ -414,32 +439,33 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 		if (contentAssistRequest.getNode().getParentNode().getNodeName()
 				.equals("m:mayaa")
-				&& contentAssistRequest.getNode().getAttributes().getNamedItem(
-						"id") == null
-				&& isMatch("id", contentAssistRequest.getMatchString())) {
-			contentAssistRequest.addProposal(new CompletionProposal("id=\"\"",
-					contentAssistRequest.getReplacementBeginPosition(),
-					contentAssistRequest.getReplacementLength(), 4, icon, "id",
-					null, ""));
+				&& ParseUtil.getAttributeNode((Element) contentAssistRequest
+						.getNode(), MatatabiPlugin.XMLNS_MAYAA, "id") == null
+				&& MatatabiValidateHandler.requiredIdAttribute(
+						contentAssistRequest.getNode().getNamespaceURI(),
+						contentAssistRequest.getNode().getLocalName())) {
+			String idAttribute = "m:id";
+			if (isMatch(idAttribute, contentAssistRequest.getMatchString())) {
+				contentAssistRequest.addProposal(new CompletionProposal(
+						idAttribute + "=\"\"", contentAssistRequest
+								.getReplacementBeginPosition(),
+						contentAssistRequest.getReplacementLength(), 4, icon,
+						idAttribute, null, ""));
+			}
 		}
 
 		if (contentAssistRequest.getNode().getNodeName().equals("m:mayaa")) {
 			ITaglibRecord[] taglibRecords = TaglibIndex
 					.getAvailableTaglibRecords(EditorUtil.getActiveFile()
 							.getFullPath());
-			NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
-			Set<String> usedNamespaces = new HashSet<String>();
 			Map<String, String> namespaces = new TreeMap<String, String>();
-			for (int i = 0; i < map.getLength(); i++) {
-				if (XMLNS_URI.equals(map.item(i).getNamespaceURI())) {
-					usedNamespaces.add(map.item(i).getNodeValue());
-				}
-			}
 			for (int i = 0; i < taglibRecords.length; i++) {
 				String namespaceuri = taglibRecords[i].getDescriptor().getURI();
-				if (!usedNamespaces.contains(namespaceuri)) {
-					namespaces.put(taglibRecords[i].getDescriptor()
-							.getShortName(), namespaceuri);
+				String namespaceprefix = taglibRecords[i].getDescriptor()
+						.getShortName();
+				if (ParseUtil.getAttributeNode((Element) contentAssistRequest
+						.getNode(), XMLNS_URI, namespaceprefix) == null) {
+					namespaces.put(namespaceprefix, namespaceuri);
 				}
 			}
 			for (Entry<String, String> entry : namespaces.entrySet()) {
@@ -456,21 +482,17 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 			for (Entry<String, AttributeInfo> entry : rootTagAttributeList
 					.entrySet()) {
-				if (!((Element) contentAssistRequest.getNode()).hasAttributeNS(
-						entry.getValue().getNamespace(), entry.getValue()
-								.getName())) {
-					if (isMatch(entry.getKey(), contentAssistRequest
-							.getMatchString())) {
-						String contents = entry.getKey() + "=\"\"";
-						contentAssistRequest
-								.addProposal(new CompletionProposal(contents,
-										contentAssistRequest
-												.getReplacementBeginPosition(),
-										contentAssistRequest
-												.getReplacementLength(),
-										contents.length() + 1, icon, contents,
-										null, ""));
-					}
+				if (ParseUtil.getAttributeValue((Element) contentAssistRequest
+						.getNode(), entry.getValue().getNamespace(), entry
+						.getValue().getName()) == null
+						&& isMatch(entry.getKey(), contentAssistRequest
+								.getMatchString())) {
+					String contents = entry.getKey() + "=\"\"";
+					contentAssistRequest.addProposal(new CompletionProposal(
+							contents, contentAssistRequest
+									.getReplacementBeginPosition(),
+							contentAssistRequest.getReplacementLength(),
+							contents.length() + 1, icon, contents, null, ""));
 				}
 			}
 
@@ -482,8 +504,9 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 					contentAssistRequest.getNode().getNodeName())
 					.getAttributeInfos();
 			for (AttributeInfo attributeInfo : attributes) {
-				if (contentAssistRequest.getNode().getAttributes()
-						.getNamedItem(attributeInfo.getName()) == null
+				if (ParseUtil.getAttributeNode((Element) contentAssistRequest
+						.getNode(), attributeInfo.getNamespace(), attributeInfo
+						.getName()) == null
 						&& isMatch(attributeInfo.getName(),
 								contentAssistRequest.getMatchString())) {
 					contentAssistRequest.addProposal(new CompletionProposal(
@@ -543,11 +566,11 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 							.getElements().item(j);
 
 					String nodeName = prefix + ":" + node.getNodeName();
-					TagInfo tag = new TagInfo(prefix, node.getNodeName(),
-							new ContextInformation(nodeName, node
-									.getDescription() == null ? "" : node
+					TagInfo tag = new TagInfo(prefix, namespaceuri, node
+							.getNodeName(), new ContextInformation(nodeName,
+							node.getDescription() == null ? "" : node
 									.getDescription()), !node.getBodycontent()
-									.equals(JSP11TLDNames.CONTENT_EMPTY),
+							.equals(JSP11TLDNames.CONTENT_EMPTY),
 							new ArrayList<AttributeInfo>());
 					if (!taglibList.containsKey(tag.getFullName())) {
 						taglibList.put(tag.getFullName(), tag);
@@ -569,15 +592,17 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	 */
 	public static class TagInfo {
 		private String prefix;
+		private String namespaceURI;
 		private String name;
 		private ContextInformation description;
 		private boolean hasBody;
 		private List<AttributeInfo> attributeInfos;
 
-		public TagInfo(String prefix, String name,
+		public TagInfo(String prefix, String namespaceURI, String name,
 				ContextInformation description, boolean hasBody,
 				List<AttributeInfo> attributeInfos) {
 			this.prefix = prefix;
+			this.namespaceURI = namespaceURI;
 			this.name = name;
 			this.description = description;
 			this.hasBody = hasBody;
@@ -588,8 +613,13 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			return prefix + ":" + name;
 		}
 
-		public String getContent() {
+		public String getContent(Node node) {
 			StringBuilder stringBuilder = new StringBuilder();
+			if (node.getParentNode().getNodeName().equals("m:mayaa")
+					&& MatatabiValidateHandler.requiredIdAttribute(
+							namespaceURI, name)) {
+				stringBuilder.append(" m:id=\"\"");
+			}
 			for (AttributeInfo attributeInfo : attributeInfos) {
 				if (attributeInfo.isRequired()) {
 					stringBuilder.append(" " + attributeInfo.name + "=\"\"");

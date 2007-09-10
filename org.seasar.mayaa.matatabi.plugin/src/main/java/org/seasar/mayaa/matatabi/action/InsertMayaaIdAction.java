@@ -12,7 +12,9 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
+import org.seasar.mayaa.matatabi.util.ParseUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -36,7 +38,8 @@ public class InsertMayaaIdAction extends ActionBase {
 					Object object = structuredSelection.getFirstElement();
 					if (object instanceof Element) {
 						Element element = (Element) object;
-						if (element.hasAttribute("m:id")) {
+						if (ParseUtil.getAttributeValue(element,
+								MatatabiPlugin.XMLNS_MAYAA, "id") != null) {
 							return;
 						}
 

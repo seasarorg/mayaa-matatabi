@@ -18,6 +18,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -145,19 +147,9 @@ public class ParseUtil {
 
 	private static void traverse(Map<String, Element> idlist, Element element,
 			String namespace) {
-		if (element.hasAttributeNS(namespace, "id")) {
-			idlist.put(element.getAttributeNS(namespace, "id"), element);
-		} else if (namespace.equals(element.getNamespaceURI())
-				&& element.hasAttribute("id")) {
-			idlist.put(element.getAttribute("id"), element);
-		} else {
-			String prefix = element.lookupPrefix(namespace);
-			if (prefix != null) {
-				prefix = prefix.toLowerCase();
-				if (element.hasAttribute(prefix + ":id")) {
-					idlist.put(element.getAttribute(prefix + ":id"), element);
-				}
-			}
+		String value = getAttributeValue(element, namespace, "id");
+		if (value != null) {
+			idlist.put(value, element);
 		}
 		NodeList nodeList = element.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -165,6 +157,49 @@ public class ParseUtil {
 				traverse(idlist, (Element) nodeList.item(i), namespace);
 			}
 		}
+	}
+
+	/**
+	 * 考えられる方法を全て使って属性値を取得
+	 * 
+	 * @param element
+	 * @param namespaceURI
+	 * @param localName
+	 * @return
+	 */
+	public static String getAttributeValue(Element element,
+			String namespaceURI, String localName) {
+		Attr attr = getAttributeNode(element, namespaceURI, localName);
+		return attr == null ? null : attr.getValue();
+	}
+
+	public static Attr getAttributeNode(Element element, String namespaceURI,
+			String localName) {
+		// 正攻法
+		if (element.hasAttributeNS(namespaceURI, localName)) {
+			return element.getAttributeNodeNS(namespaceURI, localName);
+		}
+		// 属性の名前空間が省略されている場合、要素の名前空間をチェック
+		else if (namespaceURI.equals(element.getNamespaceURI())
+				&& element.hasAttribute(localName)) {
+			return element.getAttributeNode(localName);
+		}
+		// 最後の手。名前空間のプレフィックスをとってきてローカル名にくっつけてチェック
+		// でもデフォルト名前空間とか使われてるとまた変わるかも
+		else {
+			try {
+				String prefix = element.lookupPrefix(namespaceURI);
+				if (prefix != null) {
+					prefix = prefix.toLowerCase();
+					if (element.hasAttribute(prefix + ":" + localName)) {
+						return element.getAttributeNode(prefix + ":"
+								+ localName);
+					}
+				}
+			} catch (DOMException e) {
+			}
+		}
+		return null;
 	}
 
 	public static List<String> getHtmlNamespaces(IProject project) {

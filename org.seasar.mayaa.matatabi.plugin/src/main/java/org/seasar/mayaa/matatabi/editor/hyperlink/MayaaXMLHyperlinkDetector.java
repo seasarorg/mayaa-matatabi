@@ -1,7 +1,10 @@
 package org.seasar.mayaa.matatabi.editor.hyperlink;
 
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
+import org.seasar.mayaa.matatabi.util.ParseUtil;
 import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
@@ -22,13 +25,7 @@ public class MayaaXMLHyperlinkDetector extends IdAttributeHyperlinkDetector {
 			return null;
 		}
 
-		Attr attr = (Attr) node.getAttributes().getNamedItemNS(
-				"http://mayaa.seasar.org", "id");
-		// 要素の名前空間がMayaaの場合は、名前空間指定なしのid属性を取得
-		if (attr == null
-				&& "http://mayaa.seasar.org".equals(node.getNamespaceURI())) {
-			attr = (Attr) node.getAttributes().getNamedItemNS(null, "id");
-		}
-		return attr;
+		return ParseUtil.getAttributeNode((Element) node,
+				MatatabiPlugin.XMLNS_MAYAA, "id");
 	}
 }
