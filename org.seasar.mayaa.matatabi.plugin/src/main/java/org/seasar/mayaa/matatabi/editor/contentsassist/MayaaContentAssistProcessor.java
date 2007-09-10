@@ -49,6 +49,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 	/** ルートタグ */
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
+	private Map<String, AttributeInfo> rootTagAttributeList = new LinkedHashMap<String, AttributeInfo>();
 
 	/** タグ情報 */
 	private Map<String, TagInfo> tagList = new LinkedHashMap<String, TagInfo>();
@@ -62,12 +63,23 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
 				.createImage();
 
+		rootTagAttributeList.put("m:contentType", new AttributeInfo(
+				"contentType", XMLNS_MAYAA, false));
+		rootTagAttributeList.put("m:noCache", new AttributeInfo("noCache",
+				XMLNS_MAYAA, false));
+		rootTagAttributeList.put("m:cacheControl", new AttributeInfo(
+				"cacheControl", XMLNS_MAYAA, false));
+		rootTagAttributeList.put("m:templateSuffix", new AttributeInfo(
+				"templateSuffix", XMLNS_MAYAA, false));
+		rootTagAttributeList.put("m:extends", new AttributeInfo("extends",
+				XMLNS_MAYAA, false));
+
 		tagList.put("m:attribute", new TagInfo("m", "attribute",
 				new ContextInformation("m:attribute", Messages
 						.getString("description.attribute")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("name", true),
-						new AttributeInfo("value", true) }))));
+						new AttributeInfo("name", XMLNS_MAYAA, true),
+						new AttributeInfo("value", XMLNS_MAYAA, true) }))));
 		tagList.put("m:with", new TagInfo("m", "with", new ContextInformation(
 				"m:with", Messages.getString("description.with")), true,
 				new ArrayList<AttributeInfo>()));
@@ -79,55 +91,62 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				"m:echo", Messages.getString("description.echo")), true,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("name",
-								false) }))));
+								XMLNS_MAYAA, false) }))));
 		tagList.put("m:element", new TagInfo("m", "element",
 				new ContextInformation("m:element", Messages
 						.getString("description.element")), true,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("name",
-								false) }))));
+								XMLNS_MAYAA, false) }))));
 		tagList.put("m:formatDate", new TagInfo("m", "formatDate",
 				new ContextInformation("m:formatDate", Messages
 						.getString("description.formatDate")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("value", true),
-						new AttributeInfo("pattern", false),
-						new AttributeInfo("result", false) }))));
+						new AttributeInfo("value", XMLNS_MAYAA, true),
+						new AttributeInfo("pattern", XMLNS_MAYAA, false),
+						new AttributeInfo("result", XMLNS_MAYAA, false) }))));
 		tagList.put("m:formatNumber", new TagInfo("m", "formatNumber",
 				new ContextInformation("m:formatNumber", Messages
 						.getString("description.formatNumber")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("value", true),
-						new AttributeInfo("pattern", false),
-						new AttributeInfo("result", false) }))));
-		tagList.put("m:write", new TagInfo("m", "write",
-				new ContextInformation("m:write", Messages
-						.getString("description.write")), false,
-				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("value", true),
-						new AttributeInfo("default", false),
-						new AttributeInfo("escapeXml", false),
-						new AttributeInfo("escapeWhitespace", false),
-						new AttributeInfo("escapeEol", false) }))));
+						new AttributeInfo("value", XMLNS_MAYAA, true),
+						new AttributeInfo("pattern", XMLNS_MAYAA, false),
+						new AttributeInfo("result", XMLNS_MAYAA, false) }))));
+		tagList
+				.put("m:write", new TagInfo("m", "write",
+						new ContextInformation("m:write", Messages
+								.getString("description.write")), false,
+						new ArrayList<AttributeInfo>(Arrays
+								.asList(new AttributeInfo[] {
+										new AttributeInfo("value", XMLNS_MAYAA,
+												true),
+										new AttributeInfo("default",
+												XMLNS_MAYAA, false),
+										new AttributeInfo("escapeXml",
+												XMLNS_MAYAA, false),
+										new AttributeInfo("escapeWhitespace",
+												XMLNS_MAYAA, false),
+										new AttributeInfo("escapeEol",
+												XMLNS_MAYAA, false) }))));
 		tagList.put("m:for", new TagInfo("m", "for", new ContextInformation(
 				"m:for", Messages.getString("description.for")), true,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("test", true),
-						new AttributeInfo("init", false),
-						new AttributeInfo("after", false),
-						new AttributeInfo("max", false) }))));
+						new AttributeInfo("test", XMLNS_MAYAA, true),
+						new AttributeInfo("init", XMLNS_MAYAA, false),
+						new AttributeInfo("after", XMLNS_MAYAA, false),
+						new AttributeInfo("max", XMLNS_MAYAA, false) }))));
 		tagList.put("m:forEach", new TagInfo("m", "forEach",
 				new ContextInformation("m:forEach", Messages
 						.getString("description.forEach")), true,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("items", true),
-						new AttributeInfo("var", true),
-						new AttributeInfo("index", false) }))));
+						new AttributeInfo("items", XMLNS_MAYAA, true),
+						new AttributeInfo("var", XMLNS_MAYAA, true),
+						new AttributeInfo("index", XMLNS_MAYAA, false) }))));
 		tagList.put("m:if", new TagInfo("m", "if", new ContextInformation(
 				"m:if", Messages.getString("description.if")), true,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("test",
-								true) }))));
+								XMLNS_MAYAA, true) }))));
 		tagList.put("m:doBase", new TagInfo("m", "doBase",
 				new ContextInformation("m:doBase", Messages
 						.getString("description.doBase")), false,
@@ -141,7 +160,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 						.getString("description.doRender")), false,
 				new ArrayList<AttributeInfo>(Arrays
 						.asList(new AttributeInfo[] { new AttributeInfo("name",
-								false) }))));
+								XMLNS_MAYAA, false) }))));
 		tagList.put("m:beforeRender", new TagInfo("m", "beforeRender",
 				new ContextInformation("m:beforeRender", Messages
 						.getString("description.beforeRender")), false,
@@ -154,14 +173,14 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				new ContextInformation("m:insert", Messages
 						.getString("description.insert")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("name", false),
-						new AttributeInfo("path", true) }))));
+						new AttributeInfo("name", XMLNS_MAYAA, false),
+						new AttributeInfo("path", XMLNS_MAYAA, true) }))));
 		tagList.put("m:exec", new TagInfo("m", "exec", new ContextInformation(
 				"m:exec", Messages.getString("description.exec")), false,
 				new ArrayList<AttributeInfo>(Arrays.asList(new AttributeInfo[] {
-						new AttributeInfo("script", false),
-						new AttributeInfo("src", false),
-						new AttributeInfo("encoding", true) }))));
+						new AttributeInfo("script", XMLNS_MAYAA, false),
+						new AttributeInfo("src", XMLNS_MAYAA, false),
+						new AttributeInfo("encoding", XMLNS_MAYAA, true) }))));
 		tagList.put("m:ignore", new TagInfo("m", "ignore",
 				new ContextInformation("m:ignore", Messages
 						.getString("description.ignore")), false,
@@ -435,6 +454,26 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 				}
 			}
 
+			for (Entry<String, AttributeInfo> entry : rootTagAttributeList
+					.entrySet()) {
+				if (!((Element) contentAssistRequest.getNode()).hasAttributeNS(
+						entry.getValue().getNamespace(), entry.getValue()
+								.getName())) {
+					if (isMatch(entry.getKey(), contentAssistRequest
+							.getMatchString())) {
+						String contents = entry.getKey() + "=\"\"";
+						contentAssistRequest
+								.addProposal(new CompletionProposal(contents,
+										contentAssistRequest
+												.getReplacementBeginPosition(),
+										contentAssistRequest
+												.getReplacementLength(),
+										contents.length() + 1, icon, contents,
+										null, ""));
+					}
+				}
+			}
+
 		}
 
 		if (taglibList
@@ -516,8 +555,8 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 							CMAttributeDeclarationImpl attr = (CMAttributeDeclarationImpl) node
 									.getAttributes().item(k);
 							tag.getAttributeInfos().add(
-									new AttributeInfo(attr.getNodeName(), attr
-											.isRequired()));
+									new AttributeInfo(attr.getNodeName(),
+											namespaceuri, attr.isRequired()));
 						}
 					}
 				}
@@ -587,10 +626,12 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	 */
 	public static class AttributeInfo {
 		private String name;
+		private String namespace;
 		private boolean required;
 
-		public AttributeInfo(String name, boolean required) {
+		public AttributeInfo(String name, String namespace, boolean required) {
 			this.name = name;
+			this.namespace = namespace;
 			this.required = required;
 		}
 
@@ -600,6 +641,10 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 		public boolean isRequired() {
 			return required;
+		}
+
+		public String getNamespace() {
+			return namespace;
 		}
 
 	}
