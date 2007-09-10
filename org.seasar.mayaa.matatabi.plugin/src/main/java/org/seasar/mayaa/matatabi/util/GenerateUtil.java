@@ -104,9 +104,14 @@ public class GenerateUtil {
 				fileContents.getBytes());
 		try {
 			String fileName = path.toString();
-			fileName = fileName.substring(0, fileName.length()
-					- path.getFileExtension().length())
-					+ "mayaa";
+			if (fileName.indexOf("$") > 0) {
+				fileName = fileName.substring(0, fileName.lastIndexOf("$"))
+						+ ".mayaa";
+			} else {
+				fileName = fileName.substring(0, fileName.length()
+						- path.getFileExtension().length())
+						+ "mayaa";
+			}
 			IFile openFile = project.getFile(fileName);
 			openFile.create(byteArrayInputStream, true, EditorUtil
 					.getProgressMonitor());
