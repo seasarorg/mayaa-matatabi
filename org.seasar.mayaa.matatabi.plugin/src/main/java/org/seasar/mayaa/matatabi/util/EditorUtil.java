@@ -28,6 +28,7 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.WorkbenchWindow;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 
 /**
@@ -72,7 +73,7 @@ public class EditorUtil {
 					.getActiveWorkbenchWindow().getActivePage(), openFile,
 					descriptor.getId());
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		return null;
 	}
@@ -136,11 +137,11 @@ public class EditorUtil {
 								return method.invoke(multiPageEditorPart,
 										new Object[] {});
 							} catch (IllegalArgumentException e) {
-								e.printStackTrace();
+								MatatabiPlugin.errorLog(e);
 							} catch (IllegalAccessException e) {
-								e.printStackTrace();
+								MatatabiPlugin.errorLog(e);
 							} catch (InvocationTargetException e) {
-								e.printStackTrace();
+								MatatabiPlugin.errorLog(e);
 							}
 							return null;
 						}
@@ -157,15 +158,15 @@ public class EditorUtil {
 				}
 			}
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		return null;
 	}

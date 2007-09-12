@@ -11,6 +11,7 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 
 /**
@@ -45,9 +46,9 @@ public class InsertSpanTagAction extends ActionBase {
 					multiTextEdit.addChild(replaceEdit);
 					multiTextEdit.apply(document);
 				} catch (MalformedTreeException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				} catch (BadLocationException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				}
 			}
 		}

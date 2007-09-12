@@ -212,7 +212,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 			attributeMap.put(IMarker.LINE_NUMBER, Integer.valueOf(lineNumber));
 			marker.setAttributes(attributeMap);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 	}
 

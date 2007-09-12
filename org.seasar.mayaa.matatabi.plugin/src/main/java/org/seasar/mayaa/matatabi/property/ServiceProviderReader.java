@@ -1,6 +1,7 @@
 package org.seasar.mayaa.matatabi.property;
 
 import org.eclipse.core.resources.IProject;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.JDTUtil;
 
 /**
@@ -16,7 +17,7 @@ public class ServiceProviderReader {
 			providerUtil = classLoader
 					.loadClass("org.seasar.mayaa.impl.provider.ProviderUtil");
 		} catch (Exception e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 	}
 }

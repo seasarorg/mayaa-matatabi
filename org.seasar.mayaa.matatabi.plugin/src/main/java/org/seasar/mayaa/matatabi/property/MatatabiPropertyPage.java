@@ -284,7 +284,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 				}
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 	}
 
@@ -391,7 +391,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 				removeBuilder(project);
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 
 		return result;

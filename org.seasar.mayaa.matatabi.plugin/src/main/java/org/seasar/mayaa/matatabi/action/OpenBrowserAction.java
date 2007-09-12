@@ -12,6 +12,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 /**
  * 外部ブラウザでファイルを開く
@@ -35,7 +36,7 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 			System.out.println(file.getLocationURI().toURL());
 			executeBrowser(file.getLocationURI().toURL());
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 	}
 
@@ -50,7 +51,7 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 			targetPart.getSite().getWorkbenchWindow().getWorkbench()
 					.getBrowserSupport().getExternalBrowser().openURL(url);
 		} catch (PartInitException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 	}
 }

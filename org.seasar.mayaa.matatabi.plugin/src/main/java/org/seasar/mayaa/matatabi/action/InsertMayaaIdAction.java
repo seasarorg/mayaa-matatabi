@@ -67,7 +67,7 @@ public class InsertMayaaIdAction extends ActionBase {
 
 					}
 				} catch (MalformedTreeException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				}
 			}
 		}

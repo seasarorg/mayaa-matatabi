@@ -11,6 +11,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 
@@ -63,7 +64,7 @@ public abstract class OpenActionBase extends ActionBase {
 			try {
 				openEditorPart = EditorUtil.openFile(openFile);
 			} catch (PartInitException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			}
 		}
 	}

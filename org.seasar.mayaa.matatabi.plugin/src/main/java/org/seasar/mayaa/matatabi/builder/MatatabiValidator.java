@@ -62,11 +62,11 @@ public class MatatabiValidator implements IResourceVisitor,
 				parser.parse(file.getContents(), new MatatabiValidateHandler(
 						file, sourceid, defaultid));
 			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			} catch (SAXException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			}
 		}
 	}

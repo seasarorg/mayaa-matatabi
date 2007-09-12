@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
 import org.w3c.dom.Attr;
@@ -58,7 +59,7 @@ public class GenerateUtil {
 						+ parse(entry.getValue(), entry.getKey(),
 								templateString) + "\n");
 			} catch (IOException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			}
 		}
 
@@ -115,8 +116,8 @@ public class GenerateUtil {
 			IFile openFile = project.getFile(fileName);
 			openFile.create(byteArrayInputStream, true, EditorUtil
 					.getProgressMonitor());
-		} catch (CoreException e1) {
-			e1.printStackTrace();
+		} catch (CoreException e) {
+			MatatabiPlugin.errorLog(e);
 		}
 	}
 
@@ -125,7 +126,7 @@ public class GenerateUtil {
 		try {
 			Velocity.init();
 		} catch (Exception e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		VelocityContext context = new VelocityContext();
 		Map<String, Attr> attributes = new HashMap<String, Attr>();

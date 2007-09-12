@@ -16,6 +16,7 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.GenerateUtil;
@@ -69,7 +70,7 @@ public class GenerateComponentAction extends OpenActionBase {
 								new ByteArrayInputStream(document.get()
 										.getBytes("UTF-8"))));
 					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
+						MatatabiPlugin.errorLog(e);
 					}
 					for (String id : outid.keySet()) {
 						sourceid.remove(id);
@@ -87,9 +88,9 @@ public class GenerateComponentAction extends OpenActionBase {
 					multiTextEdit.addChild(insertEdit);
 					multiTextEdit.apply(document);
 				} catch (MalformedTreeException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				} catch (BadLocationException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				}
 			}
 		}

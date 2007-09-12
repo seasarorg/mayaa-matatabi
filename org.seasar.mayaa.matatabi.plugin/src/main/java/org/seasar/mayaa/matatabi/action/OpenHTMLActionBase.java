@@ -43,7 +43,7 @@ public abstract class OpenHTMLActionBase extends OpenActionBase {
 					}
 				}
 			} catch (CoreException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			}
 		}
 

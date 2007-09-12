@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -53,7 +54,7 @@ public class ParseUtil {
 			try {
 				return getXmlIdList(new InputSource(defaultMayaa.getContents()));
 			} catch (CoreException e) {
-				e.printStackTrace();
+				MatatabiPlugin.errorLog(e);
 			}
 		}
 		return new LinkedHashMap<String, Element>();
@@ -63,7 +64,7 @@ public class ParseUtil {
 		try {
 			return getXmlIdList(new InputSource(file.getContents()));
 		} catch (CoreException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		return new LinkedHashMap<String, Element>();
 	}
@@ -77,9 +78,9 @@ public class ParseUtil {
 			traverse(idlist, document.getDocumentElement(),
 					getMayaaNamespaces());
 		} catch (SAXException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		return idlist;
 	}
@@ -114,15 +115,15 @@ public class ParseUtil {
 							"html").item(0), getHtmlNamespaces(file
 							.getProject()));
 				} catch (SAXException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				} catch (IOException e) {
-					e.printStackTrace();
+					MatatabiPlugin.errorLog(e);
 				}
 			}
 
 			return idlist;
 		} catch (CoreException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		return new LinkedHashMap<String, Element>();
 	}
@@ -197,6 +198,7 @@ public class ParseUtil {
 					}
 				}
 			} catch (DOMException e) {
+				MatatabiPlugin.errorLog(e);
 			}
 		}
 		return null;

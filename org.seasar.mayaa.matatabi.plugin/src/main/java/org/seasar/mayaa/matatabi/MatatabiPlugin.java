@@ -2,6 +2,9 @@ package org.seasar.mayaa.matatabi;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -46,6 +49,16 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 	 */
 	public static MatatabiPlugin getDefault() {
 		return plugin;
+	}
+
+	public static ILog getLogger() {
+		return getDefault().getLog();
+	}
+
+	public static void errorLog(Throwable throwable) {
+		IStatus status = new Status(IStatus.ERROR, MatatabiPlugin.PLUGIN_ID,
+				throwable.getMessage(), throwable);
+		MatatabiPlugin.getLogger().log(status);
 	}
 
 	/**

@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 public class JDTUtil {
 	/**
@@ -152,7 +153,7 @@ public class JDTUtil {
 		try {
 			url = path.toFile().toURI().toURL();
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			MatatabiPlugin.errorLog(e);
 		}
 		return url;
 	}
