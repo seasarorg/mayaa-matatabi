@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * Mayaaƒtƒ@ƒCƒ‹‚Ì‰ğÍ‚µAValidation‚ğs‚¤B
+ * Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã®è§£æã—ã€Validationã‚’è¡Œã†ã€‚
  */
 public class MatatabiValidateHandler extends DefaultHandler {
 	private static final String MAYAA_NAMESPACE = "http://mayaa.seasar.org"; //$NON-NLS-1$
@@ -60,12 +60,12 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * —v‘fŠJn‚Ìˆ—
+	 * è¦ç´ é–‹å§‹æ™‚ã®å‡¦ç†
 	 * <ul>
-	 * <li>id‘®«‚Ì‘¶İƒ`ƒFƒbƒN</li>
-	 * <li>id‘®«‚ÌˆÊ’uƒ`ƒFƒbƒN</li>
-	 * <li>ƒeƒ“ƒvƒŒ[ƒg‚É‘¶İ‚µ‚È‚¢id‘®«‚Ìƒ`ƒFƒbƒN</li>
-	 * <li>d•¡‚·‚éid‘®«‚Ìƒ`ƒFƒbƒN</li>
+	 * <li>idå±æ€§ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯</li>
+	 * <li>idå±æ€§ã®ä½ç½®ãƒã‚§ãƒƒã‚¯</li>
+	 * <li>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«å­˜åœ¨ã—ãªã„idå±æ€§ã®ãƒã‚§ãƒƒã‚¯</li>
+	 * <li>é‡è¤‡ã™ã‚‹idå±æ€§ã®ãƒã‚§ãƒƒã‚¯</li>
 	 * </ul>
 	 */
 	public void startElement(String uri, String localName, String qName,
@@ -119,7 +119,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * —v‘fI—¹‚Ìˆ—
+	 * è¦ç´ çµ‚äº†æ™‚ã®å‡¦ç†
 	 */
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
@@ -127,9 +127,9 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * ‰ğÍI—¹‚Ìˆ—
+	 * è§£æçµ‚äº†æ™‚ã®å‡¦ç†
 	 * <ul>
-	 * <li>ƒeƒ“ƒvƒŒ[ƒg‚É‚ ‚Á‚ÄAMayaaƒtƒ@ƒCƒ‹‚É‚È‚¢id‘®«‚Ìƒ`ƒFƒbƒN</li>
+	 * <li>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«ã‚ã£ã¦ã€Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã«ãªã„idå±æ€§ã®ãƒã‚§ãƒƒã‚¯</li>
 	 * </ul>
 	 */
 	public void endDocument() throws SAXException {
@@ -149,12 +149,12 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * id‘®«‚ª•K—v‚È—v‘f‚©‚Ç‚¤‚©B
+	 * idå±æ€§ãŒå¿…è¦ãªè¦ç´ ã‹ã©ã†ã‹ã€‚
 	 * 
 	 * @param uri
-	 *            —v‘f‚ÌNamespaceURI
+	 *            è¦ç´ ã®NamespaceURI
 	 * @param localName
-	 *            —v‘f‚Ì–¼‘O
+	 *            è¦ç´ ã®åå‰
 	 * @return
 	 */
 	public static final boolean requiredIdAttribute(String uri, String localName) {
@@ -163,7 +163,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * id‘®«‚ğæ“¾‚·‚éB
+	 * idå±æ€§ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
 	 * @param attributes
 	 * @param elementUri
@@ -174,7 +174,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * xpath‘®«‚ğæ“¾‚·‚éB
+	 * xpathå±æ€§ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
 	 * @param attributes
 	 * @param elementUri
@@ -194,7 +194,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * ƒ}[ƒJ[‚ğİ’è‚·‚éB
+	 * ãƒãƒ¼ã‚«ãƒ¼ã‚’è¨­å®šã™ã‚‹ã€‚
 	 * 
 	 * @param message
 	 * @param lineNumber
@@ -217,7 +217,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	}
 
 	/**
-	 * İ’è’l‚©‚çƒGƒ‰[ƒŒƒxƒ‹‚ğæ“¾‚·‚éB
+	 * è¨­å®šå€¤ã‹ã‚‰ã‚¨ãƒ©ãƒ¼ãƒ¬ãƒ™ãƒ«ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
 	 * @param preferenceValue
 	 * @return

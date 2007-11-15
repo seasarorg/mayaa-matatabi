@@ -23,15 +23,15 @@ import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 public class JDTUtil {
 	/**
-	 * ƒvƒƒWƒFƒNƒg‚ÌƒNƒ‰ƒXƒpƒX‚©‚çƒŠƒ\[ƒX‚ğæ“¾‚·‚éB
+	 * ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¯ãƒ©ã‚¹ãƒ‘ã‚¹ã‹ã‚‰ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
 	 * @param project
-	 *            ƒvƒƒWƒFƒNƒg
+	 *            ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @param packageName
-	 *            ƒpƒbƒP[ƒW–¼
+	 *            ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸å
 	 * @param name
-	 *            ƒŠƒ\[ƒX–¼
-	 * @return Œ©‚Â‚©‚Á‚½‚èƒ\[ƒX‚ÌƒŠƒXƒg
+	 *            ãƒªã‚½ãƒ¼ã‚¹å
+	 * @return è¦‹ã¤ã‹ã£ãŸã‚Šã‚½ãƒ¼ã‚¹ã®ãƒªã‚¹ãƒˆ
 	 */
 	public static List<Object> findResources(IProject project,
 			String packageName, String name) {
@@ -78,11 +78,11 @@ public class JDTUtil {
 	}
 
 	/**
-	 * JavaƒvƒƒWƒFƒNƒg‚©‚çƒNƒ‰ƒXƒ[ƒ_[‚ğì¬‚·‚éB
+	 * Javaãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰ã‚¯ãƒ©ã‚¹ãƒ­ãƒ¼ãƒ€ãƒ¼ã‚’ä½œæˆã™ã‚‹ã€‚
 	 * 
 	 * @param project
-	 *            JavaƒvƒƒWƒFƒNƒg
-	 * @return JavaƒvƒƒWƒFƒNƒg‚Ìİ’è‚ğg—p‚µ‚½ƒNƒ‰ƒXƒ[ƒ_[
+	 *            Javaãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return Javaãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®šã‚’ä½¿ç”¨ã—ãŸã‚¯ãƒ©ã‚¹ãƒ­ãƒ¼ãƒ€ãƒ¼
 	 * @throws JavaModelException
 	 */
 	public static ClassLoader createProjectClassLoader(IProject project)
@@ -92,11 +92,11 @@ public class JDTUtil {
 	}
 
 	/**
-	 * JavaƒvƒƒWƒFƒNƒg‚ÌƒNƒ‰ƒXƒpƒX‚©‚çƒNƒ‰ƒXƒpƒX‚ÌURL”z—ñ‚ğæ“¾‚·‚éB
+	 * Javaãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¯ãƒ©ã‚¹ãƒ‘ã‚¹ã‹ã‚‰ã‚¯ãƒ©ã‚¹ãƒ‘ã‚¹ã®URLé…åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
 	 * @param javaProject
-	 *            JavaƒvƒƒWƒFƒNƒg
-	 * @return ƒNƒ‰ƒXƒpƒX‚ÌURL”z—ñ
+	 *            Javaãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return ã‚¯ãƒ©ã‚¹ãƒ‘ã‚¹ã®URLé…åˆ—
 	 * @throws JavaModelException
 	 */
 	public static URL[] getClasspathAsURLArray(IJavaProject javaProject)

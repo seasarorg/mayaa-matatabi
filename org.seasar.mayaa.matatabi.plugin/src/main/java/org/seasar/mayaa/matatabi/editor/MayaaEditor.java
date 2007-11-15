@@ -6,7 +6,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
- * Mayaaファイルエディター
+ * Mayaa繝輔ぃ繧､繝ｫ繧ｨ繝�繧｣繧ｿ繝ｼ
  */
 public class MayaaEditor extends StructuredTextEditor {
 	protected void initializeKeyBindingScopes() {

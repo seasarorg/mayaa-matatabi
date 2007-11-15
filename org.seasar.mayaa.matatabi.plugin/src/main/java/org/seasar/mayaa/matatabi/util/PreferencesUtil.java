@@ -16,14 +16,14 @@ import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
 
 /**
- * İ’è’l‚ÉŠÖ‚·‚éˆ—‚ğs‚¢‚Ü‚·B
+ * è¨­å®šå€¤ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¡Œã„ã¾ã™ã€‚
  */
 public class PreferencesUtil {
 	/**
-	 * w’è‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘®‚·‚éƒvƒƒWƒFƒNƒg‚Ìİ’è’l‚ğæ“¾‚µ‚Ü‚·B
+	 * æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå±ã™ã‚‹ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®šå€¤ã‚’å–å¾—ã—ã¾ã™ã€‚
 	 * 
 	 * @param file
-	 *            ƒtƒ@ƒCƒ‹
+	 *            ãƒ•ã‚¡ã‚¤ãƒ«
 	 * @return
 	 */
 	public static final ScopedPreferenceStore getPreference(IFile file) {
@@ -36,11 +36,11 @@ public class PreferencesUtil {
 	}
 
 	/**
-	 * ƒ^ƒO•ÏŠ·ƒ‹[ƒ‹‚Ìæ“¾
+	 * ã‚¿ã‚°å¤‰æ›ãƒ«ãƒ¼ãƒ«ã®å–å¾—
 	 * 
 	 * @param store
 	 *            IPreferenceStore
-	 * @return ƒ^ƒO•ÏŠ·ƒ‹[ƒ‹
+	 * @return ã‚¿ã‚°å¤‰æ›ãƒ«ãƒ¼ãƒ«
 	 */
 	public static Map<String, ReplaceRule> getReplaceRules(
 			IPreferenceStore store) {
@@ -60,11 +60,11 @@ public class PreferencesUtil {
 	}
 
 	/**
-	 * Mayaaƒtƒ@ƒCƒ‹–¼‘O‹óŠÔ‚Ìæ“¾
+	 * Mayaaãƒ•ã‚¡ã‚¤ãƒ«åå‰ç©ºé–“ã®å–å¾—
 	 * 
 	 * @param store
 	 *            IPreferenceStore
-	 * @return Mayaaƒtƒ@ƒCƒ‹–¼‘O‹óŠÔ
+	 * @return Mayaaãƒ•ã‚¡ã‚¤ãƒ«åå‰ç©ºé–“
 	 */
 	public static List<Namespace> getNamespaces(IPreferenceStore store) {
 		List<Namespace> namespaces = new ArrayList<Namespace>();

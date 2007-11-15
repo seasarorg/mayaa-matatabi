@@ -51,7 +51,7 @@ public abstract class OpenHTMLActionBase extends OpenActionBase {
 			return targetFileList.get(0);
 		} else {
 			ListDialog dialog = new ListDialog(MatatabiPlugin.getShell());
-			dialog.setMessage("•¡”‚Ìƒeƒ“ƒvƒŒ[ƒgƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚µ‚½BŠJ‚­ƒtƒ@ƒCƒ‹‚ğ‘I‚ñ‚Å‚­‚¾‚³‚¢B");
+			dialog.setMessage("è¤‡æ•°ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚é–‹ããƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸ã‚“ã§ãã ã•ã„ã€‚");
 			dialog.setContentProvider(new IStructuredContentProvider() {
 				public void dispose() {
 				}
@@ -71,7 +71,7 @@ public abstract class OpenHTMLActionBase extends OpenActionBase {
 				}
 			});
 			dialog.setInput(targetFileList);
-			dialog.setTitle("HTMLƒtƒ@ƒCƒ‹‚ğŠJ‚­");
+			dialog.setTitle("HTMLãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã");
 			if (dialog.open() == Window.OK) {
 				Object[] result = dialog.getResult();
 				if (result.length == 1) {

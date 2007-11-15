@@ -24,17 +24,17 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * ƒR[ƒh¶¬‚ÉŠÖ‚·‚éˆ—‚ğs‚¤
+ * ã‚³ãƒ¼ãƒ‰ç”Ÿæˆã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¡Œã†
  * 
  * @author matoba
  */
 public class GenerateUtil {
 
 	/**
-	 * id‚É‘Î‰‚·‚éMayaaƒ^ƒO‚ğ¶¬‚µ‚Ü‚·B
+	 * idã«å¯¾å¿œã™ã‚‹Mayaaã‚¿ã‚°ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	 * 
 	 * @param idlist
-	 *            ¶¬‘ÎÛ‚Ìid‚ÌƒŠƒXƒg
+	 *            ç”Ÿæˆå¯¾è±¡ã®idã®ãƒªã‚¹ãƒˆ
 	 * @return
 	 */
 	public static String genereteTags(Map<String, Element> idlist,
@@ -85,7 +85,7 @@ public class GenerateUtil {
 	}
 
 	/**
-	 * Œ»İŠJ‚¢‚Ä‚¢‚éHTMLƒtƒ@ƒCƒ‹‚É‘Î‰‚·‚éMayaaƒtƒ@ƒCƒ‹‚ğ¶¬‚µ‚Ü‚·B
+	 * ç¾åœ¨é–‹ã„ã¦ã„ã‚‹HTMLãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾å¿œã™ã‚‹Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	 */
 	public static void generateMayaaFile() {
 		IFile file = EditorUtil.getActiveFile();

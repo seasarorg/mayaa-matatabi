@@ -36,7 +36,7 @@ public class ParseUtil {
 			.asList(new String[] { "http://mayaa.seasar.org" });
 
 	/**
-	 * default.mayaa‚É’è‹`‚µ‚Ä‚ ‚éid‚ğæ“¾‚µ‚Ü‚·B
+	 * default.mayaaã«å®šç¾©ã—ã¦ã‚ã‚‹idã‚’å–å¾—ã—ã¾ã™ã€‚
 	 * 
 	 * @param folder
 	 * @return
@@ -129,14 +129,14 @@ public class ParseUtil {
 	}
 
 	/**
-	 * w’è—v‘fˆÈ‰º‚ÌID‘®«‚ğ’Tõ‚·‚éB
+	 * æŒ‡å®šè¦ç´ ä»¥ä¸‹ã®IDå±æ€§ã‚’æ¢ç´¢ã™ã‚‹ã€‚
 	 * 
 	 * @param idlis
-	 *            w’è—v‘fˆÈ‰º‚ÌID‘®«‚ÌƒŠƒXƒg
+	 *            æŒ‡å®šè¦ç´ ä»¥ä¸‹ã®IDå±æ€§ã®ãƒªã‚¹ãƒˆ
 	 * @param element
-	 *            w’è—v‘f
+	 *            æŒ‡å®šè¦ç´ 
 	 * @param namespaces
-	 *            ‘ÎÛ‚Æ‚È‚é–¼‘O‹óŠÔ
+	 *            å¯¾è±¡ã¨ãªã‚‹åå‰ç©ºé–“
 	 */
 	private static void traverse(Map<String, Element> idlist, Element element,
 			List<String> namespaces) {
@@ -161,7 +161,7 @@ public class ParseUtil {
 	}
 
 	/**
-	 * l‚¦‚ç‚ê‚é•û–@‚ğ‘S‚Äg‚Á‚Ä‘®«’l‚ğæ“¾
+	 * è€ƒãˆã‚‰ã‚Œã‚‹æ–¹æ³•ã‚’å…¨ã¦ä½¿ã£ã¦å±æ€§å€¤ã‚’å–å¾—
 	 * 
 	 * @param element
 	 * @param namespaceURI
@@ -176,17 +176,17 @@ public class ParseUtil {
 
 	public static Attr getAttributeNode(Element element, String namespaceURI,
 			String localName) {
-		// ³U–@
+		// æ­£æ”»æ³•
 		if (element.hasAttributeNS(namespaceURI, localName)) {
 			return element.getAttributeNodeNS(namespaceURI, localName);
 		}
-		// ‘®«‚Ì–¼‘O‹óŠÔ‚ªÈ—ª‚³‚ê‚Ä‚¢‚éê‡A—v‘f‚Ì–¼‘O‹óŠÔ‚ğƒ`ƒFƒbƒN
+		// å±æ€§ã®åå‰ç©ºé–“ãŒçœç•¥ã•ã‚Œã¦ã„ã‚‹å ´åˆã€è¦ç´ ã®åå‰ç©ºé–“ã‚’ãƒã‚§ãƒƒã‚¯
 		else if (namespaceURI.equals(element.getNamespaceURI())
 				&& element.hasAttribute(localName)) {
 			return element.getAttributeNode(localName);
 		}
-		// ÅŒã‚ÌèB–¼‘O‹óŠÔ‚ÌƒvƒŒƒtƒBƒbƒNƒX‚ğ‚Æ‚Á‚Ä‚«‚Äƒ[ƒJƒ‹–¼‚É‚­‚Á‚Â‚¯‚Äƒ`ƒFƒbƒN
-		// ‚Å‚àƒfƒtƒHƒ‹ƒg–¼‘O‹óŠÔ‚Æ‚©g‚í‚ê‚Ä‚é‚Æ‚Ü‚½•Ï‚í‚é‚©‚à
+		// æœ€å¾Œã®æ‰‹ã€‚åå‰ç©ºé–“ã®ãƒ—ãƒ¬ãƒ•ã‚£ãƒƒã‚¯ã‚¹ã‚’ã¨ã£ã¦ãã¦ãƒ­ãƒ¼ã‚«ãƒ«åã«ãã£ã¤ã‘ã¦ãƒã‚§ãƒƒã‚¯
+		// ã§ã‚‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆåå‰ç©ºé–“ã¨ã‹ä½¿ã‚ã‚Œã¦ã‚‹ã¨ã¾ãŸå¤‰ã‚ã‚‹ã‹ã‚‚
 		else {
 			try {
 				String prefix = element.lookupPrefix(namespaceURI);

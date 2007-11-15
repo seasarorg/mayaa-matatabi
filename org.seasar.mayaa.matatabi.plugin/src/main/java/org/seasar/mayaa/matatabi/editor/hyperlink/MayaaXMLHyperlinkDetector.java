@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * Mayaa�t�@�C�������n�C�p�[�����N����
+ * Mayaaファイル向けハイパーリンク処理
  */
 public class MayaaXMLHyperlinkDetector extends IdAttributeHyperlinkDetector {
 	protected Attr getIdAttribute(Node node) {
@@ -19,7 +19,7 @@ public class MayaaXMLHyperlinkDetector extends IdAttributeHyperlinkDetector {
 			return null;
 		}
 
-		// �g�b�v�v�f�̒����̗v�f�̂ݑΏۂƂ���
+		// トップ要素の直下の要素のみ対象とする
 		if (!node.getParentNode().equals(
 				node.getOwnerDocument().getDocumentElement())) {
 			return null;

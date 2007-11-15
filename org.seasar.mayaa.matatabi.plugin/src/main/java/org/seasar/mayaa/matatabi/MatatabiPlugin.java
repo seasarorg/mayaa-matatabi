@@ -12,7 +12,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 /**
- * ƒvƒ‰ƒOƒCƒ“ƒNƒ‰ƒX
+ * ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚¯ãƒ©ã‚¹
  */
 public class MatatabiPlugin extends AbstractUIPlugin {
 
@@ -75,13 +75,13 @@ public class MatatabiPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * İ’è’l‚ğæ“¾‚·‚éB
+	 * è¨­å®šå€¤ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
 	 * @param project
-	 *            ƒvƒƒWƒFƒNƒg
+	 *            ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @param key
-	 *            ƒL[
-	 * @return İ’è’l
+	 *            ã‚­ãƒ¼
+	 * @return è¨­å®šå€¤
 	 */
 	public static String getStoreValue(IProject project, String key) {
 		return (new ScopedPreferenceStore(new ProjectScope(project),

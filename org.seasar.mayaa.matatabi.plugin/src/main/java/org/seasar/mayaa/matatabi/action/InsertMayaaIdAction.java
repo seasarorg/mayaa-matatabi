@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 /**
- * HTMLƒtƒ@ƒCƒ‹‚Ì—v‘f‚Ém:id‚ğ‘}“ü‚·‚éƒAƒNƒVƒ‡ƒ“
+ * HTMLãƒ•ã‚¡ã‚¤ãƒ«ã®è¦ç´ ã«m:idã‚’æŒ¿å…¥ã™ã‚‹ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
  */
 public class InsertMayaaIdAction extends ActionBase {
 	public void run(IAction action) {
@@ -41,8 +41,8 @@ public class InsertMayaaIdAction extends ActionBase {
 						}
 
 						InputDialog dialog = new InputDialog(targetPart
-								.getSite().getShell(), "mayaa id“ü—Í",
-								"mayaa id‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", "", null);
+								.getSite().getShell(), "mayaa idå…¥åŠ›",
+								"mayaa idã‚’å…¥åŠ›ã—ã¦ãã ã•ã„", "", null);
 						if (dialog.open() == Dialog.CANCEL) {
 							return;
 						}

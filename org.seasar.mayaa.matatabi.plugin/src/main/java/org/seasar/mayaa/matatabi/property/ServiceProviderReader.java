@@ -5,7 +5,7 @@ import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.JDTUtil;
 
 /**
- * プロジェクトのServiceProviderの設定を読み込む。
+ * 繝励Ο繧ｸ繧ｧ繧ｯ繝医�ｮServiceProvider縺ｮ險ｭ螳壹ｒ隱ｭ縺ｿ霎ｼ繧縲�
  */
 public class ServiceProviderReader {
 	Class providerUtil;

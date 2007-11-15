@@ -15,7 +15,7 @@ import org.eclipse.ui.PartInitException;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 /**
- * ŠO•”ƒuƒ‰ƒEƒU‚Åƒtƒ@ƒCƒ‹‚ğŠJ‚­
+ * å¤–éƒ¨ãƒ–ãƒ©ã‚¦ã‚¶ã§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
  */
 public class OpenBrowserAction implements IEditorActionDelegate {
 	protected IWorkbenchPart targetPart;
