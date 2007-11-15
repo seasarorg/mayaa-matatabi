@@ -72,7 +72,7 @@ public class GenerateUtil {
 		buffer.append("<m:mayaa ");
 		List<Namespace> namespaces = PreferencesUtil.getNamespaces(store);
 		for (Iterator<Namespace> iter = namespaces.iterator(); iter.hasNext();) {
-			Namespace namespace = (Namespace) iter.next();
+			Namespace namespace = iter.next();
 			if (namespace.getNamespaceAttribute() != null) {
 				buffer.append(namespace.getNamespaceAttribute() + "\n" + "\t");
 			}

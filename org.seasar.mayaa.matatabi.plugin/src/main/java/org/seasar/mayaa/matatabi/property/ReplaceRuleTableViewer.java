@@ -113,6 +113,7 @@ public class ReplaceRuleTableViewer extends TableViewer {
 			this.replace = replace;
 		}
 
+		@Override
 		public String toString() {
 			return tag + ":" + replace;
 		}
@@ -163,6 +164,7 @@ public class ReplaceRuleTableViewer extends TableViewer {
 			this.viewer = viewer;
 		}
 
+		@Override
 		public void mouseDown(MouseEvent e) {
 			int x = e.x;
 			int y = e.y;

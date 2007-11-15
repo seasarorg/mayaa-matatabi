@@ -220,6 +220,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	/**
 	 * タグ追加
 	 */
+	@Override
 	protected void addTagInsertionProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
@@ -258,6 +259,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	/**
 	 * タグ名追加
 	 */
+	@Override
 	protected void addTagNameProposals(
 			ContentAssistRequest contentAssistRequest, int childPosition) {
 		initTaglibInfo(contentAssistRequest);
@@ -277,7 +279,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			}
 		} else {
 			for (Entry<String, TagInfo> entry : taglibList.entrySet()) {
-				TagInfo tag = (TagInfo) entry.getValue();
+				TagInfo tag = entry.getValue();
 				String matchString = contentAssistRequest.getMatchString();
 				if (isMatch(tag.getContent(node).substring(1), matchString)) {
 					contentAssistRequest.addProposal(new CompletionProposal(tag
@@ -297,6 +299,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	/**
 	 * 属性値の追加
 	 */
+	@Override
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
 		// トップ要素またはトップ要素の直下の要素でない場合は処理しない
@@ -372,7 +375,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		Node idAttribute = ParseUtil.getAttributeNode(
 				(Element) contentAssistRequest.getNode(),
 				MatatabiPlugin.XMLNS_MAYAA, "id");
-		if (!attribute.equals(idAttribute)) {
+		if (attribute !=null && !attribute.equals(idAttribute)) {
 			super.addAttributeValueProposals(contentAssistRequest);
 			return;
 		}
@@ -407,7 +410,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 
 		for (Iterator<String> iter = unusedSourceId.keySet().iterator(); iter
 				.hasNext();) {
-			String id = (String) iter.next();
+			String id = iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
 			if (isMatch(id, matchString)) {
@@ -420,7 +423,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 		for (Iterator<String> iter = usedSourceId.keySet().iterator(); iter
 				.hasNext();) {
-			String id = (String) iter.next();
+			String id = iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
 			if (isMatch(id, matchString)) {
@@ -433,6 +436,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 	}
 
+	@Override
 	protected void addAttributeNameProposals(
 			ContentAssistRequest contentAssistRequest) {
 		initTaglibInfo(contentAssistRequest);

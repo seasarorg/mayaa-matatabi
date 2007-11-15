@@ -15,16 +15,17 @@ import org.seasar.mayaa.matatabi.editor.hyperlink.MayaaXMLHyperlinkDetector;
  */
 public class MayaaXMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationXML {
+	@Override
 	protected IContentAssistProcessor[] getContentAssistProcessors(
 			ISourceViewer sourceViewer, String string) {
 		List<IContentAssistProcessor> result = new ArrayList<IContentAssistProcessor>(
 				0);
 		result.add(new MayaaContentAssistProcessor());
 
-		return (IContentAssistProcessor[]) result
-				.toArray(new IContentAssistProcessor[0]);
+		return result.toArray(new IContentAssistProcessor[0]);
 	}
 
+	@Override
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
 		List<IHyperlinkDetector> result = new ArrayList<IHyperlinkDetector>(0);
 		result.add(new MayaaXMLHyperlinkDetector());
@@ -38,6 +39,6 @@ public class MayaaXMLTextViewerConfiguration extends
 			}
 		}
 
-		return (IHyperlinkDetector[]) result.toArray(new IHyperlinkDetector[0]);
+		return result.toArray(new IHyperlinkDetector[0]);
 	}
 }

@@ -55,6 +55,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	/**
 	 * 
 	 */
+	@Override
 	public void setDocumentLocator(Locator locator) {
 		this.locator = locator;
 	}
@@ -68,6 +69,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	 * <li>重複するid属性のチェック</li>
 	 * </ul>
 	 */
+	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		depth++;
@@ -121,6 +123,7 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	/**
 	 * 要素終了時の処理
 	 */
+	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		depth--;
@@ -132,11 +135,12 @@ public class MatatabiValidateHandler extends DefaultHandler {
 	 * <li>テンプレートにあって、Mayaaファイルにないid属性のチェック</li>
 	 * </ul>
 	 */
+	@Override
 	public void endDocument() throws SAXException {
 		sourceid.removeAll(idlist);
 		sourceid.removeAll(defaultid);
 		for (Iterator<String> iter = sourceid.iterator(); iter.hasNext();) {
-			String id = (String) iter.next();
+			String id = iter.next();
 			int severty = getSeverty(preferenceStore
 					.getString(MatatabiPropertyPage.UNDEFINE_ID_ATTRIBUTE));
 			setMarker(

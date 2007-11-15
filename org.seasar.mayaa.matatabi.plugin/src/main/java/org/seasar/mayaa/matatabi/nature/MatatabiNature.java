@@ -10,9 +10,11 @@ public class MatatabiNature implements IProjectNature {
 	private IProject project;
 
 	public void configure() throws CoreException {
+		// no-op
 	}
 
 	public void deconfigure() throws CoreException {
+		// no-op
 	}
 
 	public IProject getProject() {

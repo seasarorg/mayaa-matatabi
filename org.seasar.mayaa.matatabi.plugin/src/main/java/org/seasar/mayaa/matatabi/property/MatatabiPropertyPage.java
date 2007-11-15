@@ -100,6 +100,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	/**
 	 * ページ初期化
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		IProject project = getProject();
 		Composite composite = drawPage(parent, project);
@@ -288,6 +289,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 	}
 
+	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 		IProject project = getProject();
 		ScopedPreferenceStore store = null;
@@ -301,6 +303,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	/**
 	 * デフォルトに戻す
 	 */
+	@Override
 	protected void performDefaults() {
 		this.javaSourcePath.setText("");
 		this.webRootPath.setText("");
@@ -319,6 +322,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		super.performDefaults();
 	}
 
+	@Override
 	public boolean performOk() {
 		boolean result = false;
 		IProject project = getProject();
@@ -364,31 +368,34 @@ public class MatatabiPropertyPage extends PropertyPage {
 		result = true;
 
 		try {
-			if (useMatatabi.getSelection()) {
-				if (!project.hasNature(MatatabiNature.NATURE_ID)) {
+			// TODO projectがnullでない場合の処理をまとめる
+			if (project != null) {
+				if (useMatatabi.getSelection()) {
+					if (!project.hasNature(MatatabiNature.NATURE_ID)) {
+						IProjectDescription desc = project.getDescription();
+						List<String> natureIds = new ArrayList<String>(Arrays
+								.asList(desc.getNatureIds()));
+						natureIds.add(MatatabiNature.NATURE_ID);
+						desc.setNatureIds(natureIds
+								.toArray(new String[natureIds.size()]));
+						project.setDescription(desc, null);
+					}
+					if (useValidator.getSelection()) {
+						setBuilder(project);
+					} else {
+						removeBuilder(project);
+					}
+				} else if (project.hasNature(MatatabiNature.NATURE_ID)) {
 					IProjectDescription desc = project.getDescription();
 					List<String> natureIds = new ArrayList<String>(Arrays
 							.asList(desc.getNatureIds()));
-					natureIds.add(MatatabiNature.NATURE_ID);
-					desc.setNatureIds((String[]) natureIds
+					natureIds.remove(MatatabiNature.NATURE_ID);
+					desc.setNatureIds(natureIds
 							.toArray(new String[natureIds.size()]));
 					project.setDescription(desc, null);
-				}
-				if (useValidator.getSelection()) {
-					setBuilder(project);
-				} else {
+
 					removeBuilder(project);
 				}
-			} else if (project.hasNature(MatatabiNature.NATURE_ID)) {
-				IProjectDescription desc = project.getDescription();
-				List<String> natureIds = new ArrayList<String>(Arrays
-						.asList(desc.getNatureIds()));
-				natureIds.remove(MatatabiNature.NATURE_ID);
-				desc.setNatureIds((String[]) natureIds
-						.toArray(new String[natureIds.size()]));
-				project.setDescription(desc, null);
-
-				removeBuilder(project);
 			}
 		} catch (CoreException e) {
 			MatatabiPlugin.errorLog(e);
@@ -509,6 +516,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 			this.text = text;
 		}
 
+		@Override
 		public void widgetSelected(SelectionEvent e) {
 			ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 					shell, new WorkbenchLabelProvider(),
@@ -516,6 +524,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 			dialog.setInput(project);
 			dialog.setAllowMultiple(false);
 			dialog.addFilter(new ViewerFilter() {
+				@Override
 				public boolean select(Viewer viewer, Object parent,
 						Object element) {
 					return element instanceof IFolder;

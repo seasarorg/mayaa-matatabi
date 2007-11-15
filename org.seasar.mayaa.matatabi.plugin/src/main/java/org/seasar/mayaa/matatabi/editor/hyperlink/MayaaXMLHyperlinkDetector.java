@@ -11,6 +11,7 @@ import org.w3c.dom.Node;
  * Mayaaファイル向けハイパーリンク処理
  */
 public class MayaaXMLHyperlinkDetector extends IdAttributeHyperlinkDetector {
+	@Override
 	protected Attr getIdAttribute(Node node) {
 		if (node.getNodeType() != Node.ELEMENT_NODE) {
 			return null;

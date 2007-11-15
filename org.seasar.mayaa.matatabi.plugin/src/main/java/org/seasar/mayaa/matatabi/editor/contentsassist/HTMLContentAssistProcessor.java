@@ -36,6 +36,7 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 	/**
 	 * 属性値の追加
 	 */
+	@Override
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
 		// 属性を取得する(JBossのプラグインからいただいたコード)
@@ -57,7 +58,7 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 		Node idAttribute = ParseUtil.getAttributeNode(
 				(Element) contentAssistRequest.getNode(),
 				MatatabiPlugin.XMLNS_MAYAA, "id");
-		if (!attribute.equals(idAttribute)) {
+		if (attribute != null && !attribute.equals(idAttribute)) {
 			super.addAttributeValueProposals(contentAssistRequest);
 			return;
 		}
@@ -92,7 +93,7 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 
 		for (Iterator<String> iter = unusedSourceId.keySet().iterator(); iter
 				.hasNext();) {
-			String id = (String) iter.next();
+			String id = iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
 			if (isMatch(id, matchString)) {
@@ -105,7 +106,7 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 		for (Iterator<String> iter = usedSourceId.keySet().iterator(); iter
 				.hasNext();) {
-			String id = (String) iter.next();
+			String id = iter.next();
 			String matchString = contentAssistRequest.getMatchString()
 					.substring(1);
 			if (isMatch(id, matchString)) {

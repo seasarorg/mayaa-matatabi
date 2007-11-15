@@ -90,6 +90,7 @@ public abstract class OpenActionBase extends ActionBase {
 	/**
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
+	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		super.selectionChanged(action, selection);
 		if (selection instanceof StructuredSelection) {

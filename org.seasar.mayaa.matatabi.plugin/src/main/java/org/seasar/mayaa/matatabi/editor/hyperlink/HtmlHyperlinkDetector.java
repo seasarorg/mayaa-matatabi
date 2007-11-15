@@ -16,6 +16,7 @@ public class HtmlHyperlinkDetector extends IdAttributeHyperlinkDetector {
 	/**
 	 * 指定したnodeのid属性を取得します。
 	 */
+	@Override
 	protected Attr getIdAttribute(Node node) {
 		if (node.getNodeType() != Node.ELEMENT_NODE) {
 			return null;
@@ -27,9 +28,8 @@ public class HtmlHyperlinkDetector extends IdAttributeHyperlinkDetector {
 		List<String> namespaces = ParseUtil.getHtmlNamespaces(EditorUtil
 				.getActiveFile().getProject());
 		Attr attr = null;
-		for (Iterator<String> iter = namespaces.iterator(); iter.hasNext()
-				&& attr == null;) {
-			String namespace = (String) iter.next();
+		for (Iterator<String> iter = namespaces.iterator(); iter.hasNext();) {
+			String namespace = iter.next();
 			attr = ParseUtil.getAttributeNode((Element) node, namespace, "id");
 			if (attr != null) {
 				break;

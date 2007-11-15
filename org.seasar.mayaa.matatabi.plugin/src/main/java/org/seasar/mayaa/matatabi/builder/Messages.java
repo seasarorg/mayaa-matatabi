@@ -11,6 +11,7 @@ public class Messages {
 			.getBundle(BUNDLE_NAME);
 
 	private Messages() {
+		// no-op
 	}
 
 	public static String getString(String key) {

@@ -141,7 +141,7 @@ public class ParseUtil {
 	private static void traverse(Map<String, Element> idlist, Element element,
 			List<String> namespaces) {
 		for (Iterator<String> iter = namespaces.iterator(); iter.hasNext();) {
-			String namespace = (String) iter.next();
+			String namespace = iter.next();
 			traverse(idlist, element, namespace);
 		}
 	}

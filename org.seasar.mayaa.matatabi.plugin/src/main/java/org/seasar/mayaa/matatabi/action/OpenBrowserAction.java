@@ -30,11 +30,11 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		IFile file = ((IFileEditorInput) ((IEditorPart) targetPart)
+		IFile targetFile = ((IFileEditorInput) ((IEditorPart) targetPart)
 				.getEditorInput()).getFile();
 		try {
-			System.out.println(file.getLocationURI().toURL());
-			executeBrowser(file.getLocationURI().toURL());
+			System.out.println(targetFile.getLocationURI().toURL());
+			executeBrowser(targetFile.getLocationURI().toURL());
 		} catch (MalformedURLException e) {
 			MatatabiPlugin.errorLog(e);
 		}
@@ -44,6 +44,7 @@ public class OpenBrowserAction implements IEditorActionDelegate {
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
+		// no-op
 	}
 
 	private void executeBrowser(URL url) {

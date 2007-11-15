@@ -39,6 +39,7 @@ public class GenerateComponentAction extends OpenActionBase {
 		targetBaseDir = baseDir;
 	}
 
+	@Override
 	public void run(IAction action) {
 		if (EditorUtil.hasMatatabiNature()) {
 			IFile file = EditorUtil.getActiveFile();

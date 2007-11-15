@@ -49,36 +49,39 @@ public abstract class OpenHTMLActionBase extends OpenActionBase {
 
 		if (targetFileList.size() == 1) {
 			return targetFileList.get(0);
-		} else {
-			ListDialog dialog = new ListDialog(MatatabiPlugin.getShell());
-			dialog.setMessage("複数のテンプレートファイルが見つかりました。開くファイルを選んでください。");
-			dialog.setContentProvider(new IStructuredContentProvider() {
-				public void dispose() {
-				}
+		}
 
-				public Object[] getElements(Object inputElement) {
-					return ((List<IFile>) inputElement).toArray();
-				}
+		ListDialog dialog = new ListDialog(MatatabiPlugin.getShell());
+		dialog.setMessage("複数のテンプレートファイルが見つかりました。開くファイルを選んでください。");
+		dialog.setContentProvider(new IStructuredContentProvider() {
+			public void dispose() {
+				// no-op
+			}
 
-				public void inputChanged(Viewer viewer, Object oldInput,
-						Object newInput) {
-				}
-			});
-			dialog.setLabelProvider(new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					return ((IFile) element).getName();
-				}
-			});
-			dialog.setInput(targetFileList);
-			dialog.setTitle("HTMLファイルを開く");
-			if (dialog.open() == Window.OK) {
-				Object[] result = dialog.getResult();
-				if (result.length == 1) {
-					return (IFile) result[0];
-				}
+			public Object[] getElements(Object inputElement) {
+				return ((List<IFile>) inputElement).toArray();
+			}
+
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
+				// no-op
+			}
+		});
+		dialog.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((IFile) element).getName();
+			}
+		});
+		dialog.setInput(targetFileList);
+		dialog.setTitle("HTMLファイルを開く");
+		if (dialog.open() == Window.OK) {
+			Object[] result = dialog.getResult();
+			if (result.length == 1) {
+				return (IFile) result[0];
 			}
 		}
+
 		return null;
 	}
 }

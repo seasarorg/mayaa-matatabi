@@ -9,10 +9,12 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
  * Mayaaファイルエディター
  */
 public class MayaaEditor extends StructuredTextEditor {
+	@Override
 	protected void initializeKeyBindingScopes() {
 		setKeyBindingScopes(new String[] { "org.seasar.mayaa.matatabi.editor.mayaaEditorScope" });
 	}
 
+	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		super.init(site, input);

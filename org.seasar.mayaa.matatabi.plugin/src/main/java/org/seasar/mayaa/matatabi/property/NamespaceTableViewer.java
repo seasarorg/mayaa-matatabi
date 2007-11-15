@@ -113,6 +113,7 @@ public class NamespaceTableViewer extends TableViewer {
 			this.uri = uri;
 		}
 
+		@Override
 		public String toString() {
 			return prefix + ":" + uri;
 		}
@@ -170,6 +171,7 @@ public class NamespaceTableViewer extends TableViewer {
 			this.viewer = viewer;
 		}
 
+		@Override
 		public void mouseDown(MouseEvent e) {
 			int x = e.x;
 			int y = e.y;
