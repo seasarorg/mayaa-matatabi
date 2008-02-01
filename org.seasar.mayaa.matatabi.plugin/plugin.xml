@@ -59,11 +59,12 @@
 		<sourceViewerConfiguration
 			class="org.seasar.mayaa.matatabi.editor.configuration.MayaaHTMLTextViewerConfiguration"
 			target="org.eclipse.wst.html.core.htmlsource.source" />
-	</extension>
-	<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
 		<sourceViewerConfiguration
 			class="org.seasar.mayaa.matatabi.editor.configuration.MayaaHTMLTextViewerConfiguration"
 			target="org.eclipse.jst.pagedesigner.editors.DesignerStructuredTextEditorJSP" />
+		<contentOutlineConfiguration
+			class="org.eclipse.jst.pagedesigner.editors.OutlineConfiguration"
+			target="org.seasar.mayaa.matatabi.editors.MayaaEditor"/>
 	</extension>
 	<extension point="org.eclipse.core.runtime.contentTypes">
 		<content-type base-type="org.eclipse.core.runtime.xml"
@@ -75,7 +76,8 @@
 		<editor class="org.seasar.mayaa.matatabi.editor.MayaaEditor"
 			default="true" extensions="mayaa" icon="icons/mayaa_file_small.gif"
 			id="org.seasar.mayaa.matatabi.editors.MayaaEditor"
-			name="%editor.name" />
+			name="%editor.name" 
+			contributorClass="org.seasar.mayaa.matatabi.editor.EditorActionBarContributor"/>
 	</extension>
 	<extension point="org.eclipse.ui.editorActions">
 		<editorContribution
