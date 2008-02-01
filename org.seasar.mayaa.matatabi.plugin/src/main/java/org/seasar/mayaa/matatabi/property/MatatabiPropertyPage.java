@@ -70,6 +70,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	public static final String DEFAULT_PACKAGE = "defaultPackage";
 
+	public static final String DEFAULT_PACKAGE_SUFFIX = "defaultPackageSuffix";
+
 	private Button useMatatabi;
 
 	private Button useValidator;
@@ -92,6 +94,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	private Text webRootPath;
 	private Text defaultPackage;
+	private Text defaultPackageSuffix;
 
 	private ReplaceRuleTableViewer replaceRuleTableViewer;
 
@@ -125,6 +128,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 				"Webルートパス");
 		defaultPackage = createJavaPackageSelectionText(project,
 				configMarkerPanel, "Javaデフォルトパッケージ");
+		defaultPackageSuffix = createJavaPackageSelectionText(project,
+				configMarkerPanel, "Javaデフォルトパッケージ(サフィックス)");
 		onlyMayaaId = createCheckPart(configMarkerPanel,
 				"テンプレートファイルでm:idのみ処理対象とする");
 		GridData data = new GridData();
@@ -236,6 +241,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.javaSourcePath.setText(store.getString(JAVA_SOURCE_PATH));
 		this.webRootPath.setText(store.getString(WEB_ROOT_PATH));
 		this.defaultPackage.setText(store.getString(DEFAULT_PACKAGE));
+		this.defaultPackageSuffix.setText(store
+				.getString(DEFAULT_PACKAGE_SUFFIX));
 
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
@@ -308,6 +315,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.javaSourcePath.setText("");
 		this.webRootPath.setText("");
 		this.defaultPackage.setText("");
+		this.defaultPackageSuffix.setText("");
 		this.useMatatabi.setSelection(false);
 		this.onlyMayaaId.setSelection(false);
 		this.useValidator.setSelection(false);
@@ -333,6 +341,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
 			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
+			store.setValue(DEFAULT_PACKAGE_SUFFIX, defaultPackageSuffix.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, String
 					.valueOf(missingIdAttribute.getSelectionIndex()));
 			store.setValue(INVALID_ID_ATTRIBUTE, String
@@ -390,8 +399,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 					List<String> natureIds = new ArrayList<String>(Arrays
 							.asList(desc.getNatureIds()));
 					natureIds.remove(MatatabiNature.NATURE_ID);
-					desc.setNatureIds(natureIds
-							.toArray(new String[natureIds.size()]));
+					desc.setNatureIds(natureIds.toArray(new String[natureIds
+							.size()]));
 					project.setDescription(desc, null);
 
 					removeBuilder(project);

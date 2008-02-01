@@ -50,6 +50,9 @@ public abstract class OpenHTMLActionBase extends OpenActionBase {
 		if (targetFileList.size() == 1) {
 			return targetFileList.get(0);
 		}
+		if (targetFileList.size() == 0) {
+			return null;
+		}
 
 		ListDialog dialog = new ListDialog(MatatabiPlugin.getShell());
 		dialog.setMessage("複数のテンプレートファイルが見つかりました。開くファイルを選んでください。");

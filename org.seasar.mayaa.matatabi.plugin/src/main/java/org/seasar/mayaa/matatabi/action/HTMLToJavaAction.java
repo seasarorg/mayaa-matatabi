@@ -24,4 +24,14 @@ public class HTMLToJavaAction extends OpenActionBase {
 		return baseName.substring(0, 1).toUpperCase() + baseName.substring(1)
 				+ "Action";
 	}
+
+	@Override
+	protected String getSubDirectory(String packageName) {
+		String packageSuffix = store
+				.getString(MatatabiPropertyPage.DEFAULT_PACKAGE_SUFFIX);
+		if (!"".equals(packageSuffix)) {
+			packageName += "." + packageSuffix;
+		}
+		return super.getSubDirectory(packageName);
+	}
 }

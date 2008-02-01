@@ -41,6 +41,10 @@ public abstract class OpenActionBase extends ActionBase {
 		return baseName;
 	}
 
+	protected String getSubDirectory(String packageName) {
+		return packageName.replace('.', '/');
+	}
+
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
@@ -78,13 +82,12 @@ public abstract class OpenActionBase extends ActionBase {
 				className.append("." + filePath[i]);
 			}
 		}
+
 		String baseName = filePath[filePath.length - 1].substring(0,
 				filePath[filePath.length - 1].indexOf("."));
-		className.append("." + getResourceName(baseName));
-
 		return project.getFile(targetBaseDir + "/"
-				+ className.toString().replace('.', '/') + "."
-				+ targetExtension);
+				+ getSubDirectory(className.toString()) + "/"
+				+ getResourceName(baseName) + "." + targetExtension);
 	}
 
 	/**
