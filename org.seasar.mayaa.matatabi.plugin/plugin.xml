@@ -9,14 +9,37 @@
 				<objectState name="projectNature"
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
+			<menu
+		         id="org.seasar.mayaa.matatabi.menu"
+		         label="%menu.label"
+		         path="additions">
+		         <separator name="group" />
+			</menu>
 			<action
 				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaa"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openmayaa" />
 			<action
 				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openaction" />
+			<action
+				label="%label.openbrowser"
+				class="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenBrowserAction" />
+			<action
+				label="%label.insertmayaaid" 
+				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
+			<action
+				label="%label.insertspantag"
+				class="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertSpanTag" />
 		</objectContribution>
 		<objectContribution adaptable="true"
 			id="org.seasar.mayaa.matatabi.html.objectContribution"
@@ -26,29 +49,50 @@
 				<objectState name="projectNature"
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
+			<menu
+		         id="org.seasar.mayaa.matatabi.menu"
+		         label="%menu.label"
+		         path="additions">
+		         <separator name="group" />
+			</menu>
 			<action
 				class="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTML"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openhtml" />
 			<action
+				label="%label.openaction"
 				class="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
-				label="%label.openaction" />
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+			<action
+				label="%label.insertmayaaid" 
+				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
 		</objectContribution>
 		<objectContribution adaptable="true"
 			id="org.seasar.mayaa.matatabi.java.objectContribution"
-			objectClass="org.eclipse.jdt.core.IPackageFragmentRoot">
+			objectClass="org.eclipse.jdt.core.IJavaElement">
 			<visibility>
 				<objectState name="projectNature"
 					value="org.seasar.mayaa.matatabi.MatatabiNature" />
 			</visibility>
+			<menu
+		         id="org.seasar.mayaa.matatabi.menu"
+		         label="%menu.label"
+		         path="additions">
+		         <separator name="group" />
+			</menu>
 			<action
 				class="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaaPair"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openmayaa" />
 			<action
 				class="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTMLPair"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openhtml" />
 		</objectContribution>
 	</extension>
@@ -239,6 +283,12 @@
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
 			id="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
 			name="%label.insertspantag" />
+		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+			name="%label.openhtml" />
+		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
+			id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+			name="%label.openmayaa" />
 		<category id="org.seasar.mayaa.matatabi.plugin.category"
 			name="matatabi" />
 	</extension>
