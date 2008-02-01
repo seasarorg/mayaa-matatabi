@@ -70,17 +70,17 @@ public abstract class OpenActionBase extends ActionBase {
 	}
 
 	protected IFile getTargetFile() {
-		String[] filaPath = path.toString().substring(baseDir.length()).split(
+		String[] filePath = path.toString().substring(baseDir.length()).split(
 				"/");
 		StringBuilder className = new StringBuilder("");
-		for (int i = 0; i < filaPath.length - 1; i++) {
-			if (!filaPath[i].equals("")) {
-				className.append("." + filaPath[i]);
+		for (int i = 0; i < filePath.length - 1; i++) {
+			if (!filePath[i].equals("")) {
+				className.append("." + filePath[i]);
 			}
 		}
-		String baseName = filaPath[filaPath.length - 1].substring(0,
-				filaPath[filaPath.length - 1].indexOf("."));
-		className.append(getResourceName(baseName));
+		String baseName = filePath[filePath.length - 1].substring(0,
+				filePath[filePath.length - 1].indexOf("."));
+		className.append("." + getResourceName(baseName));
 
 		return project.getFile(targetBaseDir + "/"
 				+ className.toString().replace('.', '/') + "."
