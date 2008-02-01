@@ -198,7 +198,6 @@ public class ParseUtil {
 					}
 				}
 			} catch (DOMException e) {
-				MatatabiPlugin.errorLog(e);
 			}
 		}
 		return null;
