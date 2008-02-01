@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.seasar.mayaa.matatabi;singleton:=true
-Bundle-Version: 1.2.0
+Bundle-Version: 1.2.1
 Bundle-Activator: org.seasar.mayaa.matatabi.MatatabiPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.apache.xerces,
@@ -31,3 +31,4 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-ClassPath: matatabi.jar,
  lib/nekohtml.jar,
  lib/velocity-dep-1.5.jar
+Eclipse-LazyStart: false
