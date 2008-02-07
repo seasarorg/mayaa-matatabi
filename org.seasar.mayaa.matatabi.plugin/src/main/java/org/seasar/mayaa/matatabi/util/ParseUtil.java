@@ -200,6 +200,11 @@ public class ParseUtil {
 			} catch (DOMException e) {
 			}
 		}
+
+		// namespaceなしに対応
+		if ("".equals(namespaceURI) && element.hasAttribute(localName)) {
+			return element.getAttributeNode(localName);
+		}
 		return null;
 	}
 
