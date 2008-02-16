@@ -235,7 +235,7 @@
 			-->
 		</editorContribution>
 		<editorContribution
-			targetID="#CompilationUnitEditorContext"
+			targetID="org.eclipse.jdt.ui.CompilationUnitEditor"
 			id="org.seasar.mayaa.matatabi.action.java">
 			<menu label="%product.name"
 				id="org.seasar.mayaa.matatabi.menu">
