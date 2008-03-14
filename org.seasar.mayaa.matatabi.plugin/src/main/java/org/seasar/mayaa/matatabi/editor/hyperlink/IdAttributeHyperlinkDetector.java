@@ -18,7 +18,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
 /**
- * id螻樊ｧ縺ｧ縺ｮ繝上う繝代�ｼ繝ｪ繝ｳ繧ｯ蜃ｦ逅�繧定｡後≧
+ * id属性でのハイパーリンク処理を行う
  */
 public abstract class IdAttributeHyperlinkDetector implements
 		IHyperlinkDetector {

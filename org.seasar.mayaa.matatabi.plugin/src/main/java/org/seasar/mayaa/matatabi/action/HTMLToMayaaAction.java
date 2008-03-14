@@ -27,8 +27,8 @@ public class HTMLToMayaaAction extends OpenActionBase {
 		if (!getTargetFile().exists()) {
 			MessageBox messageBox = new MessageBox(targetPart.getSite()
 					.getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-			messageBox.setMessage("å¯¾å¿œã™ã‚‹Mayaaãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚ä½œæˆã—ã¾ã™ã‹ï¼Ÿ");
-			messageBox.setText("ã‚¨ãƒ©ãƒ¼");
+			messageBox.setMessage("‘Î‰‚·‚éMayaaƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñBì¬‚µ‚Ü‚·‚©H");
+			messageBox.setText("ƒGƒ‰[");
 			switch (messageBox.open()) {
 			case SWT.YES:
 				GenerateUtil.generateMayaaFile();

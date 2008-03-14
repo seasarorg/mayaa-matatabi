@@ -34,19 +34,19 @@ public class ReplaceRuleTableViewer extends TableViewer {
 	}
 
 	public void createPartControl(Composite parent) {
-		// è¦‹ãŸç›®ã®è¨­å®š
+		// Œ©‚½–Ú‚Ìİ’è
 		getTable().setLinesVisible(true);
 		getTable().setHeaderVisible(true);
 
-		// ãƒ˜ãƒƒãƒ€ã®è¨­å®š
+		// ƒwƒbƒ_‚Ìİ’è
 		TableColumn col1 = new TableColumn(getTable(), SWT.LEFT);
-		col1.setText("ã‚¿ã‚°å");
+		col1.setText("ƒ^ƒO–¼");
 		col1.setWidth(100);
 		TableColumn col2 = new TableColumn(getTable(), SWT.LEFT);
-		col2.setText("ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ");
+		col2.setText("ƒeƒ“ƒvƒŒ[ƒg");
 		col2.setWidth(400);
 
-		// ç·¨é›†è¨­å®š
+		// •ÒWİ’è
 		String[] properties = new String[] { "tag", "replace" };
 		setColumnProperties(properties);
 		CellEditor[] cellEditors = new CellEditor[] {
@@ -55,7 +55,7 @@ public class ReplaceRuleTableViewer extends TableViewer {
 		setCellModifier(new RelpaceCellModifier(this));
 		getTable().addMouseListener(new RelpaceMouseAdapter(this));
 
-		// å€¤ã®è¨­å®š
+		// ’l‚Ìİ’è
 		setContentProvider(new ArrayContentProvider());
 		setLabelProvider(new RelpaceLabelProvider());
 	}

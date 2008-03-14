@@ -11,7 +11,7 @@ import org.seasar.mayaa.matatabi.editor.contentsassist.MayaaContentAssistProcess
 import org.seasar.mayaa.matatabi.editor.hyperlink.MayaaXMLHyperlinkDetector;
 
 /**
- * Mayaaãƒ•ã‚¡ã‚¤ãƒ«å‘ã‘ã®WTPã‚¨ãƒ‡ã‚£ã‚¿è¨­å®š
+ * Mayaaƒtƒ@ƒCƒ‹Œü‚¯‚ÌWTPƒGƒfƒBƒ^İ’è
  */
 public class MayaaXMLTextViewerConfiguration extends
 		StructuredTextViewerConfigurationXML {

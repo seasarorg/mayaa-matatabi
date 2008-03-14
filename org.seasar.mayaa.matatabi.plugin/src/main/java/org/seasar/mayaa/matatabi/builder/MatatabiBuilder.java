@@ -11,19 +11,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 /**
- * Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã®Validationã‚’è¡Œã†ãƒ“ãƒ«ãƒ€ãƒ¼
+ * Mayaaƒtƒ@ƒCƒ‹‚ÌValidation‚ğs‚¤ƒrƒ‹ƒ_[
  */
 public class MatatabiBuilder extends IncrementalProjectBuilder {
 
 	/**
-	 * ãƒ“ãƒ«ãƒ‰ã‚’è¡Œã†ã€‚
+	 * ƒrƒ‹ƒh‚ğs‚¤B
 	 * 
 	 * @param kind
-	 *            ãƒ“ãƒ«ãƒ‰ã®ç¨®é¡
+	 *            ƒrƒ‹ƒh‚Ìí—Ş
 	 * @param args
-	 *            å¼•æ•°
+	 *            ˆø”
 	 * @param monitor
-	 *            ãƒ¢ãƒ‹ã‚¿ãƒ¼
+	 *            ƒ‚ƒjƒ^[
 	 */
 	@Override
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
@@ -43,7 +43,7 @@ public class MatatabiBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * ãƒ•ãƒ«ãƒ“ãƒ«ãƒ‰ã‚’è¡Œã†ã€‚
+	 * ƒtƒ‹ƒrƒ‹ƒh‚ğs‚¤B
 	 * 
 	 * @param monitor
 	 * @throws CoreException
@@ -55,7 +55,7 @@ public class MatatabiBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ãƒ“ãƒ«ãƒ‰ã‚’è¡Œã†ã€‚
+	 * ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒrƒ‹ƒh‚ğs‚¤B
 	 * 
 	 * @param monitor
 	 * @throws CoreException

@@ -20,26 +20,26 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¢ã‚·ã‚¹ãƒˆæ©Ÿèƒ½
+ * ƒRƒ“ƒeƒ“ƒcƒAƒVƒXƒg‹@”\
  */
 @SuppressWarnings("restriction")
 public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
-	/** ã‚¢ã‚¤ã‚³ãƒ³ */
+	/** ƒAƒCƒRƒ“ */
 	private Image icon;
 
-	/** ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
+	/** ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
 	public HTMLContentAssistProcessor() {
 		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
 				.createImage();
 	}
 
 	/**
-	 * å±æ€§å€¤ã®è¿½åŠ 
+	 * ‘®«’l‚Ì’Ç‰Á
 	 */
 	@Override
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
-		// å±æ€§ã‚’å–å¾—ã™ã‚‹(JBossã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‹ã‚‰ã„ãŸã ã„ãŸã‚³ãƒ¼ãƒ‰)
+		// ‘®«‚ğæ“¾‚·‚é(JBoss‚Ìƒvƒ‰ƒOƒCƒ“‚©‚ç‚¢‚½‚¾‚¢‚½ƒR[ƒh)
 		int beginPos = contentAssistRequest.getReplacementBeginPosition();
 		NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
 		AttrImpl attribute = null;
@@ -120,12 +120,12 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * è£œå®Œã™ã‚‹æ–‡å­—åˆ—ã¨å…¥åŠ›ä¸­ã®æ–‡å­—åˆ—ãŒå…ˆé ­ä¸€è‡´ã™ã‚‹ã‹ã©ã†ã‹ã€‚
+	 * •âŠ®‚·‚é•¶š—ñ‚Æ“ü—Í’†‚Ì•¶š—ñ‚ªæ“ªˆê’v‚·‚é‚©‚Ç‚¤‚©B
 	 * 
 	 * @param contents
-	 *            è£œå®Œã™ã‚‹æ–‡å­—åˆ—
+	 *            •âŠ®‚·‚é•¶š—ñ
 	 * @param matchString
-	 *            å…¥åŠ›ä¸­ã®æ–‡å­—åˆ—
+	 *            “ü—Í’†‚Ì•¶š—ñ
 	 * @return
 	 */
 	private boolean isMatch(String contents, String matchString) {

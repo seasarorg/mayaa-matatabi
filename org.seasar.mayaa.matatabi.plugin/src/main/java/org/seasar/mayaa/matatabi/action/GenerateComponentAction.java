@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 /**
- * ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®ä¸€æ‹¬ç”Ÿæˆã‚’è¡Œã†ã€‚
+ * ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌˆêŠ‡¶¬‚ğs‚¤B
  */
 public class GenerateComponentAction extends OpenActionBase {
 	public GenerateComponentAction() {

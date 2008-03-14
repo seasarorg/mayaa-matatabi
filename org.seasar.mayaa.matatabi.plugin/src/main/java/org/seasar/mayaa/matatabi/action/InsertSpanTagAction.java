@@ -15,7 +15,7 @@ import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 
 /**
- * HTMLãƒ•ã‚¡ã‚¤ãƒ«ã«<span m:id="xxxx"></span>ã‚’æŒ¿å…¥ã™ã‚‹ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
+ * HTMLƒtƒ@ƒCƒ‹‚É<span m:id="xxxx"></span>‚ğ‘}“ü‚·‚éƒAƒNƒVƒ‡ƒ“
  */
 public class InsertSpanTagAction extends ActionBase {
 	public void run(IAction action) {
@@ -30,7 +30,7 @@ public class InsertSpanTagAction extends ActionBase {
 					int offset = textSelection.getOffset();
 
 					InputDialog dialog = new InputDialog(targetPart.getSite()
-							.getShell(), "mayaa idå…¥åŠ›", "mayaa idã‚’å…¥åŠ›ã—ã¦ãã ã•ã„", "",
+							.getShell(), "mayaa id“ü—Í", "mayaa id‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", "",
 							null);
 					dialog.open();
 					String id = dialog.getValue();

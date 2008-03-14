@@ -32,7 +32,7 @@ import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.nature.MatatabiNature;
 
 /**
- * エディタに関する処理を行う
+ * �G�f�B�^�Ɋւ��鏈�����s��
  * 
  * @author matoba
  */
@@ -79,7 +79,7 @@ public class EditorUtil {
 	}
 
 	/**
-	 * 選択中の文字列を取得する。
+	 * �I�𒆂̕�������擾����B
 	 * 
 	 * @param targetPart
 	 * @return
@@ -199,7 +199,7 @@ public class EditorUtil {
 	}
 
 	/**
-	 * 開いているファイルが属するプロジェクトにMatatabiNatureが設定されているかどうか。
+	 * �J���Ă���t�@�C����������v���W�F�N�g��MatatabiNature���ݒ肳��Ă��邩�ǂ����B
 	 * 
 	 * @return
 	 */

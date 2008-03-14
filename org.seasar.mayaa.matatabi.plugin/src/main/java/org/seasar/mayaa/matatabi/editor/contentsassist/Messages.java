@@ -4,7 +4,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * 繝｡繝�繧ｻ繝ｼ繧ｸ邂｡逅�
+ * メッセージ管理
  */
 public class Messages {
 	private static final String BUNDLE_NAME = "org.seasar.mayaa.matatabi.editor.contentsassist.messages"; //$NON-NLS-1$

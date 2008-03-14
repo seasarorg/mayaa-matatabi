@@ -40,24 +40,24 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¢ã‚·ã‚¹ãƒˆæ©Ÿèƒ½
+ * ƒRƒ“ƒeƒ“ƒcƒAƒVƒXƒg‹@”\
  */
 @SuppressWarnings("restriction")
 public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
-	/** åå‰ç©ºé–“ */
+	/** –¼‘O‹óŠÔ */
 	private static final String XMLNS_URI = "http://www.w3.org/2000/xmlns/";
-	/** ãƒ«ãƒ¼ãƒˆã‚¿ã‚° */
+	/** ƒ‹[ƒgƒ^ƒO */
 	private static final String ROOT_TAG = "<m:mayaa>\n</m:mayaa>";
 	private Map<String, AttributeInfo> rootTagAttributeList = new LinkedHashMap<String, AttributeInfo>();
 
-	/** ã‚¿ã‚°æƒ…å ± */
+	/** ƒ^ƒOî•ñ */
 	private Map<String, TagInfo> tagList = new LinkedHashMap<String, TagInfo>();
 	private Map<String, TagInfo> taglibList = new LinkedHashMap<String, TagInfo>();
 
-	/** ã‚¢ã‚¤ã‚³ãƒ³ */
+	/** ƒAƒCƒRƒ“ */
 	private Image icon;
 
-	/** ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ */
+	/** ƒRƒ“ƒXƒgƒ‰ƒNƒ^ */
 	public MayaaContentAssistProcessor() {
 		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
 				.createImage();
@@ -218,7 +218,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * ã‚¿ã‚°è¿½åŠ 
+	 * ƒ^ƒO’Ç‰Á
 	 */
 	@Override
 	protected void addTagInsertionProposals(
@@ -228,7 +228,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 		Node parentNode = contentAssistRequest.getNode().getParentNode();
 		Node node = contentAssistRequest.getNode();
 		if (parentNode instanceof Document) {
-			// ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã®è¿½åŠ 
+			// ƒ‹[ƒgƒm[ƒh‚Ì’Ç‰Á
 			if (isMatch(ROOT_TAG, contentAssistRequest.getMatchString())) {
 				contentAssistRequest.addProposal(new CompletionProposal(
 						ROOT_TAG, contentAssistRequest
@@ -257,7 +257,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * ã‚¿ã‚°åè¿½åŠ 
+	 * ƒ^ƒO–¼’Ç‰Á
 	 */
 	@Override
 	protected void addTagNameProposals(
@@ -297,12 +297,12 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * å±æ€§å€¤ã®è¿½åŠ 
+	 * ‘®«’l‚Ì’Ç‰Á
 	 */
 	@Override
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
-		// ãƒˆãƒƒãƒ—è¦ç´ ã¾ãŸã¯ãƒˆãƒƒãƒ—è¦ç´ ã®ç›´ä¸‹ã®è¦ç´ ã§ãªã„å ´åˆã¯å‡¦ç†ã—ãªã„
+		// ƒgƒbƒv—v‘f‚Ü‚½‚Íƒgƒbƒv—v‘f‚Ì’¼‰º‚Ì—v‘f‚Å‚È‚¢ê‡‚Íˆ—‚µ‚È‚¢
 		if (!contentAssistRequest.getNode().getParentNode().equals(
 				contentAssistRequest.getNode().getOwnerDocument()
 						.getDocumentElement())
@@ -313,7 +313,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		// å±æ€§ã‚’å–å¾—ã™ã‚‹(JBossã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‹ã‚‰ã„ãŸã ã„ãŸã‚³ãƒ¼ãƒ‰)
+		// ‘®«‚ğæ“¾‚·‚é(JBoss‚Ìƒvƒ‰ƒOƒCƒ“‚©‚ç‚¢‚½‚¾‚¢‚½ƒR[ƒh)
 		int beginPos = contentAssistRequest.getReplacementBeginPosition();
 		NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
 		AttrImpl attribute = null;
@@ -329,7 +329,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 			}
 		}
 
-		// ã‚¿ã‚°ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®åå‰ç©ºé–“ã®è£œå®Œ
+		// ƒ^ƒOƒ‰ƒCƒuƒ‰ƒŠ‚Ì–¼‘O‹óŠÔ‚Ì•âŠ®
 		if (contentAssistRequest.getNode().equals(
 				contentAssistRequest.getNode().getOwnerDocument()
 						.getDocumentElement())) {
@@ -526,12 +526,12 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * è£œå®Œã™ã‚‹æ–‡å­—åˆ—ã¨å…¥åŠ›ä¸­ã®æ–‡å­—åˆ—ãŒå…ˆé ­ä¸€è‡´ã™ã‚‹ã‹ã©ã†ã‹ã€‚
+	 * •âŠ®‚·‚é•¶š—ñ‚Æ“ü—Í’†‚Ì•¶š—ñ‚ªæ“ªˆê’v‚·‚é‚©‚Ç‚¤‚©B
 	 * 
 	 * @param contents
-	 *            è£œå®Œã™ã‚‹æ–‡å­—åˆ—
+	 *            •âŠ®‚·‚é•¶š—ñ
 	 * @param matchString
-	 *            å…¥åŠ›ä¸­ã®æ–‡å­—åˆ—
+	 *            “ü—Í’†‚Ì•¶š—ñ
 	 * @return
 	 */
 	private boolean isMatch(String contents, String matchString) {
@@ -539,7 +539,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * ã‚¿ã‚°ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®æƒ…å ±ã‚’èª­ã¿è¾¼ã‚€
+	 * ƒ^ƒOƒ‰ƒCƒuƒ‰ƒŠ‚Ìî•ñ‚ğ“Ç‚İ‚Ş
 	 * 
 	 * @param contentAssistRequest
 	 */
@@ -592,7 +592,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * ã‚¿ã‚°æƒ…å ±
+	 * ƒ^ƒOî•ñ
 	 */
 	public static class TagInfo {
 		private String prefix;
@@ -656,7 +656,7 @@ public class MayaaContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	/**
-	 * å±æ€§æƒ…å ±
+	 * ‘®«î•ñ
 	 */
 	public static class AttributeInfo {
 		private String name;

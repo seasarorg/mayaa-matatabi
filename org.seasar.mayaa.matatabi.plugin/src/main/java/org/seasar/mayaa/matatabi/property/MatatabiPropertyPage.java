@@ -43,7 +43,7 @@ import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
 import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 
 /**
- * è¨­å®šãƒšãƒ¼ã‚¸
+ * İ’èƒy[ƒW
  */
 public class MatatabiPropertyPage extends PropertyPage {
 	public static final String BUILDER_ID = "org.seasar.mayaa.matatabi.MatatabiBuilder";
@@ -101,7 +101,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private NamespaceTableViewer namespaceTableViewer;
 
 	/**
-	 * ãƒšãƒ¼ã‚¸åˆæœŸåŒ–
+	 * ƒy[ƒW‰Šú‰»
 	 */
 	@Override
 	protected Control createContents(Composite parent) {
@@ -118,56 +118,56 @@ public class MatatabiPropertyPage extends PropertyPage {
 		panel.setLayout(g);
 		panel.setFont(parent.getFont());
 
-		useMatatabi = createCheckPart(panel, "matatabiã‚’ä½¿ç”¨ã™ã‚‹");
+		useMatatabi = createCheckPart(panel, "matatabi‚ğg—p‚·‚é");
 		folder = createTabFolder(panel);
 
 		Composite configMarkerPanel = createPanel(folder, 3);
 		javaSourcePath = createFolderSelectionText(project, configMarkerPanel,
-				"Javaã‚½ãƒ¼ã‚¹ãƒ‘ã‚¹");
+				"Javaƒ\[ƒXƒpƒX");
 		webRootPath = createFolderSelectionText(project, configMarkerPanel,
-				"Webãƒ«ãƒ¼ãƒˆãƒ‘ã‚¹");
+				"Webƒ‹[ƒgƒpƒX");
 		defaultPackage = createJavaPackageSelectionText(project,
-				configMarkerPanel, "Javaãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‘ãƒƒã‚±ãƒ¼ã‚¸");
+				configMarkerPanel, "JavaƒfƒtƒHƒ‹ƒgƒpƒbƒP[ƒW");
 		defaultPackageSuffix = createJavaPackageSelectionText(project,
-				configMarkerPanel, "Javaãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ‘ãƒƒã‚±ãƒ¼ã‚¸(ã‚µãƒ•ã‚£ãƒƒã‚¯ã‚¹)");
+				configMarkerPanel, "JavaƒfƒtƒHƒ‹ƒgƒpƒbƒP[ƒW(ƒTƒtƒBƒbƒNƒX)");
 		onlyMayaaId = createCheckPart(configMarkerPanel,
-				"ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã§m:idã®ã¿å‡¦ç†å¯¾è±¡ã¨ã™ã‚‹");
+				"ƒeƒ“ƒvƒŒ[ƒgƒtƒ@ƒCƒ‹‚Åm:id‚Ì‚İˆ—‘ÎÛ‚Æ‚·‚é");
 		GridData data = new GridData();
 		data.horizontalSpan = 2;
 		onlyMayaaId.setLayoutData(data);
 
 		Composite errorMarkerPanel = createPanel(folder, 2);
 		useValidator = createCheckPart(errorMarkerPanel,
-				"Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã®Validatorã‚’æœ‰åŠ¹ã«ã™ã‚‹");
+				"Mayaaƒtƒ@ƒCƒ‹‚ÌValidator‚ğ—LŒø‚É‚·‚é");
 		missingIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"ãƒ«ãƒ¼ãƒˆè¦ç´ ç›´ä¸‹ã®id,xpathå±æ€§ã®å¿…é ˆãƒã‚§ãƒƒã‚¯");
+				"ƒ‹[ƒg—v‘f’¼‰º‚Ìid,xpath‘®«‚Ì•K{ƒ`ƒFƒbƒN");
 		invalidIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"ç„¡åŠ¹ãªä½ç½®ã®id,xpathå±æ€§ã®ãƒã‚§ãƒƒã‚¯");
+				"–³Œø‚ÈˆÊ’u‚Ìid,xpath‘®«‚Ìƒ`ƒFƒbƒN");
 		notexistIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã«å­˜åœ¨ã—ãªã„idå±æ€§ã®ãƒã‚§ãƒƒã‚¯");
+				"ƒeƒ“ƒvƒŒ[ƒg‚É‘¶İ‚µ‚È‚¢id‘®«‚Ìƒ`ƒFƒbƒN");
 		duplicateIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"é‡è¤‡ã™ã‚‹idå±æ€§ã®ãƒã‚§ãƒƒã‚¯");
+				"d•¡‚·‚éid‘®«‚Ìƒ`ƒFƒbƒN");
 		undefineIdAttribute = createErrorMarkerCombo(errorMarkerPanel,
-				"æœªå®šç¾©ã®idå±æ€§ã®ãƒã‚§ãƒƒã‚¯");
+				"–¢’è‹`‚Ìid‘®«‚Ìƒ`ƒFƒbƒN");
 
 		Composite generatePanel = createPanel(folder, 1);
 		Label namespaceLabel = new Label(generatePanel, SWT.BOLD);
-		namespaceLabel.setText("Mayaaãƒ•ã‚¡ã‚¤ãƒ«åå‰ç©ºé–“");
+		namespaceLabel.setText("Mayaaƒtƒ@ƒCƒ‹–¼‘O‹óŠÔ");
 
 		namespaceTableViewer = new NamespaceTableViewer(generatePanel,
 				SWT.SINGLE | SWT.V_SCROLL);
 		Label replaceRuleLabel = new Label(generatePanel, SWT.BOLD);
-		replaceRuleLabel.setText("ã‚¿ã‚°å¤‰æ›ãƒ«ãƒ¼ãƒ«");
+		replaceRuleLabel.setText("ƒ^ƒO•ÏŠ·ƒ‹[ƒ‹");
 		replaceRuleTableViewer = new ReplaceRuleTableViewer(generatePanel,
 				SWT.SINGLE | SWT.V_SCROLL);
 		TabItem configTabItem = new TabItem(folder, SWT.NULL);
-		configTabItem.setText("å‹•ä½œè¨­å®š");
+		configTabItem.setText("“®ìİ’è");
 		configTabItem.setControl(configMarkerPanel);
 		TabItem errorTabItem = new TabItem(folder, SWT.NULL);
-		errorTabItem.setText("ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³");
+		errorTabItem.setText("ƒoƒŠƒf[ƒVƒ‡ƒ“");
 		errorTabItem.setControl(errorMarkerPanel);
 		TabItem generateTabItem = new TabItem(folder, SWT.NULL);
-		generateTabItem.setText("è‡ªå‹•ç”Ÿæˆ");
+		generateTabItem.setText("©“®¶¬");
 		generateTabItem.setControl(generatePanel);
 
 		loadStore(project);
@@ -183,7 +183,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		text.setLayoutData(data);
 		Button srcpath = new Button(configMarkerPanel, SWT.PUSH);
-		srcpath.setText("é¸æŠ");
+		srcpath.setText("‘I‘ğ");
 
 		srcpath.addSelectionListener(new FolderSelectionAdapter(getShell(),
 				project, text));
@@ -205,10 +205,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	private Combo createErrorMarkerCombo(Composite composite, String label) {
 		Combo combo = createComboPart(composite, label);
-		combo.add("ã‚¨ãƒ©ãƒ¼");
-		combo.add("è­¦å‘Š");
-		combo.add("æƒ…å ±");
-		combo.add("ç„¡è¦–");
+		combo.add("ƒGƒ‰[");
+		combo.add("Œx");
+		combo.add("î•ñ");
+		combo.add("–³‹");
 
 		combo.select(1);
 
@@ -308,7 +308,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	}
 
 	/**
-	 * ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
+	 * ƒfƒtƒHƒ‹ƒg‚É–ß‚·
 	 */
 	@Override
 	protected void performDefaults() {
@@ -341,7 +341,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(JAVA_SOURCE_PATH, javaSourcePath.getText());
 			store.setValue(WEB_ROOT_PATH, webRootPath.getText());
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
-			store.setValue(DEFAULT_PACKAGE_SUFFIX, defaultPackageSuffix.getText());
+			store.setValue(DEFAULT_PACKAGE_SUFFIX, defaultPackageSuffix
+					.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, String
 					.valueOf(missingIdAttribute.getSelectionIndex()));
 			store.setValue(INVALID_ID_ATTRIBUTE, String
@@ -377,7 +378,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		result = true;
 
 		try {
-			// TODO projectãŒnullã§ãªã„å ´åˆã®å‡¦ç†ã‚’ã¾ã¨ã‚ã‚‹
+			// TODO project‚ªnull‚Å‚È‚¢ê‡‚Ìˆ—‚ğ‚Ü‚Æ‚ß‚é
 			if (project != null) {
 				if (useMatatabi.getSelection()) {
 					if (!project.hasNature(MatatabiNature.NATURE_ID)) {
@@ -466,7 +467,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	}
 
 	/**
-	 * Builderã®ç™»éŒ²
+	 * Builder‚Ì“o˜^
 	 * 
 	 * @throws CoreException
 	 */
@@ -475,7 +476,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 		ICommand[] commands = description.getBuildSpec();
 		for (int i = 0; i < commands.length; i++) {
 			if (commands[i].getBuilderName().equals(BUILDER_ID)) {
-				return; // ãƒ“ãƒ«ãƒ€ãƒ¼ç™»éŒ²ã®ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+				return; // ƒrƒ‹ƒ_[“o˜^‚ÌƒLƒƒƒ“ƒZƒ‹
 			}
 		}
 		ICommand command = description.newCommand();
@@ -488,7 +489,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	}
 
 	/**
-	 * Builderã®ç™»éŒ²è§£é™¤
+	 * Builder‚Ì“o˜^‰ğœ
 	 * 
 	 * @throws CoreException
 	 */
@@ -512,7 +513,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 	}
 
 	/**
-	 * ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆå†…ã®ãƒ•ã‚©ãƒ«ãƒ€é¸æŠ
+	 * ƒvƒƒWƒFƒNƒg“à‚ÌƒtƒHƒ‹ƒ_‘I‘ğ
 	 */
 	private static class FolderSelectionAdapter extends SelectionAdapter {
 		private Shell shell;

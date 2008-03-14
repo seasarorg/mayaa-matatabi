@@ -10,11 +10,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * HTMLãƒ•ã‚¡ã‚¤ãƒ«å‘ã‘ãƒã‚¤ãƒ‘ãƒ¼ãƒªãƒ³ã‚¯
+ * HTMLƒtƒ@ƒCƒ‹Œü‚¯ƒnƒCƒp[ƒŠƒ“ƒN
  */
 public class HtmlHyperlinkDetector extends IdAttributeHyperlinkDetector {
 	/**
-	 * æŒ‡å®šã—ãŸnodeã®idå±žæ€§ã‚’å–å¾—ã—ã¾ã™ã€‚
+	 * Žw’è‚µ‚½node‚Ìid‘®«‚ðŽæ“¾‚µ‚Ü‚·B
 	 */
 	@Override
 	protected Attr getIdAttribute(Node node) {

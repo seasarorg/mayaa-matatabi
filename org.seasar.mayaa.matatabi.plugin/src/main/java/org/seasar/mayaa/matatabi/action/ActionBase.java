@@ -9,7 +9,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 
 /**
- * 蜷後§繝�繧｣繝ｬ繧ｯ繝医Μ縺ｫ縺ゅｋ驕輔≧諡｡蠑ｵ蟄舌�ｮ繝輔ぃ繧､繝ｫ繧帝幕縺上い繧ｯ繧ｷ繝ｧ繝ｳ
+ * 同じディレクトリにある違う拡張子のファイルを開くアクション
  */
 public abstract class ActionBase implements IObjectActionDelegate,
 		IEditorActionDelegate {

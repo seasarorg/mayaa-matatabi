@@ -18,7 +18,7 @@ import org.seasar.mayaa.matatabi.util.ParseUtil;
 import org.xml.sax.SAXException;
 
 /**
- * Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã®Validationã‚’è¡Œã†ã€‚
+ * Mayaaƒtƒ@ƒCƒ‹‚ÌValidation‚ğs‚¤B
  */
 public class MatatabiValidator implements IResourceVisitor,
 		IResourceDeltaVisitor {

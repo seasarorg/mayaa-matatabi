@@ -34,19 +34,19 @@ public class NamespaceTableViewer extends TableViewer {
 	}
 
 	public void createPartControl(Composite parent) {
-		// è¦‹ãŸç›®ã®è¨­å®š
+		// Œ©‚½–Ú‚Ìİ’è
 		getTable().setLinesVisible(true);
 		getTable().setHeaderVisible(true);
 
-		// ãƒ˜ãƒƒãƒ€ã®è¨­å®š
+		// ƒwƒbƒ_‚Ìİ’è
 		TableColumn col1 = new TableColumn(getTable(), SWT.LEFT);
-		col1.setText("æ¥é ­è¾");
+		col1.setText("Ú“ª«");
 		col1.setWidth(100);
 		TableColumn col2 = new TableColumn(getTable(), SWT.LEFT);
-		col2.setText("åå‰ç©ºé–“");
+		col2.setText("–¼‘O‹óŠÔ");
 		col2.setWidth(400);
 
-		// ç·¨é›†è¨­å®š
+		// •ÒWİ’è
 		String[] properties = new String[] { "prefix", "uri" };
 		setColumnProperties(properties);
 		CellEditor[] cellEditors = new CellEditor[] {
@@ -55,7 +55,7 @@ public class NamespaceTableViewer extends TableViewer {
 		setCellModifier(new NamespaceCellModifier(this));
 		getTable().addMouseListener(new NamespaceMouseAdapter(this));
 
-		// å€¤ã®è¨­å®š
+		// ’l‚Ìİ’è
 		setContentProvider(new ArrayContentProvider());
 		setLabelProvider(new NamespaceLabelProvider());
 	}

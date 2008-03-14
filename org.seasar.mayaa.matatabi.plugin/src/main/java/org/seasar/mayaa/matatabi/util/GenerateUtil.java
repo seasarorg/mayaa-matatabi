@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -22,19 +27,20 @@ import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
- * ã‚³ãƒ¼ãƒ‰ç”Ÿæˆã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¡Œã†
+ * ƒR[ƒh¶¬‚ÉŠÖ‚·‚éˆ—‚ğs‚¤
  * 
  * @author matoba
  */
 public class GenerateUtil {
 
 	/**
-	 * idã«å¯¾å¿œã™ã‚‹Mayaaã‚¿ã‚°ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * id‚É‘Î‰‚·‚éMayaaƒ^ƒO‚ğ¶¬‚µ‚Ü‚·B
 	 * 
 	 * @param idlist
-	 *            ç”Ÿæˆå¯¾è±¡ã®idã®ãƒªã‚¹ãƒˆ
+	 *            ¶¬‘ÎÛ‚Ìid‚ÌƒŠƒXƒg
 	 * @return
 	 */
 	public static String genereteTags(Map<String, Element> idlist,
@@ -42,16 +48,23 @@ public class GenerateUtil {
 		Map<String, ReplaceRule> replaceRules = PreferencesUtil
 				.getReplaceRules(store);
 		StringBuffer buffer = new StringBuffer();
-		ReplaceRule defaultReplaceRule = replaceRules.get("*");
+		ReplaceRule defaultReplaceRule = replaceRules.remove("*");
 		for (Iterator<Entry<String, Element>> iter = idlist.entrySet()
 				.iterator(); iter.hasNext();) {
 			Entry<String, Element> entry = iter.next();
-			String templateString;
-			ReplaceRule replaceRule = replaceRules.get(entry.getValue()
-					.getNodeName().toLowerCase());
-			if (replaceRule != null) {
-				templateString = replaceRule.getReplace();
-			} else {
+			String templateString = null;
+
+			for (Entry<String, ReplaceRule> replaceRuleEntry : replaceRules
+					.entrySet()) {
+
+				ReplaceRule replaceRule = replaceRuleEntry.getValue();
+				if (!"".equals(replaceRule.getTag())
+						&& isTargetNode(replaceRule.getTag(), entry.getValue())) {
+					templateString = replaceRule.getReplace();
+				}
+
+			}
+			if (templateString == null) {
 				templateString = defaultReplaceRule.getReplace();
 			}
 			try {
@@ -85,7 +98,7 @@ public class GenerateUtil {
 	}
 
 	/**
-	 * ç¾åœ¨é–‹ã„ã¦ã„ã‚‹HTMLãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾å¿œã™ã‚‹Mayaaãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
+	 * Œ»İŠJ‚¢‚Ä‚¢‚éHTMLƒtƒ@ƒCƒ‹‚É‘Î‰‚·‚éMayaaƒtƒ@ƒCƒ‹‚ğ¶¬‚µ‚Ü‚·B
 	 */
 	public static void generateMayaaFile() {
 		IFile file = EditorUtil.getActiveFile();
@@ -145,5 +158,23 @@ public class GenerateUtil {
 		engine.evaluate(context, out, "MATATABI", templateString);
 
 		return out.getBuffer().toString();
+	}
+
+	public static boolean isTargetNode(String expression, Element element) {
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpath = factory.newXPath();
+		try {
+			NodeList nodeList = (NodeList) xpath.evaluate(expression, element,
+					XPathConstants.NODESET);
+			for (int i = 0; i < nodeList.getLength(); i++) {
+				if (element.equals(nodeList.item(i))) {
+					return true;
+				}
+			}
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 }
