@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -26,7 +28,10 @@ import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
 import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -163,6 +168,8 @@ public class GenerateUtil {
 	public static boolean isTargetNode(String expression, Element element) {
 		XPathFactory factory = XPathFactory.newInstance();
 		XPath xpath = factory.newXPath();
+		xpath.setNamespaceContext(new NamespaceContextImpl(element
+				.getOwnerDocument()));
 		try {
 			NodeList nodeList = (NodeList) xpath.evaluate(expression, element,
 					XPathConstants.NODESET);
@@ -176,5 +183,46 @@ public class GenerateUtil {
 		}
 
 		return false;
+	}
+
+	private static class NamespaceContextImpl implements NamespaceContext {
+		private Map<String, String> nsMap;
+		private String defaultNamespace;
+
+		public NamespaceContextImpl(Document document) {
+			nsMap = new HashMap<String, String>();
+			Element root = document.getDocumentElement();
+			NamedNodeMap attrs = root.getAttributes();
+			String xmlns = "xmlns";
+			for (int i = 0; i < attrs.getLength(); i++) {
+				Node attr = attrs.item(i);
+				String[] name = attr.getNodeName().split(":");
+				if (xmlns.equals(name[0])) {
+					if (name.length == 1) {
+						defaultNamespace = attr.getNodeValue();
+					} else {
+						nsMap.put(name[1], attr.getNodeValue());
+					}
+				}
+			}
+		}
+
+		public String getNamespaceURI(String prefix) {
+			if (prefix == null)
+				return defaultNamespace;
+
+			if (nsMap.containsKey(prefix))
+				return nsMap.get(prefix);
+
+			return XMLConstants.NULL_NS_URI;
+		}
+
+		public String getPrefix(String uri) {
+			throw new UnsupportedOperationException();
+		}
+
+		public Iterator getPrefixes(String namespaceURI) {
+			throw new UnsupportedOperationException();
+		}
 	}
 }
