@@ -6,15 +6,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.seasar.mayaa.matatabi.util.GenerateUtil;
 
-public class HTMLToMayaaAction extends OpenActionBase {
-
-	/**
-	 * Constructor for Action1.
-	 */
-	public HTMLToMayaaAction() {
-		super("mayaa");
-	}
-
+public class HTMLToMayaaAction extends OpenMayaaActionBase {
 	@Override
 	protected void init() {
 		baseDir = store.getString(MatatabiPropertyPage.WEB_ROOT_PATH);

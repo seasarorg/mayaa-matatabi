@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.seasar.mayaa.matatabi;singleton:=true
-Bundle-Version: 1.2.2
+Bundle-Version: 1.2.3
 Bundle-Activator: org.seasar.mayaa.matatabi.MatatabiPlugin
 Bundle-Localization: plugin
 Require-Bundle: org.apache.xerces,
@@ -26,7 +26,8 @@ Require-Bundle: org.apache.xerces,
  org.eclipse.jst.pagedesigner,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
- org.eclipse.wst.common.core
+ org.eclipse.wst.common.core,
+ org.eclipse.jdt
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ClassPath: matatabi.jar,
  lib/nekohtml.jar,

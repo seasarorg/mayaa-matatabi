@@ -2,11 +2,7 @@ package org.seasar.mayaa.matatabi.action;
 
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 
-public class JavaToMayaaAction extends OpenActionBase {
-	public JavaToMayaaAction() {
-		super("mayaa");
-	}
-
+public class JavaToMayaaAction extends OpenMayaaActionBase {
 	@Override
 	protected void init() {
 		baseDir = store.getString(MatatabiPropertyPage.JAVA_SOURCE_PATH)

@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IEditorPart;
@@ -20,11 +21,15 @@ public abstract class OpenActionBase extends ActionBase {
 
 	protected IProject project;
 
+	protected IStructuredSelection selection;
+
 	protected IEditorPart openEditorPart;
 	protected ScopedPreferenceStore store = null;
 
 	protected String baseDir;
 	protected String targetBaseDir;
+	protected String baseName;
+	protected String subDirectory;
 	private String targetExtension;
 
 	/**
@@ -83,10 +88,10 @@ public abstract class OpenActionBase extends ActionBase {
 			}
 		}
 
-		String baseName = filePath[filePath.length - 1].substring(0,
+		baseName = filePath[filePath.length - 1].substring(0,
 				filePath[filePath.length - 1].indexOf("."));
-		return project.getFile(targetBaseDir + "/"
-				+ getSubDirectory(className.toString()) + "/"
+		subDirectory = getSubDirectory(className.toString());
+		return project.getFile(targetBaseDir + "/" + subDirectory + "/"
 				+ getResourceName(baseName) + "." + targetExtension);
 	}
 
@@ -96,6 +101,9 @@ public abstract class OpenActionBase extends ActionBase {
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		super.selectionChanged(action, selection);
+		if (selection instanceof IStructuredSelection) {
+			this.selection = (IStructuredSelection) selection;
+		}
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection ss = (StructuredSelection) selection;
 			Object obj = ss.getFirstElement();

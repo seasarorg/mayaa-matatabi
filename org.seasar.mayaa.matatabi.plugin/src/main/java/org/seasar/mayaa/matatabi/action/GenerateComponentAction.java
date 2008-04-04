@@ -28,11 +28,7 @@ import org.xml.sax.InputSource;
 /**
  * コンポーネントの一括生成を行う。
  */
-public class GenerateComponentAction extends OpenActionBase {
-	public GenerateComponentAction() {
-		super("mayaa");
-	}
-
+public class GenerateComponentAction extends OpenMayaaActionBase {
 	@Override
 	protected void init() {
 		baseDir = store.getString(MatatabiPropertyPage.WEB_ROOT_PATH);
