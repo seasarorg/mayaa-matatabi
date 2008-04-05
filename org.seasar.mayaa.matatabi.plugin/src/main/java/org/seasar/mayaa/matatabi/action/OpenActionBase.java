@@ -42,8 +42,8 @@ public abstract class OpenActionBase extends ActionBase {
 
 	protected abstract void init();
 
-	protected String getResourceName(String baseName) {
-		return baseName;
+	protected String[] getResourceNames(String baseName) {
+		return new String[] { baseName };
 	}
 
 	protected String getSubDirectory(String packageName) {
@@ -91,8 +91,15 @@ public abstract class OpenActionBase extends ActionBase {
 		baseName = filePath[filePath.length - 1].substring(0,
 				filePath[filePath.length - 1].indexOf("."));
 		subDirectory = getSubDirectory(className.toString());
-		return project.getFile(targetBaseDir + "/" + subDirectory + "/"
-				+ getResourceName(baseName) + "." + targetExtension);
+		IFile file = null;
+		for (String resourceName : getResourceNames(baseName)) {
+			file = project.getFile(targetBaseDir + "/" + subDirectory + "/"
+					+ resourceName + "." + targetExtension);
+			if (file.exists()) {
+				return file;
+			}
+		}
+		return file;
 	}
 
 	/**

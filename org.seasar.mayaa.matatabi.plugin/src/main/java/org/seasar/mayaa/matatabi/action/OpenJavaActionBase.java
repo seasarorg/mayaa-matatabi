@@ -47,7 +47,7 @@ public abstract class OpenJavaActionBase extends OpenActionBase {
 						.getPackageFragment(packageName);
 
 				NewClassWizardPage page = new NewClassWizardPage();
-				page.setTypeName(getResourceName(baseName), false);
+				page.setTypeName(getResourceNames(baseName)[0], false);
 
 				page.setPackageFragmentRoot(packageFragmentRoot, false);
 				page.setPackageFragment(packageFragment, false);

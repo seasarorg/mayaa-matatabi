@@ -33,10 +33,10 @@ public class HTMLToMayaaAction extends OpenMayaaActionBase {
 	}
 
 	@Override
-	protected String getResourceName(String baseName) {
+	protected String[] getResourceNames(String baseName) {
 		if (baseName.indexOf("$") > 0) {
 			baseName = baseName.substring(0, baseName.indexOf("$"));
 		}
-		return super.getResourceName(baseName);
+		return super.getResourceNames(baseName);
 	}
 }

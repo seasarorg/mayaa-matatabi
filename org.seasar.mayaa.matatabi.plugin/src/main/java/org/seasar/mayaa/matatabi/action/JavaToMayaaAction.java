@@ -1,6 +1,10 @@
 package org.seasar.mayaa.matatabi.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
+import org.seasar.mayaa.matatabi.util.FileUtil;
 
 public class JavaToMayaaAction extends OpenMayaaActionBase {
 	@Override
@@ -13,9 +17,16 @@ public class JavaToMayaaAction extends OpenMayaaActionBase {
 	}
 
 	@Override
-	protected String getResourceName(String baseName) {
-		return baseName.substring(0, 1).toLowerCase()
+	protected String[] getResourceNames(String baseName) {
+		List<String> resourceNames = new ArrayList<String>();
+		String resurceName = baseName.substring(0, 1).toLowerCase()
 				+ baseName.substring(1, baseName.length() - 6);
+		resourceNames.add(resurceName);
+
+		resourceNames.add(FileUtil.toSeparated(resurceName, '_'));
+		resourceNames.add(FileUtil.toSeparated(resurceName, '-'));
+
+		return resourceNames.toArray(new String[0]);
 	}
 
 	@Override

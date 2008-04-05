@@ -1,6 +1,10 @@
 package org.seasar.mayaa.matatabi.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
+import org.seasar.mayaa.matatabi.util.FileUtil;
 
 public class JavaToHTMLAction extends OpenHTMLActionBase {
 	@Override
@@ -13,9 +17,16 @@ public class JavaToHTMLAction extends OpenHTMLActionBase {
 	}
 
 	@Override
-	protected String getResourceName(String baseName) {
-		return baseName.substring(0, 1).toLowerCase()
+	protected String[] getResourceNames(String baseName) {
+		List<String> resourceNames = new ArrayList<String>();
+		String resourceName = baseName.substring(0, 1).toLowerCase()
 				+ baseName.substring(1, baseName.length() - 6);
+
+		resourceNames.add(resourceName);
+		resourceNames.add(FileUtil.toSeparated(resourceName, '_'));
+		resourceNames.add(FileUtil.toSeparated(resourceName, '-'));
+
+		return resourceNames.toArray(new String[0]);
 	}
 
 	@Override

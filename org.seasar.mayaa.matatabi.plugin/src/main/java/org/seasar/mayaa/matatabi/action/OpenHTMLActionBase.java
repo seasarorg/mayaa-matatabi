@@ -15,9 +15,6 @@ import org.eclipse.ui.dialogs.ListDialog;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 
 public abstract class OpenHTMLActionBase extends OpenActionBase {
-	/**
-	 * Constructor for Action1.
-	 */
 	public OpenHTMLActionBase() {
 		super("html");
 	}
@@ -25,6 +22,7 @@ public abstract class OpenHTMLActionBase extends OpenActionBase {
 	@Override
 	protected IFile getTargetFile() {
 		IFile file = super.getTargetFile();
+
 		List<IFile> targetFileList = new ArrayList<IFile>();
 		if (file.exists()) {
 			targetFileList.add(file);
