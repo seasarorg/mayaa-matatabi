@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+<!--
 	<extension point="org.eclipse.ui.popupMenus">
 		<objectContribution adaptable="true"
 			id="org.seasar.mayaa.matatabi.mayaa.objectContribution"
@@ -16,27 +17,27 @@
 		         <separator name="group" />
 			</menu>
 			<action
+				label="%label.openmayaa" enablesFor="1"
 				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaa"
-				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				label="%label.openmayaa" />
+				id="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group" />
 			<action
+				label="%label.openaction" enablesFor="1" 
 				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenActionPair"
-				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				label="%label.openaction" />
+				id="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group" />
 			<action
-				label="%label.openbrowser"
+				label="%label.openbrowser" enablesFor="1" 
 				class="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenBrowserAction" />
 			<action
-				label="%label.insertmayaaid" 
+				label="%label.insertmayaaid" enablesFor="0" 
 				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
 			<action
-				label="%label.insertspantag"
+				label="%label.insertspantag" enablesFor="0" 
 				class="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.InsertSpanTag" />
@@ -57,7 +58,7 @@
 			</menu>
 			<action
 				class="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenHTML"
+				id="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openhtml" />
 			<action
@@ -69,7 +70,12 @@
 				label="%label.insertmayaaid" 
 				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
+				id="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction" />
+			<action
+				label="%label.generatecomponent"
+				class="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.GenerateComponentAction" />
 		</objectContribution>
 		<objectContribution adaptable="true"
 			id="org.seasar.mayaa.matatabi.java.objectContribution"
@@ -86,7 +92,7 @@
 			</menu>
 			<action
 				class="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
-				enablesFor="1" id="org.seasar.mayaa.matatabi.OpenMayaaPair"
+				enablesFor="1" id="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				label="%label.openmayaa" />
 			<action
@@ -96,6 +102,8 @@
 				label="%label.openhtml" />
 		</objectContribution>
 	</extension>
+-->
+
 	<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
 		<sourceViewerConfiguration
 			class="org.seasar.mayaa.matatabi.editor.configuration.MayaaXMLTextViewerConfiguration"
@@ -132,29 +140,29 @@
 				<separator name="group" />
 			</menu>
 			<action
-				definitionId="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
-				label="%label.generatecomponent"
-				class="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
-				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.GenerateComponentAction" />
-			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
+				definitionId="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 				label="%label.openhtml"
 				class="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenHTMLAction" />
+				id="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction" />
 			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+				definitionId="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 				label="%label.openaction"
 				class="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
+				id="org.seasar.mayaa.matatabi.action.MayaaToJavaAction" />
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
 				label="%label.insertmayaaid" 
 				class="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.InsertMayaaId" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
+				label="%label.generatecomponent"
+				class="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.GenerateComponentAction" />
 		</editorContribution>
 		<editorContribution
 			targetID="org.eclipse.wst.html.core.htmlsource.source"
@@ -164,23 +172,23 @@
 				<separator name="group" />
 			</menu>
 			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				definitionId="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				label="%label.openmayaa"
 				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenMayaaAction" />
+				id="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
+				label="%label.openaction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.MayaaToJavaAction" />
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				label="%label.openbrowser"
 				class="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenBrowserAction" />
-			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
-				label="%label.openaction"
-				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
-				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
 				label="%label.insertmayaaid" 
@@ -202,23 +210,23 @@
 				<separator name="group" />
 			</menu>
 			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+				definitionId="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				label="%label.openmayaa"
 				class="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenMayaaAction" />
+				id="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
+				label="%label.openaction"
+				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.MayaaToJavaAction" />
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				label="%label.openbrowser"
 				class="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
 				id="org.seasar.mayaa.matatabi.action.OpenBrowserAction" />
-			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
-				label="%label.openaction"
-				class="org.seasar.mayaa.matatabi.action.HTMLToJavaAction"
-				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenActionPairAction" />
 			<!-- ページデザイナーでは動かなかったので保留
 			<action
 				definitionId="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
@@ -242,17 +250,17 @@
 				<separator name="group" />
 			</menu>
 			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
-				label="%label.openmayaa"
-				class="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
-				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction" />
-			<action
-				definitionId="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+				definitionId="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 				label="%label.openhtml"
 				class="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 				menubarPath="org.seasar.mayaa.matatabi.menu/group"
-				id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction" />
+				id="org.seasar.mayaa.matatabi.action.JavaToHTMLAction" />
+			<action
+				definitionId="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
+				label="%label.openmayaa"
+				class="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
+				menubarPath="org.seasar.mayaa.matatabi.menu/group"
+				id="org.seasar.mayaa.matatabi.action.JavaToMayaaAction" />
 		</editorContribution>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
@@ -260,22 +268,22 @@
 			id="org.seasar.mayaa.matatabi.action.GenerateComponentAction"
 			name="%label.generatecomponent" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
+			id="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 			name="%label.openhtml" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+			id="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 			name="%label.openmayaa" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
 			id="org.seasar.mayaa.matatabi.action.OpenBrowserAction"
 			name="%label.openbrowser" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+			id="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 			name="%label.openaction" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+			id="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 			name="%label.openhtml" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+			id="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 			name="label.openmayaa" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
 			id="org.seasar.mayaa.matatabi.action.InsertMayaaIdAction"
@@ -284,16 +292,16 @@
 			id="org.seasar.mayaa.matatabi.action.InsertSpanTagAction"
 			name="%label.insertspantag" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+			id="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 			name="%label.openhtml" />
 		<command categoryId="org.seasar.mayaa.matatabi.plugin.category"
-			id="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+			id="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 			name="%label.openmayaa" />
 		<category id="org.seasar.mayaa.matatabi.plugin.category"
 			name="matatabi" />
 	</extension>
 	<extension point="org.eclipse.ui.bindings">
-		<key commandId="org.seasar.mayaa.matatabi.action.OpenHTMLAction"
+		<key commandId="org.seasar.mayaa.matatabi.action.MayaaToHTMLAction"
 			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+T" />
@@ -303,7 +311,7 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+G" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+			commandId="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 			contextId="org.seasar.mayaa.matatabi.editor.mayaaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Alt+T" />
@@ -313,7 +321,7 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Shift+I" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.action.OpenMayaaAction"
+			commandId="org.seasar.mayaa.matatabi.action.HTMLToMayaaAction"
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+T" />
@@ -333,17 +341,17 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Shift+S" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.action.OpenActionPairAction"
+			commandId="org.seasar.mayaa.matatabi.action.MayaaToJavaAction"
 			contextId="org.eclipse.wst.sse.ui.structuredTextEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Alt+T" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.action.OpenMayaaPairAction"
+			commandId="org.seasar.mayaa.matatabi.action.JavaToMayaaAction"
 			contextId="org.eclipse.jdt.ui.javaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Alt+T" />
 		<key
-			commandId="org.seasar.mayaa.matatabi.action.OpenHTMLPairAction"
+			commandId="org.seasar.mayaa.matatabi.action.JavaToHTMLAction"
 			contextId="org.eclipse.jdt.ui.javaEditorScope"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
 			sequence="Ctrl+Alt+Y" />
