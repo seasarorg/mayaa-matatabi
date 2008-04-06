@@ -71,6 +71,7 @@ public class ParseUtil {
 
 	public static Map<String, Element> getXmlIdList(InputSource inputSource) {
 		org.apache.xerces.parsers.DOMParser parser = new org.apache.xerces.parsers.DOMParser();
+
 		Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 		try {
 			parser.parse(inputSource);
@@ -106,13 +107,24 @@ public class ParseUtil {
 			}
 
 			DOMParser parser = new DOMParser();
+			try {
+				parser.setProperty(
+						"http://cyberneko.org/html/properties/names/attrs",
+						"default");
+				parser.setProperty(
+						"http://cyberneko.org/html/properties/names/elems",
+						"match");
+			} catch (SAXException e) {
+				MatatabiPlugin.errorLog(e);
+			}
+
 			Map<String, Element> idlist = new LinkedHashMap<String, Element>();
 			for (IFile targetFile : fileList) {
 				try {
 					parser.parse(new InputSource(targetFile.getContents()));
 					Document document = parser.getDocument();
-					traverse(idlist, (Element) document.getElementsByTagName(
-							"html").item(0), getHtmlNamespaces(file
+					traverse(idlist, document.getDocumentElement()
+							, getHtmlNamespaces(file
 							.getProject()));
 				} catch (SAXException e) {
 					MatatabiPlugin.errorLog(e);

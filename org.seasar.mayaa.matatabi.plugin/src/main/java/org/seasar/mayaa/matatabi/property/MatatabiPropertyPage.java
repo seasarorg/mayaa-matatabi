@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.internal.core.search.JavaWorkspaceScope;
 import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
-import org.eclipse.jdt.ui.text.IJavaColorConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.Viewer;
@@ -532,6 +531,21 @@ public class MatatabiPropertyPage extends PropertyPage {
 		List<ReplaceRule> replaceRules = new ArrayList<ReplaceRule>();
 
 		replaceRules.add(new ReplaceRule("*", "<m:echo id=\"$id\"></m:echo>"));
+		replaceRules.add(new ReplaceRule("//span",
+				"<m:write id=\"${id}\" value=\"${${id}}\" />"));
+		replaceRules
+				.add(new ReplaceRule(
+						"//textarea",
+						"<m:echo id=\"${id}\"><m:attribute name=\"name\" value=\"${id}\" /><m:write value=\"${${id}}\" escapeEol=\"false\" /></m:echo>"));
+		replaceRules
+				.add(new ReplaceRule(
+						"//input[@type=\"text\" or @type=\"hidden\"]",
+						"<m:echo id=\"${id}\"><m:attribute name=\"name\" value=\"${id}\" /><m:attribute name=\"value\" value=\"${${id}}\" /></m:echo>"));
+		replaceRules
+				.add(new ReplaceRule(
+						"//input[@type=\"password\" or @type=\"file\"]",
+						"<m:echo id=\"${id}\"><m:attribute name=\"name\" value=\"${id}\" /></m:echo>"));
+
 		while (replaceRules.size() < 5) {
 			replaceRules.add(new ReplaceRule("", ""));
 		}
@@ -622,6 +636,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 	}
 
+	/**
+	 * プロジェクト内のJavaの型選択
+	 */
 	private static class JavaTypeSelectionAdapter extends SelectionAdapter {
 		private Shell shell;
 		private Text text;

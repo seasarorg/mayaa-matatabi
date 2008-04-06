@@ -10,11 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -24,6 +19,17 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.jaxen.Context;
+import org.jaxen.ContextSupport;
+import org.jaxen.JaxenException;
+import org.jaxen.NamespaceContext;
+import org.jaxen.SimpleNamespaceContext;
+import org.jaxen.SimpleVariableContext;
+import org.jaxen.XPathFunctionContext;
+import org.jaxen.dom.DocumentNavigator;
+import org.jaxen.pattern.Pattern;
+import org.jaxen.pattern.PatternParser;
+import org.jaxen.saxpath.SAXPathException;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
@@ -32,7 +38,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * コード生成に関する処理を行う
@@ -166,63 +171,42 @@ public class GenerateUtil {
 	}
 
 	public static boolean isTargetNode(String expression, Element element) {
-		XPathFactory factory = XPathFactory.newInstance();
-		XPath xpath = factory.newXPath();
-		xpath.setNamespaceContext(new NamespaceContextImpl(element
-				.getOwnerDocument()));
+		SimpleNamespaceContext nsContext = new SimpleNamespaceContext();
+		Element root = element.getOwnerDocument().getDocumentElement();
+		if (root.getLocalName() == null) {
+			Node node = root.getFirstChild();
+			do {
+				if (node instanceof Element) {
+					root = (Element) node;
+					break;
+				}
+			} while ((node = root.getNextSibling()) != null);
+		}
+		NamedNodeMap attrs = root.getAttributes();
+		String xmlns = "xmlns";
+		for (int i = 0; i < attrs.getLength(); i++) {
+			Node attr = attrs.item(i);
+			String[] name = attr.getNodeName().split(":");
+			if (xmlns.equals(name[0])) {
+				if (name.length == 1) {
+					nsContext.addNamespace(XMLConstants.DEFAULT_NS_PREFIX, attr
+							.getNodeValue());
+				} else {
+					nsContext.addNamespace(name[1], attr.getNodeValue());
+				}
+			}
+		}
+		ContextSupport support = new ContextSupport(nsContext,
+				XPathFunctionContext.getInstance(),
+				new SimpleVariableContext(), new DocumentNavigator());
+		Context context = new Context(support);
 		try {
-			NodeList nodeList = (NodeList) xpath.evaluate(expression, element,
-					XPathConstants.NODESET);
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				if (element.equals(nodeList.item(i))) {
-					return true;
-				}
-			}
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		}
-
-		return false;
-	}
-
-	private static class NamespaceContextImpl implements NamespaceContext {
-		private Map<String, String> nsMap;
-		private String defaultNamespace;
-
-		public NamespaceContextImpl(Document document) {
-			nsMap = new HashMap<String, String>();
-			Element root = document.getDocumentElement();
-			NamedNodeMap attrs = root.getAttributes();
-			String xmlns = "xmlns";
-			for (int i = 0; i < attrs.getLength(); i++) {
-				Node attr = attrs.item(i);
-				String[] name = attr.getNodeName().split(":");
-				if (xmlns.equals(name[0])) {
-					if (name.length == 1) {
-						defaultNamespace = attr.getNodeValue();
-					} else {
-						nsMap.put(name[1], attr.getNodeValue());
-					}
-				}
-			}
-		}
-
-		public String getNamespaceURI(String prefix) {
-			if (prefix == null)
-				return defaultNamespace;
-
-			if (nsMap.containsKey(prefix))
-				return nsMap.get(prefix);
-
-			return XMLConstants.NULL_NS_URI;
-		}
-
-		public String getPrefix(String uri) {
-			throw new UnsupportedOperationException();
-		}
-
-		public Iterator getPrefixes(String namespaceURI) {
-			throw new UnsupportedOperationException();
+			Pattern pattern = PatternParser.parse(expression);
+			return pattern.matches(element, context);
+		} catch (JaxenException e) {
+			throw new RuntimeException(e);
+		} catch (SAXPathException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

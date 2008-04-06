@@ -92,7 +92,11 @@ public class ReplaceRuleTableViewer extends TableViewer {
 		}
 
 		public ReplaceRule(String string) {
-			String[] namespace = string.split(":", 2);
+			String[] namespace = string.split("\t", 2);
+			// 以前のバージョンでの設定読み込み対応
+			if (namespace.length != 2) {
+				namespace = string.split(":", 2);
+			}
 			this.tag = namespace[0];
 			this.replace = namespace[1];
 		}
@@ -115,7 +119,7 @@ public class ReplaceRuleTableViewer extends TableViewer {
 
 		@Override
 		public String toString() {
-			return tag + ":" + replace;
+			return tag + "\t" + replace;
 		}
 	}
 
