@@ -10,6 +10,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
+import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 
 public abstract class OpenJavaActionBase extends OpenActionBase {
 	public OpenJavaActionBase() {
@@ -51,6 +52,8 @@ public abstract class OpenJavaActionBase extends OpenActionBase {
 
 				page.setPackageFragmentRoot(packageFragmentRoot, false);
 				page.setPackageFragment(packageFragment, false);
+				page.setSuperClass(PreferencesUtil.getPreference(project)
+						.getString(MatatabiPropertyPage.JAVA_BASE_CLASS), true);
 
 				NewClassCreationWizard wizard = new NewClassCreationWizard(
 						page, true);

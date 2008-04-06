@@ -1,5 +1,7 @@
 package org.seasar.mayaa.matatabi.action;
 
+import java.sql.PreparedStatement;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -13,6 +15,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
+import org.seasar.mayaa.matatabi.property.MatatabiPropertyPage;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.PreferencesUtil;
 
@@ -30,11 +33,10 @@ public abstract class OpenActionBase extends ActionBase {
 	protected String targetBaseDir;
 	protected String baseName;
 	protected String subDirectory;
-	private String targetExtension;
+	protected String targetExtension;
 
-	/**
-	 * Constructor for Action1.
-	 */
+	protected String javaClassSuffix;
+
 	public OpenActionBase(String targetExtension) {
 		super();
 		this.targetExtension = targetExtension;
@@ -60,6 +62,8 @@ public abstract class OpenActionBase extends ActionBase {
 			path = file.getProjectRelativePath();
 			project = file.getProject();
 			store = PreferencesUtil.getPreference(file);
+			javaClassSuffix = PreferencesUtil.getPreference(project)
+					.getString(MatatabiPropertyPage.JAVA_CLASS_SUFFIX);
 		} else {
 			store = PreferencesUtil.getPreference(project);
 		}

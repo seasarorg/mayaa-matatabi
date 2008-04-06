@@ -13,6 +13,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.internal.core.search.JavaWorkspaceScope;
+import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.Viewer;
@@ -72,6 +76,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	public static final String DEFAULT_PACKAGE_SUFFIX = "defaultPackageSuffix";
 
+	public static final String JAVA_CLASS_SUFFIX = "javaClassSuffix";
+
+	public static final String JAVA_BASE_CLASS = "javaBaseClass";
+
 	private Button useMatatabi;
 
 	private Button useValidator;
@@ -81,20 +89,17 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private TabFolder folder;
 
 	private Combo missingIdAttribute;
-
 	private Combo invalidIdAttribute;
-
 	private Combo notexistIdAttribute;
-
 	private Combo duplicateIdAttribute;
-
 	private Combo undefineIdAttribute;
 
 	private Text javaSourcePath;
-
 	private Text webRootPath;
 	private Text defaultPackage;
 	private Text defaultPackageSuffix;
+	private Text javaClassSuffix;
+	private Text javaBaseClass;
 
 	private ReplaceRuleTableViewer replaceRuleTableViewer;
 
@@ -130,6 +135,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 				configMarkerPanel, "Javaデフォルトパッケージ");
 		defaultPackageSuffix = createJavaPackageSelectionText(project,
 				configMarkerPanel, "Javaデフォルトパッケージ(サフィックス)");
+		javaClassSuffix = createText(project, configMarkerPanel,
+				"Javaクラスサフィックス");
+		javaBaseClass = createJavaClassSelectionText(project,
+				configMarkerPanel, "Java基底クラス");
 		onlyMayaaId = createCheckPart(configMarkerPanel,
 				"テンプレートファイルでm:idのみ処理対象とする");
 		GridData data = new GridData();
@@ -191,8 +200,36 @@ public class MatatabiPropertyPage extends PropertyPage {
 		return text;
 	}
 
+	private Text createJavaClassSelectionText(IProject project,
+			Composite configMarkerPanel, String labelText) {
+		Label label = new Label(configMarkerPanel, SWT.NONE);
+		label.setText(labelText);
+		Text text = new Text(configMarkerPanel, SWT.SINGLE | SWT.BORDER);
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		text.setLayoutData(data);
+		Button srcpath = new Button(configMarkerPanel, SWT.PUSH);
+		srcpath.setText("選択");
+
+		srcpath.addSelectionListener(new ClassSelectionAdapter(getShell(),
+				project, text));
+
+		return text;
+	}
+
 	private Text createJavaPackageSelectionText(IProject project,
 			Composite configMarkerPanel, String labelText) {
+		Label label = new Label(configMarkerPanel, SWT.NONE);
+		label.setText(labelText);
+		final Text text = new Text(configMarkerPanel, SWT.SINGLE | SWT.BORDER);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		label = new Label(configMarkerPanel, SWT.NONE);
+
+		return text;
+	}
+
+	private Text createText(IProject project, Composite configMarkerPanel,
+			String labelText) {
 		Label label = new Label(configMarkerPanel, SWT.NONE);
 		label.setText(labelText);
 		final Text text = new Text(configMarkerPanel, SWT.SINGLE | SWT.BORDER);
@@ -243,6 +280,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.defaultPackage.setText(store.getString(DEFAULT_PACKAGE));
 		this.defaultPackageSuffix.setText(store
 				.getString(DEFAULT_PACKAGE_SUFFIX));
+		this.javaClassSuffix.setText(store.getString(JAVA_CLASS_SUFFIX));
+		this.javaBaseClass.setText(store.getString(JAVA_BASE_CLASS));
 
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
@@ -316,6 +355,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.webRootPath.setText("");
 		this.defaultPackage.setText("");
 		this.defaultPackageSuffix.setText("");
+		this.javaClassSuffix.setText("Action");
+		this.javaBaseClass.setText("");
 		this.useMatatabi.setSelection(false);
 		this.onlyMayaaId.setSelection(false);
 		this.useValidator.setSelection(false);
@@ -343,6 +384,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(DEFAULT_PACKAGE, defaultPackage.getText());
 			store.setValue(DEFAULT_PACKAGE_SUFFIX, defaultPackageSuffix
 					.getText());
+			store.setValue(JAVA_CLASS_SUFFIX, javaClassSuffix.getText());
+			store.setValue(JAVA_BASE_CLASS, javaBaseClass.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, String
 					.valueOf(missingIdAttribute.getSelectionIndex()));
 			store.setValue(INVALID_ID_ATTRIBUTE, String
@@ -549,4 +592,29 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 	}
 
+	private static class ClassSelectionAdapter extends SelectionAdapter {
+		private Shell shell;
+		private IProject project;
+		private Text text;
+
+		public ClassSelectionAdapter(Shell shell, IProject project, Text text) {
+			this.shell = shell;
+			this.project = project;
+			this.text = text;
+		}
+
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			OpenTypeSelectionDialog dialog = new OpenTypeSelectionDialog(shell,
+					false, MatatabiPlugin.getDefault().getWorkbench()
+							.getActiveWorkbenchWindow(),
+					new JavaWorkspaceScope(), IJavaSearchConstants.CLASS);
+			if (dialog.open() == Dialog.OK) {
+				IType result = (IType) dialog.getFirstResult();
+				if (result != null) {
+					text.setText(result.getFullyQualifiedName());
+				}
+			}
+		}
+	}
 }

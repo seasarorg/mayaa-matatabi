@@ -20,7 +20,7 @@ public class JavaToHTMLAction extends OpenHTMLActionBase {
 	protected String[] getResourceNames(String baseName) {
 		List<String> resourceNames = new ArrayList<String>();
 		String resourceName = baseName.substring(0, 1).toLowerCase()
-				+ baseName.substring(1, baseName.length() - 6);
+				+ baseName.substring(1, baseName.length() - javaClassSuffix.length());
 
 		resourceNames.add(resourceName);
 		resourceNames.add(FileUtil.toSeparated(resourceName, '_'));

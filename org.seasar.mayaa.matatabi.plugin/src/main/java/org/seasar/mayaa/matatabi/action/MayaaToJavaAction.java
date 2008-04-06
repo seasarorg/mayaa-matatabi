@@ -11,7 +11,7 @@ public class MayaaToJavaAction extends OpenJavaActionBase {
 			baseName = FileUtil.toCamelCase(baseName, '_');
 		}
 		String resourceName = baseName.substring(0, 1).toUpperCase()
-				+ baseName.substring(1) + "Action";
+				+ baseName.substring(1) + javaClassSuffix;
 
 		return new String[] { resourceName };
 	}

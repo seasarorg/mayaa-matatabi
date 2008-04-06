@@ -20,7 +20,8 @@ public class JavaToMayaaAction extends OpenMayaaActionBase {
 	protected String[] getResourceNames(String baseName) {
 		List<String> resourceNames = new ArrayList<String>();
 		String resurceName = baseName.substring(0, 1).toLowerCase()
-				+ baseName.substring(1, baseName.length() - 6);
+				+ baseName.substring(1, baseName.length()
+						- javaClassSuffix.length());
 		resourceNames.add(resurceName);
 
 		resourceNames.add(FileUtil.toSeparated(resurceName, '_'));
