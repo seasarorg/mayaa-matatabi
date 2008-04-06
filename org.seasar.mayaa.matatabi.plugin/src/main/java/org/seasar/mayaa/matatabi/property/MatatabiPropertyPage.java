@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.internal.core.search.JavaWorkspaceScope;
 import org.eclipse.jdt.internal.ui.dialogs.OpenTypeSelectionDialog;
+import org.eclipse.jdt.ui.text.IJavaColorConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.Viewer;
@@ -78,7 +79,9 @@ public class MatatabiPropertyPage extends PropertyPage {
 
 	public static final String JAVA_CLASS_SUFFIX = "javaClassSuffix";
 
-	public static final String JAVA_BASE_CLASS = "javaBaseClass";
+	public static final String JAVA_SUPER_CLASS = "javaSuperClass";
+
+	public static final String JAVA_SUPER_INTERFACE = "javaSuperInterface";
 
 	private Button useMatatabi;
 
@@ -99,7 +102,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 	private Text defaultPackage;
 	private Text defaultPackageSuffix;
 	private Text javaClassSuffix;
-	private Text javaBaseClass;
+	private Text javaSuperClass;
+	private Text javaSuperInterface1;
+	private Text javaSuperInterface2;
+	private Text javaSuperInterface3;
 
 	private ReplaceRuleTableViewer replaceRuleTableViewer;
 
@@ -137,8 +143,17 @@ public class MatatabiPropertyPage extends PropertyPage {
 				configMarkerPanel, "Javaデフォルトパッケージ(サフィックス)");
 		javaClassSuffix = createText(project, configMarkerPanel,
 				"Javaクラスサフィックス");
-		javaBaseClass = createJavaClassSelectionText(project,
-				configMarkerPanel, "Java基底クラス");
+		javaSuperClass = createJavaTypeSelectionText(project,
+				configMarkerPanel, "Javaスーパークラス", IJavaSearchConstants.CLASS);
+		javaSuperInterface1 = createJavaTypeSelectionText(project,
+				configMarkerPanel, "Javaインターフェイス1",
+				IJavaSearchConstants.INTERFACE);
+		javaSuperInterface2 = createJavaTypeSelectionText(project,
+				configMarkerPanel, "Javaインターフェイス2",
+				IJavaSearchConstants.INTERFACE);
+		javaSuperInterface3 = createJavaTypeSelectionText(project,
+				configMarkerPanel, "Javaインターフェイス3",
+				IJavaSearchConstants.INTERFACE);
 		onlyMayaaId = createCheckPart(configMarkerPanel,
 				"テンプレートファイルでm:idのみ処理対象とする");
 		GridData data = new GridData();
@@ -200,8 +215,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		return text;
 	}
 
-	private Text createJavaClassSelectionText(IProject project,
-			Composite configMarkerPanel, String labelText) {
+	private Text createJavaTypeSelectionText(IProject project,
+			Composite configMarkerPanel, String labelText, int type) {
 		Label label = new Label(configMarkerPanel, SWT.NONE);
 		label.setText(labelText);
 		Text text = new Text(configMarkerPanel, SWT.SINGLE | SWT.BORDER);
@@ -210,8 +225,8 @@ public class MatatabiPropertyPage extends PropertyPage {
 		Button srcpath = new Button(configMarkerPanel, SWT.PUSH);
 		srcpath.setText("選択");
 
-		srcpath.addSelectionListener(new ClassSelectionAdapter(getShell(),
-				project, text));
+		srcpath.addSelectionListener(new JavaTypeSelectionAdapter(getShell(),
+				text, type));
 
 		return text;
 	}
@@ -281,7 +296,13 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.defaultPackageSuffix.setText(store
 				.getString(DEFAULT_PACKAGE_SUFFIX));
 		this.javaClassSuffix.setText(store.getString(JAVA_CLASS_SUFFIX));
-		this.javaBaseClass.setText(store.getString(JAVA_BASE_CLASS));
+		this.javaSuperClass.setText(store.getString(JAVA_SUPER_CLASS));
+		this.javaSuperInterface1.setText(store.getString(JAVA_SUPER_INTERFACE
+				+ "1"));
+		this.javaSuperInterface2.setText(store.getString(JAVA_SUPER_INTERFACE
+				+ "2"));
+		this.javaSuperInterface3.setText(store.getString(JAVA_SUPER_INTERFACE
+				+ "3"));
 
 		if (!store.getString(MISSING_ID_ATTRIBUTE).equals("")) {
 			this.missingIdAttribute.select(store.getInt(MISSING_ID_ATTRIBUTE));
@@ -356,7 +377,10 @@ public class MatatabiPropertyPage extends PropertyPage {
 		this.defaultPackage.setText("");
 		this.defaultPackageSuffix.setText("");
 		this.javaClassSuffix.setText("Action");
-		this.javaBaseClass.setText("");
+		this.javaSuperClass.setText("");
+		this.javaSuperInterface1.setText("");
+		this.javaSuperInterface2.setText("");
+		this.javaSuperInterface3.setText("");
 		this.useMatatabi.setSelection(false);
 		this.onlyMayaaId.setSelection(false);
 		this.useValidator.setSelection(false);
@@ -385,7 +409,13 @@ public class MatatabiPropertyPage extends PropertyPage {
 			store.setValue(DEFAULT_PACKAGE_SUFFIX, defaultPackageSuffix
 					.getText());
 			store.setValue(JAVA_CLASS_SUFFIX, javaClassSuffix.getText());
-			store.setValue(JAVA_BASE_CLASS, javaBaseClass.getText());
+			store.setValue(JAVA_SUPER_CLASS, javaSuperClass.getText());
+			store.setValue(JAVA_SUPER_INTERFACE + "1", javaSuperInterface1
+					.getText());
+			store.setValue(JAVA_SUPER_INTERFACE + "2", javaSuperInterface2
+					.getText());
+			store.setValue(JAVA_SUPER_INTERFACE + "3", javaSuperInterface3
+					.getText());
 			store.setValue(MISSING_ID_ATTRIBUTE, String
 					.valueOf(missingIdAttribute.getSelectionIndex()));
 			store.setValue(INVALID_ID_ATTRIBUTE, String
@@ -592,15 +622,15 @@ public class MatatabiPropertyPage extends PropertyPage {
 		}
 	}
 
-	private static class ClassSelectionAdapter extends SelectionAdapter {
+	private static class JavaTypeSelectionAdapter extends SelectionAdapter {
 		private Shell shell;
-		private IProject project;
 		private Text text;
+		private int type;
 
-		public ClassSelectionAdapter(Shell shell, IProject project, Text text) {
+		public JavaTypeSelectionAdapter(Shell shell, Text text, int type) {
 			this.shell = shell;
-			this.project = project;
 			this.text = text;
+			this.type = type;
 		}
 
 		@Override
@@ -608,7 +638,7 @@ public class MatatabiPropertyPage extends PropertyPage {
 			OpenTypeSelectionDialog dialog = new OpenTypeSelectionDialog(shell,
 					false, MatatabiPlugin.getDefault().getWorkbench()
 							.getActiveWorkbenchWindow(),
-					new JavaWorkspaceScope(), IJavaSearchConstants.CLASS);
+					new JavaWorkspaceScope(), type);
 			if (dialog.open() == Dialog.OK) {
 				IType result = (IType) dialog.getFirstResult();
 				if (result != null) {

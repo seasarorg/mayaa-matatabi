@@ -1,7 +1,5 @@
 package org.seasar.mayaa.matatabi.action;
 
-import java.sql.PreparedStatement;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;

@@ -50,10 +50,22 @@ public abstract class OpenJavaActionBase extends OpenActionBase {
 				NewClassWizardPage page = new NewClassWizardPage();
 				page.setTypeName(getResourceNames(baseName)[0], false);
 
+				page.setMethodStubSelection(false, false, true, true);
 				page.setPackageFragmentRoot(packageFragmentRoot, false);
 				page.setPackageFragment(packageFragment, false);
-				page.setSuperClass(PreferencesUtil.getPreference(project)
-						.getString(MatatabiPropertyPage.JAVA_BASE_CLASS), true);
+				page
+						.setSuperClass(PreferencesUtil.getPreference(project)
+								.getString(
+										MatatabiPropertyPage.JAVA_SUPER_CLASS),
+								true);
+				for (int i = 1; i <= 3; i++) {
+					String superInterface = PreferencesUtil.getPreference(
+							project).getString(
+							MatatabiPropertyPage.JAVA_SUPER_INTERFACE + i);
+					if (superInterface != null && !superInterface.equals("")) {
+						page.addSuperInterface(superInterface);
+					}
+				}
 
 				NewClassCreationWizard wizard = new NewClassCreationWizard(
 						page, true);
