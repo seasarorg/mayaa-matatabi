@@ -82,12 +82,10 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 		Map<String, Element> allSourceid = ParseUtil.getIdList(openFile);
 		Map<String, Element> unusedSourceId = new TreeMap<String, Element>(
 				allSourceid);
+		allSourceid.putAll(ParseUtil.getDefaultIdList(file.getParent()));
+
 		for (Iterator<String> iter = ParseUtil.getIdList(file).keySet()
 				.iterator(); iter.hasNext();) {
-			unusedSourceId.remove(iter.next());
-		}
-		for (Iterator<String> iter = ParseUtil.getDefaultIdList(
-				file.getParent()).keySet().iterator(); iter.hasNext();) {
 			unusedSourceId.remove(iter.next());
 		}
 
