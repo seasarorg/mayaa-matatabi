@@ -1,6 +1,7 @@
 package org.seasar.mayaa.matatabi.editor.contentsassist;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -55,18 +56,24 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 			}
 		}
 
-		Node idAttribute = ParseUtil.getAttributeNode(
-				(Element) contentAssistRequest.getNode(),
-				MatatabiPlugin.XMLNS_MAYAA, "id");
+		IFile file = EditorUtil.getActiveFile();
+		IProject project = file.getProject();
+		List<String> namespaces = ParseUtil.getHtmlNamespaces(project);
+		Node idAttribute = null;
+		for (String namespace : namespaces) {
+			idAttribute = ParseUtil.getAttributeNode(
+					(Element) contentAssistRequest.getNode(), namespace, "id");
+			if (idAttribute != null) {
+				break;
+			}
+		}
+
 		if (attribute != null && !attribute.equals(idAttribute)) {
 			super.addAttributeValueProposals(contentAssistRequest);
 			return;
 		}
 
-		IFile file = EditorUtil.getActiveFile();
-		IProject project = file.getProject();
 		IPath path = file.getProjectRelativePath();
-
 		String fileName = path.toString();
 		fileName = fileName.substring(0, fileName.length()
 				- path.getFileExtension().length())
