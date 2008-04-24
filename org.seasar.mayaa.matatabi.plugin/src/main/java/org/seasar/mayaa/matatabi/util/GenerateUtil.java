@@ -159,6 +159,10 @@ public class GenerateUtil {
 		}
 
 		context.put("id", id);
+		if (id.split("-").length == 2) {
+			context.put("id-command", id.split("-")[0]);
+			context.put("id-variable", id.split("-")[1]);
+		}
 		context.put("name", element.getNodeName());
 		context.put("hasBody", element.hasChildNodes());
 		context.put("attributes", attributes);
