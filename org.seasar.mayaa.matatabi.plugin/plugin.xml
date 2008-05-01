@@ -359,7 +359,12 @@
 	<extension point="org.eclipse.ui.propertyPages">
 		<page 
 			class="org.seasar.mayaa.matatabi.property.MatatabiPropertyPage"
-			id="org.seasar.mayaa.matatabi.propertyPage" name="Matatabi" />
+			id="org.seasar.mayaa.matatabi.propertyPage"
+ 			name="Matatabi" >
+	 			<enabledWhen>
+		 			<instanceof value="org.eclipse.core.resources.IProject" />
+	 			</enabledWhen>
+ 			</page>
 	</extension>
 	<extension id="MatatabiNature"
 		point="org.eclipse.core.resources.natures">
