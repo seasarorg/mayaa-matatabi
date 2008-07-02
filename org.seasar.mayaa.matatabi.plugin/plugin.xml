@@ -360,9 +360,12 @@
 		<page 
 			class="org.seasar.mayaa.matatabi.property.MatatabiPropertyPage"
 			id="org.seasar.mayaa.matatabi.propertyPage"
- 			name="Matatabi" >
+ 			name="Matatabi">
 	 			<enabledWhen>
-		 			<instanceof value="org.eclipse.core.resources.IProject" />
+		 			<or>
+			 			<instanceof  value="org.eclipse.core.resources.IProject"/>
+			 			<instanceof  value="org.eclipse.jdt.core.IJavaProject"/>
+		 			</or>
 	 			</enabledWhen>
  			</page>
 	</extension>
