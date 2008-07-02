@@ -3,6 +3,8 @@ package org.seasar.mayaa.matatabi.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +24,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.jaxen.Context;
 import org.jaxen.ContextSupport;
 import org.jaxen.JaxenException;
-import org.jaxen.NamespaceContext;
 import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.SimpleVariableContext;
 import org.jaxen.XPathFunctionContext;
@@ -34,7 +35,6 @@ import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.property.NamespaceTableViewer.Namespace;
 import org.seasar.mayaa.matatabi.property.ReplaceRuleTableViewer.ReplaceRule;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -157,11 +157,14 @@ public class GenerateUtil {
 			Attr attr = (Attr) element.getAttributes().item(i);
 			attributes.put(attr.getName(), attr);
 		}
-
 		context.put("id", id);
-		if (id.split("-").length == 2) {
-			context.put("id-command", id.split("-")[0]);
-			context.put("id-variable", id.split("-")[1]);
+		if (id.split("-").length > 1) {
+			List<String> idWithCommand = new ArrayList<String>(Arrays.asList(id
+					.split("-")));
+			context.put("id_command", idWithCommand.remove(0));
+			for (int i = 0; i < idWithCommand.size(); i++) {
+				context.put("id_variable" + i, idWithCommand.get(i));
+			}
 		}
 		context.put("name", element.getNodeName());
 		context.put("hasBody", element.hasChildNodes());
