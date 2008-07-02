@@ -6,8 +6,9 @@ import java.util.List;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.wst.html.core.text.IHTMLPartitions;
 import org.eclipse.wst.html.ui.StructuredTextViewerConfigurationHTML;
-import org.seasar.mayaa.matatabi.editor.contentsassist.HTMLContentAssistProcessor;
+import org.seasar.mayaa.matatabi.editor.contentsassist.MayaaHTMLContentAssistProcessor;
 import org.seasar.mayaa.matatabi.editor.hyperlink.HtmlHyperlinkDetector;
 
 /**
@@ -18,12 +19,15 @@ public class MayaaHTMLTextViewerConfiguration extends
 
 	@Override
 	protected IContentAssistProcessor[] getContentAssistProcessors(
-			ISourceViewer sourceViewer, String string) {
-		List<IContentAssistProcessor> result = new ArrayList<IContentAssistProcessor>(
-				0);
-		result.add(new HTMLContentAssistProcessor());
+			ISourceViewer sourceViewer, String partitionType) {
 
-		return result.toArray(new IContentAssistProcessor[0]);
+		if ((partitionType == IHTMLPartitions.HTML_DEFAULT)
+				|| (partitionType == IHTMLPartitions.HTML_COMMENT)) {
+			return new IContentAssistProcessor[] { new MayaaHTMLContentAssistProcessor() };
+		} else {
+			return super
+					.getContentAssistProcessors(sourceViewer, partitionType);
+		}
 	}
 
 	@Override

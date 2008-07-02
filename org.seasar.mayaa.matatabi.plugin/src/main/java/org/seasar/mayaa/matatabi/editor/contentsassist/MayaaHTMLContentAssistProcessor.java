@@ -10,9 +10,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.wst.html.ui.internal.contentassist.HTMLContentAssistProcessor;
 import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
-import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.seasar.mayaa.matatabi.MatatabiPlugin;
 import org.seasar.mayaa.matatabi.util.EditorUtil;
 import org.seasar.mayaa.matatabi.util.ParseUtil;
@@ -24,12 +24,12 @@ import org.w3c.dom.Node;
  * コンテンツアシスト機能
  */
 @SuppressWarnings("restriction")
-public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
+public class MayaaHTMLContentAssistProcessor extends HTMLContentAssistProcessor {
 	/** アイコン */
 	private Image icon;
 
 	/** コンストラクタ */
-	public HTMLContentAssistProcessor() {
+	public MayaaHTMLContentAssistProcessor() {
 		icon = MatatabiPlugin.getImageDescriptor("icons/mayaa_file_small.gif")
 				.createImage();
 	}
@@ -40,6 +40,8 @@ public class HTMLContentAssistProcessor extends XMLContentAssistProcessor {
 	@Override
 	protected void addAttributeValueProposals(
 			ContentAssistRequest contentAssistRequest) {
+		super.addAttributeValueProposals(contentAssistRequest);
+		
 		// 属性を取得する(JBossのプラグインからいただいたコード)
 		int beginPos = contentAssistRequest.getReplacementBeginPosition();
 		NamedNodeMap map = contentAssistRequest.getNode().getAttributes();
