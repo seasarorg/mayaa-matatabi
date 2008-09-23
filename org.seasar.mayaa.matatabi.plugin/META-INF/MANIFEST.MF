@@ -20,14 +20,15 @@ Require-Bundle: org.apache.xerces,
  org.eclipse.wst.html.core,
  org.eclipse.wst.html.ui,
  org.eclipse.wst.common.ui,
- org.eclipse.wst.common.ui.properties,
  org.eclipse.wst.common.modulecore,
  org.eclipse.jst.jsp.core,
  org.eclipse.jst.pagedesigner,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
  org.eclipse.wst.common.core,
- org.eclipse.jdt
+ org.eclipse.jdt,
+ org.eclipse.ui.views.properties.tabbed;resolution:=optional,
+ org.eclipse.wst.common.ui.properties;resolution:=optional
 Bundle-Vendor: %Bundle-Vendor
 Bundle-ClassPath: matatabi.jar,
  lib/nekohtml.jar,
