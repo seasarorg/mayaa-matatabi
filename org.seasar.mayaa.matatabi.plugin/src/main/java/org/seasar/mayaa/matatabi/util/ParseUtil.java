@@ -23,6 +23,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -123,8 +124,7 @@ public class ParseUtil {
 				try {
 					parser.parse(new InputSource(targetFile.getContents()));
 					Document document = parser.getDocument();
-					traverse(idlist, document.getDocumentElement()
-							, getHtmlNamespaces(file
+					traverse(idlist, document, getHtmlNamespaces(file
 							.getProject()));
 				} catch (SAXException e) {
 					MatatabiPlugin.errorLog(e);
@@ -150,7 +150,7 @@ public class ParseUtil {
 	 * @param namespaces
 	 *            ëŒè€Ç∆Ç»ÇÈñºëOãÛä‘
 	 */
-	private static void traverse(Map<String, Element> idlist, Element element,
+	private static void traverse(Map<String, Element> idlist, Node element,
 			List<String> namespaces) {
 		for (Iterator<String> iter = namespaces.iterator(); iter.hasNext();) {
 			String namespace = iter.next();
@@ -158,11 +158,13 @@ public class ParseUtil {
 		}
 	}
 
-	private static void traverse(Map<String, Element> idlist, Element element,
+	private static void traverse(Map<String, Element> idlist, Node element,
 			String namespace) {
-		String value = getAttributeValue(element, namespace, "id");
-		if (value != null) {
-			idlist.put(value, element);
+		if (element instanceof Element) {
+			String value = getAttributeValue((Element) element, namespace, "id");
+			if (value != null) {
+				idlist.put(value, (Element) element);
+			}
 		}
 		NodeList nodeList = element.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
