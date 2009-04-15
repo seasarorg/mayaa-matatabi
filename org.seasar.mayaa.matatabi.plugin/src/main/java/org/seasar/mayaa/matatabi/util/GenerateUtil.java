@@ -192,10 +192,7 @@ public class GenerateUtil {
 			Node attr = attrs.item(i);
 			String[] name = attr.getNodeName().split(":");
 			if (xmlns.equals(name[0])) {
-				if (name.length == 1) {
-					nsContext.addNamespace(
-							javax.xml.XMLConstants.DEFAULT_NS_PREFIX, "");
-				} else {
+				if (name.length != 1) {
 					nsContext.addNamespace(name[1], attr.getNodeValue());
 				}
 			}
