@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.XMLConstants;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -85,7 +83,6 @@ public class GenerateUtil {
 				MatatabiPlugin.errorLog(e);
 			}
 		}
-
 		return buffer.toString();
 	}
 
@@ -179,7 +176,7 @@ public class GenerateUtil {
 
 	public static boolean isTargetNode(String expression, Element element) {
 		SimpleNamespaceContext nsContext = new SimpleNamespaceContext();
-		Element root = element.getOwnerDocument().getDocumentElement();
+		Element root = getRoot(element);
 		if (root.getLocalName() == null) {
 			Node node = root.getFirstChild();
 			do {
@@ -196,13 +193,14 @@ public class GenerateUtil {
 			String[] name = attr.getNodeName().split(":");
 			if (xmlns.equals(name[0])) {
 				if (name.length == 1) {
-					nsContext.addNamespace(XMLConstants.DEFAULT_NS_PREFIX, attr
-							.getNodeValue());
+					nsContext.addNamespace(
+							javax.xml.XMLConstants.DEFAULT_NS_PREFIX, "");
 				} else {
 					nsContext.addNamespace(name[1], attr.getNodeValue());
 				}
 			}
 		}
+
 		ContextSupport support = new ContextSupport(nsContext,
 				XPathFunctionContext.getInstance(),
 				new SimpleVariableContext(), new DocumentNavigator());
@@ -215,5 +213,12 @@ public class GenerateUtil {
 		} catch (SAXPathException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static Element getRoot(Node element) {
+		while (element.getParentNode() instanceof Element) {
+			element = (Element) element.getParentNode();
+		}
+		return (Element) element;
 	}
 }
